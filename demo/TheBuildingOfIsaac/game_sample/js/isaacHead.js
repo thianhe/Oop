@@ -1,32 +1,21 @@
-//由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
-//目前Class寫法都是以function的方式
-//只要是this.XXX皆會是Public的property
-var Monster = function(file, map, options) {
+var IsaacHead = function(file, options,file2 ,option2) {
     this.url = file;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
-    this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:4 , loop:true , speed:12}); 
+    this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:4 , loop:true , speed:12});
+    
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
     //this.sprite.start({ from: 0, to: 2, loop: true});
     this.mapPosition = {x:0, y:0};
-    this.walkTarget = {x:0, y:0};
     this.spritePosition = {x:0, y:0};
     this.constants = new Constants();
-    this.map = map;
-    this.isdieing = false;
-    this.isdead = false;
-    this.dieingCounter = 0;
-
-    this.canWalking = true;
-
-    this.StepMovedCallBack = [];
 
     this.isWalking = false;
-
-    var m_monster = this;
+    this.StepMovedCallBack = [];
 
     this.playerDirection = this.constants.DirectionEnum.DOWN;
+    this.shootingDirection = this.constants.DirectionEnum.DOWN;
     //以下這句話的意思是當options.position為undefined時this.sprite.position = x: 0, y: 0}
     //若options.position有值, 則this.sprite.position = options.position
     //原因是在JS中, undefined會被cast成false
@@ -38,40 +27,57 @@ var Monster = function(file, map, options) {
 
 
     //moveStep為位移量  格式範例{x:1,y:0}
+    this.sprite.start({ from: this.shootingDirection * 3, to: this.shootingDirection * 3 + 2, loop: true});
     this.walk = function(moveStep){
+        console.log(moveStep);
         if(this.isWalking === false){
-            if(moveStep.x > 0){
+            if(moveStep.x > 0 && moveStep.y > 0){
+                this.playerDirection = this.constants.DirectionEnum.RIGHTDOWN;
+            }
+            else if(moveStep.x <0 && moveStep.y >0){
+                this.playerDirection = this.constants.DirectionEnum.LEFTDOWN;
+            }
+            else if(moveStep.x <0 && moveStep.y < 0){
+                this.playerDirection = this.constants.DirectionEnum.LEFTUP;
+            }
+            else if(moveStep.x > 0 && moveStep.y < 0){
+                this.playerDirection = this.constants.DirectionEnum.RIGHTUP;
+            }
+            else if(moveStep.x > 0){
                 this.playerDirection = this.constants.DirectionEnum.RIGHT;
-            }else if(moveStep.x <0){
+            }
+            else if(moveStep.x <0){
                 this.playerDirection = this.constants.DirectionEnum.LEFT;
             }
-
-            if(moveStep.y > 0){
+            else if(moveStep.y > 0){
                 this.playerDirection = this.constants.DirectionEnum.DOWN;
-            }else if(moveStep.y < 0){
+            }
+            else if(moveStep.y < 0){
                 this.playerDirection = this.constants.DirectionEnum.UP;
             }
             this.isWalking = true;
-            this.walkTarget = {x:this.mapPosition.x + moveStep.x, y:this.mapPosition.y + moveStep.y};
-            this.sprite.start({ from: this.playerDirection * 3, to: this.playerDirection * 3 + 2, loop: true});
+            this.mapPosition = {x:this.mapPosition.x + moveStep.x, y:this.mapPosition.y + moveStep.y};
         }
-    }
-
-    this.die = function(){
-        this.isdead = true;
-    }
-
-    this.stopWalk = function()
-    {
-        this.canWalking = false;
     }
 
     this.walkEnd = function(){    }
 
-    var walkSpeed = 8;
+    var walkSpeed =8;
     this.walkAlittle = function(){
-
-        if(this.playerDirection === this.constants.DirectionEnum.DOWN){
+        //console.log("player walk a little " + walkSpeed);
+        if(this.playerDirection === this.constants.DirectionEnum.RIGHTDOWN){
+            this.spritePosition = {x:this.spritePosition.x + walkSpeed, y:this.spritePosition.y + walkSpeed};
+        }
+        else if(this.playerDirection === this.constants.DirectionEnum.LEFTDOWN){
+            this.spritePosition = {x:this.spritePosition.x - walkSpeed, y:this.spritePosition.y + walkSpeed};
+        }
+        else if(this.playerDirection === this.constants.DirectionEnum.RIGHTUP){
+            this.spritePosition = {x:this.spritePosition.x + walkSpeed, y:this.spritePosition.y - walkSpeed};
+        }
+        else if(this.playerDirection === this.constants.DirectionEnum.LEFTUP){
+            this.spritePosition = {x:this.spritePosition.x- walkSpeed, y:this.spritePosition.y - walkSpeed};
+        }
+        else if(this.playerDirection === this.constants.DirectionEnum.DOWN){
             this.spritePosition = {x:this.spritePosition.x, y:this.spritePosition.y + walkSpeed};
         }
         else if(this.playerDirection === this.constants.DirectionEnum.LEFT){
@@ -86,14 +92,10 @@ var Monster = function(file, map, options) {
     }
 
     this.update = function(){
-        if(this.isdead ){ return; }
         this.sprite.update();
         if(this.isWalking){
-            if(this.walkTarget.x * PIXEL_CONST === this.spritePosition.x && this.walkTarget.y * PIXEL_CONST === this.spritePosition.y){
+            if(this.mapPosition.x * PIXEL_CONST === this.spritePosition.x && this.mapPosition.y * PIXEL_CONST === this.spritePosition.y){
                 this.isWalking = false;
-                this.sprite.stop();
-                this.sprite.index = this.playerDirection * 3 + 1;
-                this.mapPosition = this.walkTarget;
                 //callback
                 for(var i=0; i<this.StepMovedCallBack.length; i++){
                     this.StepMovedCallBack[i](this);
@@ -101,55 +103,22 @@ var Monster = function(file, map, options) {
             }else{
                 this.walkAlittle();
             }
-        }else
-        {
-            if(this.canWalking)
-            {
-                this.randomWalk();
-            }
         }
     }
 
 
     this.draw = function(ctx){
-        if(this.isdead){ return; }
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         this.sprite.draw(ctx);
     }
-    var walkDir = 0;
-    this.randomWalk = function()
-    {
-        //var randNum = Math.floor(Math.random() * 100);
-        var randNum = Framework.Game._currentLevel.cycleCount % 553;
-        walkDir++;
-        var walkStep = {x:0,y:0}
-        if(randNum % 117 == 0)
-        {
-            walkStep.x = 1
-        }else if(randNum % 79 == 0)
-        {
-            walkStep.x = -1
-        }else if(randNum % 133 == 0)
-        {
-            walkStep.y = 1
-        }else if(randNum % 157 == 0)
-        {
-            walkStep.y = -1
-        }else
-        {
-            walkDir = 0;
-            return;
-        }
 
-        if(this.map.checkIsWalkAble(this.mapPosition.x + walkStep.x,this.mapPosition.y + walkStep.y))
-        {
-            this.walk(walkStep);
-        }
+
+    this.shootingUp = function(){
+
     }
-
 };
 
-Object.defineProperty(Monster.prototype, 'position', {
+Object.defineProperty(IsaacHead.prototype, 'position', {
     get: function() {
         return this.mapPosition;
     },
@@ -157,10 +126,4 @@ Object.defineProperty(Monster.prototype, 'position', {
         this.mapPosition = newValue;
         this.spritePosition = {x:this.mapPosition.x * 64, y: this.mapPosition.y * 64};
     }
-}); 
-
-Object.defineProperty(Monster.prototype, 'isDead', {
-    get: function() {
-        return this.isdead;
-    }
-}); 
+});

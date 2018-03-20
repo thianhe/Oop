@@ -1,4 +1,4 @@
-(function(window){	
+(function(window){
 	var define ={}, mainPath = 'game_sample/';
 	Object.defineProperties(define, {
 		'mainPath': {

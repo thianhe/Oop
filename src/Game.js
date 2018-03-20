@@ -7,7 +7,7 @@ var Framework = (function (Framework) {
     * 整個遊戲(多個{{#crossLink "Level"}}{{/crossLink}})的主體
     * 主要功能為新增移除關卡與關卡的切換
     * @class Game
-    */ 
+    */
 	Framework.Game = (function () {
         var that = {};
 		that._config = new Framework.Config();
@@ -21,11 +21,11 @@ var Framework = (function (Framework) {
 		that._heightRatio = 1;
 
 		that._isRecording = false;
-		that._isRecordMode = _isRecordMode;  // 來自入口的 .html 檔所呼叫的 load.js 或 recordLoad.js 
+		that._isRecordMode = _isRecordMode;  // 來自入口的 .html 檔所呼叫的 load.js 或 recordLoad.js
 		that._isTestMode = _isTestMode;      // 同上
 		that._isTestReady = false;
 		that._isReplay = false;
-		
+
 		that.isContinue = false;
 		that._isInit = false;
 		// gameloop is running ?
@@ -54,7 +54,7 @@ var Framework = (function (Framework) {
 
 		that._tempUpdate = function() {};
 		that._tempDraw = function(context) {};
-		
+
 		that.recordStart = function() {
 		    if (document.getElementById("start_btn").getAttribute("enable") == "true") {
 			    if (that._isRecordMode) {
@@ -72,7 +72,7 @@ var Framework = (function (Framework) {
   			    // ↓如果在replay mode下按了 Record btn, 應該要停止後續的replay動作, 同時放棄後續的腳本, 重新錄製新的腳本才對吧!
   			    // 試試在這裡把isReplay設為false, 看看 updateFunc() 能不能過.
   			    // 2017.12.13 : 在Recording mode下replay, Record.waitCounter 和 Replay._waitingCounter 似乎可以調齊了,
-  			    // 但在 _isTestMode = true 下Replay, 仍然快一個cycle, 
+  			    // 但在 _isTestMode = true 下Replay, 仍然快一個cycle,
   			    // to do  : 1. 錄製時, assertion game.cycleCount, 2. dump cyclecount 來比較
 			    if (that._isReplay){
 			    	that._isReplay  = false; // 2017.12.13 增加
@@ -122,11 +122,11 @@ var Framework = (function (Framework) {
 		that.recordInput = function(){
 		    if (document.getElementById("type_btn").getAttribute("enable") == "true") {
   			    var command = prompt("Please enter comment", "");
-    
+
 		        if (command != null) {
 				    that._record.inputCommand("//"+command);
 		        }
-			}	
+			}
 		};
 		that.recordReplay = function(){
 		    if (document.getElementById("replay_btn").getAttribute("enable") == "true") {
@@ -141,7 +141,7 @@ var Framework = (function (Framework) {
 			    Framework.Replay.resetWaitingCounter();
 			    var replayScript = document.getElementById("record_div").innerText;
 			    document.getElementById("record_div").innerText = "";
-			
+
 			    that.getReplayScript(replayScript);
 			    that._record.start();
 			    that._isRecording = true;
@@ -206,7 +206,7 @@ var Framework = (function (Framework) {
 			}
 			listMember("Framework.Game._currentLevel", "&nbsp", "variable_list");
 		};
-		
+
 		that.btnMouseOver = function(button){
 			if(button.getAttribute('enable') === "true"){
 				if(button.id == "start_btn")
@@ -244,27 +244,27 @@ var Framework = (function (Framework) {
 				document.getElementById("start_btn").src = "../../src/image/play.png";
 			else
 				document.getElementById("start_btn").src = "../../src/image/play_disable.png";
-			
+
 			if(document.getElementById("pause_btn").getAttribute("enable") === "true")
 				document.getElementById("pause_btn").src = "../../src/image/pause.png";
 			else
 				document.getElementById("pause_btn").src = "../../src/image/pause_disable.png";
-			
+
 			if(document.getElementById("stop_btn").getAttribute("enable") === "true")
 				document.getElementById("stop_btn").src = "../../src/image/stop.png";
 			else
 				document.getElementById("stop_btn").src = "../../src/image/stop_disable.png";
-			
+
 			if(document.getElementById("type_btn").getAttribute("enable") === "true")
 				document.getElementById("type_btn").src = "../../src/image/addComment.png";
 			else
 				document.getElementById("type_btn").src = "../../src/image/addComment_disable.png";
-			
+
 			if(document.getElementById("replay_btn").getAttribute("enable") === "true")
 				document.getElementById("replay_btn").src = "../../src/image/replay.png";
 			else
 				document.getElementById("replay_btn").src = "../../src/image/replay_disable.png";
-			
+
 			if(document.getElementById("variable_btn").getAttribute("enable") === "true")
 				document.getElementById("variable_btn").src = "../../src/image/variable.png";
 			else
@@ -357,12 +357,12 @@ var Framework = (function (Framework) {
 
 
 		that._mainContainer.style.backgroundColor = '#000';
-		that._canvasContainer = document.createElement('div');		
+		that._canvasContainer = document.createElement('div');
 		that._canvasContainer.style.display = 'table-cell';
 		that._canvasContainer.style.textAlign = 'center';
 		that._canvasContainer.style.verticalAlign = 'middle';
-		that._canvas = document.createElement('canvas');	
-		that._canvas.style.backgroundColor = '#fff';		
+		that._canvas = document.createElement('canvas');
+		that._canvas.style.backgroundColor = '#fff';
 		that._canvas.setAttribute('id', '__game_canvas__');
 		that._canvas.width = that._config.canvasWidth;
 		that._canvas.height = that._config.canvasHeight;
@@ -401,10 +401,10 @@ var Framework = (function (Framework) {
                 }
             }
 		}
-		that.update = function () {		
+		that.update = function () {
             that._currentLevel._update();
 		};
-		that.draw = function () {					
+		that.draw = function () {
             that._currentLevel._draw();
 		};
 
@@ -461,7 +461,7 @@ var Framework = (function (Framework) {
         }
 
         /**
-		* 加入一個新的關卡	
+		* 加入一個新的關卡
 		* @method addNewLevel
 		* @static
 		* @param {Object} levelData { 關卡名稱: 關卡的instance }
@@ -496,9 +496,9 @@ var Framework = (function (Framework) {
                         throw new Error('Game: already has same script name');
                     }
         }
-        
+
         /**
-		* 前往另一個關卡(前後皆可), 若沒有該關卡, 會throw exception	
+		* 前往另一個關卡(前後皆可), 若沒有該關卡, 會throw exception
 		* @method goToLevel
 		* @static
 		* @param {Object} levelName 關卡名稱
@@ -526,7 +526,7 @@ var Framework = (function (Framework) {
         };
 
         /**
-		* 前往下一個關卡, 若沒有下一個關卡, 會throw exception	
+		* 前往下一個關卡, 若沒有下一個關卡, 會throw exception
 		* @method goToNextLevel
 		* @static
 		* @example
@@ -561,7 +561,7 @@ var Framework = (function (Framework) {
         };
 
         /**
-		* 前往前一個關卡, 若沒有前一個關卡, 會throw exception	
+		* 前往前一個關卡, 若沒有前一個關卡, 會throw exception
 		* @method goToPreviousLevel
 		* @static
 		* @example
@@ -644,7 +644,7 @@ var Framework = (function (Framework) {
 				if (Framework.ResourceManager.getRequestCount() !==  Framework.ResourceManager.getResponseCount()) {
 					return;
 				}
-				self._isInit = true;					
+				self._isInit = true;
 				self.draw = self.loadingProgress;
 				self.update = function() {};
 				self.run();
@@ -655,7 +655,7 @@ var Framework = (function (Framework) {
 				}
 			};
 
-			Framework.ResourceManager.setSubjectFunction(function() {			
+			Framework.ResourceManager.setSubjectFunction(function() {
 				if(!self._isInit) {
 					initFunction();
 					return;
@@ -665,16 +665,16 @@ var Framework = (function (Framework) {
 				}
 			});
 
-			
+
 			//if(Framework.ResourceManager.getRequestCount() === 0) {
 			initFunction();
 			//}
 			//
-			
+
 			Framework.TouchManager.setSubject(self._currentLevel);
 			Framework.TouchManager.setTouchstartEvent(self._currentLevel.touchstart);
 			Framework.TouchManager.setTouchendEvent(self._currentLevel.touchend);
-			Framework.TouchManager.setTouchmoveEvent(self._currentLevel.touchmove);			
+			Framework.TouchManager.setTouchmoveEvent(self._currentLevel.touchmove);
 
 			Framework.MouseManager.setSubject(self._currentLevel);
 			Framework.MouseManager.setClickEvent(self.click);
@@ -686,12 +686,12 @@ var Framework = (function (Framework) {
 			Framework.KeyBoardManager.setSubject(self._currentLevel);
 			Framework.KeyBoardManager.setKeyupEvent(self.keyup);
 			Framework.KeyBoardManager.setKeydownEvent(self.keydown);
-			
+
 		};
 
-		that.run = function() {	
-			var self = that,	
-				nowFunc = function() { return (new Date()).getTime(); },		
+		that.run = function() {
+			var self = that,
+				nowFunc = function() { return (new Date()).getTime(); },
 				updateTicks = 1000 / that.fps,
 				drawTicks = 1000 / that.fps,
 				previousUpdateTime = nowFunc(),
@@ -702,18 +702,18 @@ var Framework = (function (Framework) {
 				nextGameDrawTick = now;
 			that.skipTicks = Math.round(1000 / that.fps);
 
-			var updateFunc = function() {	
-				now = nowFunc();						
+			var updateFunc = function() {
+				now = nowFunc();
 				if (now > nextGameTick) {
-					//console.log('now: ' + now + ', nextGameTick: ' + nextGameTick + ', diff:' + (now-nextGameTick));	
+					//console.log('now: ' + now + ', nextGameTick: ' + nextGameTick + ', diff:' + (now-nextGameTick));
 					that._fpsAnalysis.update();
 					// show FPS information
 					if (that.fpsContext) {
 						that.fpsContext.innerHTML = 'update FPS:' + that._fpsAnalysis.getUpdateFPS() + '<br />draw FPS:' + that._drawfpsAnalysis.getUpdateFPS();
-					}							
+					}
 					// run Game's update
 					that.update();
-					
+
 		            if (that._isRecording) {
 		                if ((that._isReplay == false) || (Framework.Replay.getWaitingCounter() > 0))  {  // ok, 但game的cycleCount還是不一致
 		            	   that._record.update();  // 哪裡會多做一次呢? 怎麼知道是 game 啟動時第一次的update嗎? 來跳過去?
@@ -728,11 +728,11 @@ var Framework = (function (Framework) {
 //		            	console.log("cycleCount(current_level, Replay) : " + that._currentLevel.cycleCount + ' , ' + Framework.Replay.getCycleCount() );
 //		            }
 					nextGameTick += that.skipTicks;
-				}						
+				}
 			};
 
 			var drawFunc = function() {
-				if (now >= nextGameDrawTick) {					
+				if (now >= nextGameDrawTick) {
 					that.draw(that._context);
 					that._drawfpsAnalysis.update();
 					if (that.fpsContext) {
@@ -746,7 +746,7 @@ var Framework = (function (Framework) {
 
                 var preDraw = Date.now();
 				updateFunc();
-				drawFunc();		
+				drawFunc();
 
                 var drawTime = Date.now() - preDraw;
                 if(drawTime > 5)
@@ -758,7 +758,7 @@ var Framework = (function (Framework) {
                     var average = that.countAverage(that.timelist);
                     that.timelist = [];
                     //console.log("game loop time average " + average);
-                }						
+                }
 			}
 
 			that._isRun = true;
@@ -780,15 +780,15 @@ var Framework = (function (Framework) {
 		that.stopAnimationFrame = function() {
 			cancelAnimationFrame(that._runInstance);
 		};
-		
+
 		that.runAnimationFrame = function (gameLoopFunc) {
 			/*if(!Framework.Util.isUndefined(that._runInstance)) {
 				that.stopAnimationFrame();
 			}*/
 			// dynamic product runnable function
-			window.requestAnimationFrame = window.requestAnimationFrame || 
-                        window.mozRequestAnimationFrame || 
-                        window.webkitRequestAnimationFrame || 
+			window.requestAnimationFrame = window.requestAnimationFrame ||
+                        window.mozRequestAnimationFrame ||
+                        window.webkitRequestAnimationFrame ||
                         window.msRequestAnimationFrame;
 			var _run = function () {
 				gameLoopFunc();
@@ -798,7 +798,7 @@ var Framework = (function (Framework) {
 			};
 			_run();
 			that.stopLoop = that.stopAnimationFrame;
-		};	/**/			
+		};	/**/
 
 		that.runInterval = function (gameLoopFunc) {
 			/*if(!Framework.Util.isUndefined(that._runInstance)) {
@@ -890,7 +890,7 @@ var Framework = (function (Framework) {
 
 
 		/**
-		* 讓任何一個在網頁上的元件得以全螢幕, 一定要在有使用者可以觸發的事件內撰寫, 例如: 
+		* 讓任何一個在網頁上的元件得以全螢幕, 一定要在有使用者可以觸發的事件內撰寫, 例如:
 		* {{#crossLink "Level/click:event"}}{{/crossLink}},
 		* {{#crossLink "Level/mousedown:event"}}{{/crossLink}},
 		* {{#crossLink "Level/mouseup:event"}}{{/crossLink}},
@@ -907,10 +907,10 @@ var Framework = (function (Framework) {
 		* 	Framework.Game.fullScreen();
 		*/
 		that.fullScreen = function(ele) {
-			var ele = ele || that._canvas;			
+			var ele = ele || that._canvas;
 			if (!ele.fullscreenElement &&    // alternative standard method
-			  !ele.mozFullScreenElement && 
-			  !ele.webkitFullscreenElement && 
+			  !ele.mozFullScreenElement &&
+			  !ele.webkitFullscreenElement &&
 			  !ele.msFullscreenElement ) {  // current working methods
 				if (ele.requestFullscreen) {
 				  ele.requestFullscreen();
@@ -922,18 +922,18 @@ var Framework = (function (Framework) {
 				  ele.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 				}
 				//ele.style.width = '100%'//window.innerWidth;
-				//ele.style.height = '100%'//window.innerHeight;			
-			} 
+				//ele.style.height = '100%'//window.innerHeight;
+			}
 		};
 
 		/**
-		* 退出全螢幕	
+		* 退出全螢幕
 		* @method exitFullScreen
 		* @static
 		* @example
 		* 	Framework.Game.exitFullScreen();
 		*/
-		that.exitFullScreen = function() {	
+		that.exitFullScreen = function() {
 			if (document.exitFullscreen) {
 			  document.exitFullscreen();
 			} else if (document.msExitFullscreen) {
@@ -965,12 +965,12 @@ var Framework = (function (Framework) {
 			scaledWidth = Math.round(base * that._ideaWidth);
 			scaledHeight = Math.round(base * that._ideaHeight);
 			that._widthRatio = scaledWidth / that._canvas.width;
-			that._heightRatio = scaledHeight / that._canvas.height;		
+			that._heightRatio = scaledHeight / that._canvas.height;
 			//that._canvasContainer.style.width = scaledWidth;
 			//that._canvasContainer.style.height = scaledHeight;
 			that._canvas.style.width = scaledWidth + 'px';    // 2017.02.20, from V3.1.1
 			that._canvas.style.height = scaledHeight + 'px';  // 2017.02.20, from V3.1.1
-	
+
 		};
 
 		that._pushGameObj = function(ele) {
@@ -1042,7 +1042,7 @@ listMember = function(main, space, divId) {
 					}
 				}
 			}catch(e){
-			
+
 			}
 		}
 		space += "&nbsp&nbsp&nbsp";

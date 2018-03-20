@@ -5,7 +5,7 @@ var Box = function(item) {
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
 
-    this.mapPosition = {x:0, y:0};
+    this.mapPosition = {x:1, y:1};
 
     this.constants = new Constants();
     this.item = item;

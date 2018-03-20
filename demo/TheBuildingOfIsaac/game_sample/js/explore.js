@@ -1,6 +1,6 @@
 
 var Explore = function() {
-    this.sprite = new Framework.AnimationSprite({url:define.imagePath + 'explore.png', col:3 , row:1 , loop:true , speed:12}); 
+    this.sprite = new Framework.AnimationSprite({url:define.imagePath + 'explore.png', col:3 , row:1 , loop:true , speed:12});
     this.sprite.scale = 2;
     this.sprite.initialize();
     this.sprite.start({ from: 0, to: 2, loop: true })

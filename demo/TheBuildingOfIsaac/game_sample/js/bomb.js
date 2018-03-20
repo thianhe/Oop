@@ -57,4 +57,4 @@ Object.defineProperty(Bomb.prototype, 'position', {
     set: function(newValue) {
         this.mapPosition = newValue;
     }
-}); 
+});

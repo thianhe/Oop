@@ -1,6 +1,12 @@
-var Map = function(map)
+var Map = function(map,mapState)
 {
-    this.mapArray = map;
+    var mapPositionX=1;
+    var mapPositionY=1;
+    this.thisMapState = mapState;
+    this.mapTerrain = map;
+    this.mapList = new Terrain();
+    this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
+    //this.mapArray = map;
     this.load = function(){
 
         this.score = new Score();
@@ -20,8 +26,10 @@ var Map = function(map)
         this.increaseBombPower.scale = 1.5;
         this.stopMonster  = new Framework.Sprite(define.imagePath + 'stopMonster.png');
         this.stopMonster.scale = 1.5;
-        this.player1 = new BombMan(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}},define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         this.player1.position = {x:1, y:1};
+        //this.player1Head = new IsaacHead(define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        //this.player1Head.position = {x:1, y:1};
 
         this.monster = [];
         this.stopMonster = false;
@@ -72,6 +80,7 @@ var Map = function(map)
 
     this.setPlayerPosition = function(playerPosition){
         this.player1.position = playerPosition;
+        //this.player1Head.position = this.player1.position;
     }
     this.addMonster = function(monsterPosition)
     {
@@ -125,6 +134,7 @@ var Map = function(map)
         {
             if(this.checkIsWalkAble(this.player1.position.x+this.playerWalkDirection.x,this.player1.position.y+this.playerWalkDirection.y))
             {
+                //this.player1Head.walk(this.playerWalkDirection);
                 this.player1.walk(this.playerWalkDirection);
             }
         }
@@ -190,9 +200,10 @@ var Map = function(map)
         {
             this.monster[i].draw(ctx);
         }
+        //this.player1Head.draw(ctx);
         this.player1.draw(ctx);
         this.score.draw(ctx);
-	}	
+	}
 
     var m_map = this;
     this.bombExploredHandler = function(exploredArray, bomb){
@@ -333,7 +344,6 @@ var Map = function(map)
         
         this.playerWalkFunction();
     }
-
     this.playerWalkFunction = function()
     {
         console.log(walkDirection);
@@ -435,5 +445,41 @@ var Map = function(map)
                 this.pressWalk = false;
             }
         }
+    }
+    this.outOfMap = function(){
+        var mapXSize =21;
+        var mapYSize = 11;
+        if(this.player1.position.x==0){
+            mapPositionY--;
+            this.changeMap();
+            this.init();
+            this.setPlayerPosition({x:20,y:5});
+        }
+        if(this.player1.position.x==mapXSize){
+            mapPositionY++;
+            this.changeMap();
+            this.init();
+            this.setPlayerPosition({x:1,y:5});
+        }
+        if(this.player1.position.y==0){
+            mapPositionX--;
+            this.changeMap();
+            this.init();
+            this.setPlayerPosition({x:10,y:10});
+        }
+        if(this.player1.position.y==mapYSize){
+            mapPositionX++;
+            this.changeMap();
+            this.init();
+            this.setPlayerPosition({x:10,y:1});
+        }
+    }
+
+    this.changeMap = function(){
+        this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
+        this.mapArray[5][0] = this.thisMapState[mapPositionX][mapPositionY][1];
+        this.mapArray[0][10] = this.thisMapState[mapPositionX][mapPositionY][2];
+        this.mapArray[5][21] = this.thisMapState[mapPositionX][mapPositionY][3];
+        this.mapArray[11][10] = this.thisMapState[mapPositionX][mapPositionY][4];
     }
 }

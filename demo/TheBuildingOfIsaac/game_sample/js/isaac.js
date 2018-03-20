@@ -1,10 +1,12 @@
 //由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
 //目前Class寫法都是以function的方式
 //只要是this.XXX皆會是Public的property
-var BombMan = function(file, options) {
+var Isaac = function(file, options,file2 ,option2) {
     this.url = file;
+    this.url2 = file2;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
     this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:8 , loop:true , speed:12});
+    this.headSprite = new Framework.AnimationSprite({url2:this.url2, col:3 , row:4 , loop:true , speed:12});
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
@@ -74,7 +76,7 @@ var BombMan = function(file, options) {
 
     this.walkEnd = function(){    }
 
-    var walkSpeed = 4;
+    var walkSpeed =8;
     this.walkAlittle = function(){
         //console.log("player walk a little " + walkSpeed);
         if(this.playerDirection === this.constants.DirectionEnum.RIGHTDOWN){
@@ -149,9 +151,13 @@ var BombMan = function(file, options) {
         }
         return null;
     }
+
+    this.shootingUp = function(){
+
+    }
 };
 
-Object.defineProperty(BombMan.prototype, 'position', {
+Object.defineProperty(Isaac.prototype, 'position', {
     get: function() {
         return this.mapPosition;
     },
