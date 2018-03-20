@@ -37,7 +37,7 @@ var Isaac = function(file, options,file2 ,option2) {
 
     //moveStep為位移量  格式範例{x:1,y:0}
     this.walk = function(moveStep){
-        console.log(moveStep);
+
         if(this.isWalking === false){
             if(moveStep.x > 0 && moveStep.y > 0){
                 this.playerDirection = this.constants.DirectionEnum.RIGHTDOWN;

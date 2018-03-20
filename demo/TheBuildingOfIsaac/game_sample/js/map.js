@@ -1,12 +1,11 @@
 var Map = function(map,mapState)
 {
-    var mapPositionX=1;
-    var mapPositionY=1;
     this.thisMapState = mapState;
     this.mapTerrain = map;
+    var mapPositionX=(this.mapTerrain.length-1)/2;
+    var mapPositionY=(this.mapTerrain.length-1)/2;
     this.mapList = new Terrain();
     this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
-    //this.mapArray = map;
     this.load = function(){
 
         this.score = new Score();
@@ -28,8 +27,6 @@ var Map = function(map,mapState)
         this.stopMonster.scale = 1.5;
         this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}},define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         this.player1.position = {x:1, y:1};
-        //this.player1Head = new IsaacHead(define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
-        //this.player1Head.position = {x:1, y:1};
 
         this.monster = [];
         this.stopMonster = false;
@@ -40,7 +37,6 @@ var Map = function(map,mapState)
     {
         this.player1.StepMovedCallBack.push(this.playerMovedHandler);
         this.constants = new Constants();
-        //this.mapArray = [];
         this.boxArray = [];
         this.bombArray = [];
         this.itemArray = [];
@@ -134,7 +130,6 @@ var Map = function(map,mapState)
         {
             if(this.checkIsWalkAble(this.player1.position.x+this.playerWalkDirection.x,this.player1.position.y+this.playerWalkDirection.y))
             {
-                //this.player1Head.walk(this.playerWalkDirection);
                 this.player1.walk(this.playerWalkDirection);
             }
         }
@@ -160,25 +155,6 @@ var Map = function(map,mapState)
         }
 	}
 	this.draw = function(ctx) {
-		// for(var i=0; i<this.mapArray.length; i++){
-		// 	var line = this.mapArray[i];
-		// 	for(var j=0; j<line.length; j++){
-		// 		this.mapFloor.position = {x: j * 64, y: i * 64};
-		// 		this.mapFloor.draw(ctx);
-  //               if(line[j] === 1){
-  //                   this.mapWall.position = {x: j * 64, y: i * 64};
-  //                   this.mapWall.draw(ctx);
-  //               }else if(line[j] === -1){
-  //                   this.increaseBombNum.position = {x: j * 64, y: i * 64};
-  //                   this.increaseBombNum.draw(ctx);
-  //               }else if(line[j] === -2){
-  //                   this.increaseBombPower.position = {x: j * 64, y: i * 64};
-  //                   this.increaseBombPower.draw(ctx);
-  //               }
-		// 	}
-		// }
-
-
         for(var i=0; i<this.tileArray.length; i++)
         {
             this.tileArray[i].draw(ctx);
@@ -200,7 +176,6 @@ var Map = function(map,mapState)
         {
             this.monster[i].draw(ctx);
         }
-        //this.player1Head.draw(ctx);
         this.player1.draw(ctx);
         this.score.draw(ctx);
 	}
@@ -293,42 +268,20 @@ var Map = function(map,mapState)
         if(e.key === 'S') {
             walkDirection[2] = true;
             this.keyPress = "S";
-            /*if(this.checkIsWalkAble(playerPosition.x,playerPosition.y+1)){
-                this.playerWalkDirection = {x:0,y:+1};
-                this.pressWalk = true;
-                this.keyPress = "S";
-            }*/
         }
 
         if(e.key === 'A') {
             walkDirection[1] = true;
             this.keyPress = "A";
-            /*if(this.checkIsWalkAble(playerPosition.x-1,playerPosition.y)){
-                this.playerWalkDirection = {x:-1,y:0};
-                this.pressWalk = true;
-                this.keyPress = "A";
-            }*/
         }
 
         if(e.key === 'D') {
             walkDirection[3] = true;
             this.keyPress = "D";
-            /*if(this.checkIsWalkAble(playerPosition.x+1,playerPosition.y)){
-                //this.player1.walk({x:1,y:0});
-                this.playerWalkDirection = {x:1,y:0};
-                this.pressWalk = true;
-                this.keyPress = "D";
-            }*/
         }
         if(e.key === 'W') {
             walkDirection[0] = true;
             this.keyPress = "W";
-            /*if(this.checkIsWalkAble(playerPosition.x,playerPosition.y-1)){
-                //this.player1.walk({x:0,y:-1});
-                this.playerWalkDirection = {x:0,y:-1};
-                this.pressWalk = true;
-                this.keyPress = "W";
-            }*/
         }
 
         if(e.key === 'Space'){
@@ -341,12 +294,11 @@ var Map = function(map,mapState)
                 this.mapArray[bombPosition.y][bombPosition.x] = 3;
             }
         }
-        
+
         this.playerWalkFunction();
     }
     this.playerWalkFunction = function()
     {
-        console.log(walkDirection);
         var playerPosition = this.player1.position;
         if((walkDirection[0]) && (walkDirection[1]) && !(walkDirection[2]) && !(walkDirection[3])){
             if(this.checkIsWalkAble(playerPosition.x-1,playerPosition.y-1)){
@@ -425,13 +377,11 @@ var Map = function(map,mapState)
     this.checkIsWalkAble = function(x,y){
         if(x < 0 || x > this.mapArray[0].length){ return false; }
         if(y < 0 || y > this.mapArray.length){ return false; }
-
         if(this.mapArray[y][x] > 0){ return false; }
         else{ return true;}
     }
 
     this.keyup = function(e, list){
-        console.log(e);
         if(e.key === 'W' || e.key === 'A' || e.key === 'S' || e.key === 'D') {
             if(e.key === 'W')walkDirection[0]=false;
             if(e.key === 'A')walkDirection[1]=false;
@@ -446,6 +396,7 @@ var Map = function(map,mapState)
             }
         }
     }
+
     this.outOfMap = function(){
         var mapXSize =21;
         var mapYSize = 11;
@@ -476,6 +427,7 @@ var Map = function(map,mapState)
     }
 
     this.changeMap = function(){
+        console.log(mapPositionX,mapPositionY);
         this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
         this.mapArray[5][0] = this.thisMapState[mapPositionX][mapPositionY][1];
         this.mapArray[0][10] = this.thisMapState[mapPositionX][mapPositionY][2];

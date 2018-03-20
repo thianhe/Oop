@@ -1,27 +1,42 @@
 var Level2_change = Framework.Class(Framework.Level , {
-    
-    load: function() {
-        //0 空地  1牆壁  2空木箱  3增加炸彈木箱  4增加威力木箱  -1增加炸彈數  -2增加炸彈power
-        this.mapArray = [];
-        this.mapArray.push([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]); //1
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //2
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //3
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //4
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //5
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //6
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //7
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //8
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //9
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //10
-        this.mapArray.push([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]); //11
-        this.mapArray.push([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]); //12
 
-        this.map = new Map(this.mapArray);
+    load: function() {
+        this.mapArray = [];
+        for(var i=0;i<9;i++){
+            this.mapArray[i] = [];
+            for(var j=0;j<9;j++){
+                if(i==4 && j==4)this.mapArray[i].push(0)
+                else this.mapArray[i].push(Math.floor((Math.random() * 9)));
+            }
+        }
+        this.mapState = [];
+        for(var i=0 ; i< this.mapArray.length;i++){
+            this.mapState[i] = []
+            var mapState = [];
+            for(var j=0; j< this.mapArray.length;j++){
+                var leftGate=0;
+                var upGate=0;
+                var rightGate=0;
+                var bottomGate=0;
+                this.mapState[i][j] = [];
+                if(i===0) upGate = 1;
+                if(i===this.mapArray.length-1) bottomGate = 1;
+                if(j===0) leftGate = 1;
+                if(j===this.mapArray.length-1) rightGate =1;
+                this.mapState[i][j].push(0);
+                this.mapState[i][j].push(leftGate);
+                this.mapState[i][j].push(upGate);
+                this.mapState[i][j].push(rightGate);
+                this.mapState[i][j].push(bottomGate);
+            }
+        }
+        console.log(this.mapArray);
+        console.log(this.mapState);
+        this.map = new Map(this.mapArray,this.mapState);
         this.map.load();
     },
 
     initialize: function() {
-        
         this.map.init();
         this.map.setPlayerPosition({x:6,y:6});
         /*this.map.addMonster({x:3, y:4});
@@ -34,6 +49,7 @@ var Level2_change = Framework.Class(Framework.Level , {
 
     update: function() {     
         this.map.update();
+        this.map.outOfMap();
     },
 
     draw:function(parentCtx){

@@ -27,7 +27,6 @@ var Level2 = Framework.Class(Framework.Level , {
                 this.mapState[i][j].push(bottomGate);
             }
         }
-        console.log(this.mapArray.length-1);
         this.map = new Map(this.mapArray,this.mapState);
         this.map.load();
     },
