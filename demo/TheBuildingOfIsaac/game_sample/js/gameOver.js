@@ -10,7 +10,6 @@ var GameOver = Framework.Class(Framework.Level , {
     //在initialize時會觸發的事件
     loadingProgress: function(ctx, requestInfo) {
         //console.log(Framework.ResourceManager.getFinishedRequestPercent())
-        
     },
 
     load: function() {

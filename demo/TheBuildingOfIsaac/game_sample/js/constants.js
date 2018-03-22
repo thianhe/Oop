@@ -1,13 +1,13 @@
 
 var Constants = function() {
     this.DirectionEnum = {
-        DOWN : 0,
-        LEFT : 1,
-        RIGHT : 2,
-        UP : 3,
-        LEFTUP : 4,
+        UP : 0,
+        DOWN : 1,
+        LEFT : 2,
+        RIGHT : 3,
+        RIGHTDOWN: 4,
         LEFTDOWN : 5,
-        RIGHTDOWN : 6,
+        LEFTUP: 6,
         RIGHTUP: 7
     };
 

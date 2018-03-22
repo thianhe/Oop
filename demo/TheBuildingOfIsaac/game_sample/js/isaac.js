@@ -9,6 +9,8 @@ var Isaac = function(file, options,file2 ,option2) {
     this.headSprite = new Framework.AnimationSprite({url2:this.url2, col:3 , row:4 , loop:true , speed:12});
     this.sprite.scale = 2;
     this.sprite.index = 1;
+    this.headSprite.scale = 2;
+    this.headSprite.index = 1;
     var PIXEL_CONST = 64;
     //this.sprite.start({ from: 0, to: 2, loop: true});
     this.mapPosition = {x:0, y:0};
@@ -107,6 +109,7 @@ var Isaac = function(file, options,file2 ,option2) {
 
     this.update = function(){
         this.sprite.update();
+        this.headSprite.update();
         if(this.isWalking){
             if(this.mapPosition.x * PIXEL_CONST === this.spritePosition.x && this.mapPosition.y * PIXEL_CONST === this.spritePosition.y){
                 this.isWalking = false;
@@ -127,6 +130,8 @@ var Isaac = function(file, options,file2 ,option2) {
     this.draw = function(ctx){
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         this.sprite.draw(ctx);
+        this.headSprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
+        //this.headSprite.draw(ctx);
     }
 
     this.increaseBombNum = function(){

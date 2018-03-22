@@ -1,13 +1,12 @@
-var Map = function(map,mapState)
+var Map = function(map)
 {
-    this.thisMapState = mapState;
+    this.thisMapState = [];
     this.mapTerrain = map;
     var mapPositionX=(this.mapTerrain.length-1)/2;
     var mapPositionY=(this.mapTerrain.length-1)/2;
     this.mapList = new Terrain();
     this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
     this.load = function(){
-
         this.score = new Score();
         this.score.position = {x:1000,y:0};
         this.mapFloor = new Framework.Sprite(define.imagePath + 'floor2.png');
@@ -31,6 +30,9 @@ var Map = function(map,mapState)
         this.monster = [];
         this.stopMonster = false;
         this.stopMonsterCounter =0;
+        this.randomMapState();
+        console.log(this.thisMapState);
+        console.log(this.mapTerrain);
     }
 
     this.init = function()
@@ -76,7 +78,6 @@ var Map = function(map,mapState)
 
     this.setPlayerPosition = function(playerPosition){
         this.player1.position = playerPosition;
-        //this.player1Head.position = this.player1.position;
     }
     this.addMonster = function(monsterPosition)
     {
@@ -153,6 +154,7 @@ var Map = function(map,mapState)
                 }
             }
         }
+        this.outOfMap();
 	}
 	this.draw = function(ctx) {
         for(var i=0; i<this.tileArray.length; i++)
@@ -302,32 +304,24 @@ var Map = function(map,mapState)
         var playerPosition = this.player1.position;
         if((walkDirection[0]) && (walkDirection[1]) && !(walkDirection[2]) && !(walkDirection[3])){
             if(this.checkIsWalkAble(playerPosition.x-1,playerPosition.y-1)){
-                //this.keyPress = "W";
-                //this.keyPress = "A";
                 this.playerWalkDirection = {x:-1,y:-1};
                 this.pressWalk = true;
             }
         }
         else if(!(walkDirection[0]) && (walkDirection[1]) && (walkDirection[2]) && !(walkDirection[3])){
             if(this.checkIsWalkAble(playerPosition.x-1,playerPosition.y+1)){
-                //this.keyPress = "A";
-                //this.keyPress = "S";
                 this.playerWalkDirection = {x:-1,y:1};
                 this.pressWalk = true;
             }
         }
         else if(!(walkDirection[0]) && !(walkDirection[1]) && (walkDirection[2]) && (walkDirection[3])){
             if(this.checkIsWalkAble(playerPosition.x+1,playerPosition.y+1)){
-                //this.keyPress = "S";
-                //this.keyPress = "D";
                 this.playerWalkDirection = {x:1,y:1};
                 this.pressWalk = true;
             }
         }
         else if((walkDirection[0]) && !(walkDirection[1]) && !(walkDirection[2]) && (walkDirection[3])){
             if(this.checkIsWalkAble(playerPosition.x+1,playerPosition.y-1)){
-                //this.keyPress = "W";
-                //this.keyPress = "D";
                 this.playerWalkDirection = {x:1,y:-1};
                 this.pressWalk = true;
             }
@@ -335,7 +329,6 @@ var Map = function(map,mapState)
         else if(walkDirection[0]&& !(walkDirection[1]) && !(walkDirection[2]) && !(walkDirection[3]))
         {
             if(this.checkIsWalkAble(playerPosition.x,playerPosition.y-1)){
-                //this.keyPress = "W";
                 this.playerWalkDirection = {x:0,y:-1};
                 this.pressWalk = true;
             }
@@ -343,7 +336,6 @@ var Map = function(map,mapState)
         else if(!(walkDirection[0]) && (walkDirection[1]) && !(walkDirection[2]) && !(walkDirection[3]))
         {
             if(this.checkIsWalkAble(playerPosition.x-1,playerPosition.y)){
-                //this.keyPress = "A";
                 this.playerWalkDirection = {x:-1,y:0};
                 this.pressWalk = true;
             }
@@ -351,7 +343,6 @@ var Map = function(map,mapState)
         else if(!(walkDirection[0]) && !(walkDirection[1]) && (walkDirection[2]) && !(walkDirection[3]))
         {
             if(this.checkIsWalkAble(playerPosition.x,playerPosition.y+1)){
-                //this.keyPress = "S";
                 this.playerWalkDirection = {x:0,y:1};
                 this.pressWalk = true;
             }
@@ -359,7 +350,6 @@ var Map = function(map,mapState)
         else if(!(walkDirection[0]) && !(walkDirection[1]) && !(walkDirection[2]) && (walkDirection[3]))
         {
             if(this.checkIsWalkAble(playerPosition.x+1,playerPosition.y)){
-                //this.keyPress = "D";
                 this.playerWalkDirection = {x:1,y:0};
                 this.pressWalk = true;
             }
@@ -395,6 +385,93 @@ var Map = function(map,mapState)
                 this.pressWalk = false;
             }
         }
+    }
+
+    this.randomMapState = function(){
+        for(var i=0 ; i< this.mapTerrain.length;i++){
+            this.thisMapState[i] = []
+            for(var j=0; j< this.mapTerrain.length;j++){
+                this.thisMapState[i][j] = [];
+                //state leftGate UpGate RightGate BottomGate
+                this.thisMapState[i][j].push(-1);
+                this.thisMapState[i][j].push(1);
+                this.thisMapState[i][j].push(1);
+                this.thisMapState[i][j].push(1);
+                this.thisMapState[i][j].push(1);
+            }
+        }
+        var mapSize =this.mapTerrain.length;
+        var centerXY = (mapSize-1)/2;
+        this.thisMapState[centerXY][centerXY][0] = 0;
+        this.randomOpenMap(centerXY,centerXY,mapSize-1);
+        this.connectOpenRoom();
+        this.changeMap()
+        this.init();
+    }
+
+    this.randomOpenMap = function(tempX,tempY,size){
+        if(tempX>0 && this.randomBool()){
+            if( this.thisMapState[tempX-1][tempY][0] == -1){
+                this.thisMapState[tempX-1][tempY][0] = 0;
+                this.mapUpToBottomConnect(tempX-1,tempY,0);
+                this.randomOpenMap(tempX-1,tempY,size);
+            }
+        }
+        if(tempX<size && this.randomBool()){
+            if(this.thisMapState[tempX+1][tempY][0] == -1){
+                this.thisMapState[tempX+1][tempY][0] = 0;
+                this.mapUpToBottomConnect(tempX,tempY,0);
+                this.randomOpenMap(tempX+1,tempY,size);
+            }
+        }
+        if(tempY>0 && this.randomBool()){
+            if(this.thisMapState[tempX][tempY-1][0] == -1){
+                this.thisMapState[tempX][tempY-1][0] = 0;
+                this.mapLeftToRightConnect(tempX,tempY-1,0);
+                this.randomOpenMap(tempX,tempY-1,size);
+            }
+        }
+        if(tempY<size && this.randomBool()){
+            if(this.thisMapState[tempX][tempY+1][0] == -1){
+                this.thisMapState[tempX][tempY+1][0] = 0;
+                this.mapLeftToRightConnect(tempX,tempY,0);
+                this.randomOpenMap(tempX,tempY+1,size);
+            }
+        }
+    }
+
+    this.randomBool = function(){
+        return (Math.random()>=0.25);
+    }
+
+    this.connectOpenRoom = function(){
+        for(var i=0;i< this.mapTerrain.length;i++){
+            for(var j=0;j<this.mapTerrain.length;j++){
+                if(this.thisMapState[i][j][0] > -1){
+                    if(i<this.mapTerrain.length-1){
+                        if(this.thisMapState[i+1][j][0] >-1 ){
+                            this.mapUpToBottomConnect(i,j,0);
+                        }
+                    }
+                    if(j<this.mapTerrain.length-1){
+                        if(this.thisMapState[i][j+1][0]>-1){
+                            this.mapLeftToRightConnect(i,j,0);
+                        }
+                    }
+                }else{
+                    this.mapTerrain[i][j]=9;
+                }
+            }
+        }
+    }
+
+    this.mapUpToBottomConnect = function(i,j,gateType){
+        this.thisMapState[i][j][4] = gateType;
+        this.thisMapState[i+1][j][2] = gateType;
+    }
+    this.mapLeftToRightConnect = function(i,j,gateType){
+        this.thisMapState[i][j][3] = gateType;
+        this.thisMapState[i][j+1][1] = gateType;
     }
 
     this.outOfMap = function(){
