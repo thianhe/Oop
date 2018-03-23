@@ -246,7 +246,7 @@ var Map = function(map)
                 if(boxPosition.x === explorePos.x && boxPosition.y === explorePos.y){
                     m_map.boxArray[j].explored();
                     m_map.mapArray[explorePos.y][explorePos.x] = m_map.boxArray[j].item;
-                    m_map.tileArray[explorePos.y*22+explorePos.x].tileType = m_map.boxArray[j].item;
+                    //m_map.tileArray[explorePos.y*22+explorePos.x].tileType = m_map.boxArray[j].item;
                     m_map.boxArray.splice(j,1);
                     m_map.score.addScore(100);
                 }
@@ -447,7 +447,7 @@ var Map = function(map)
     }
 
     this.randomBool = function(){
-        return (Math.random()>=0.25);
+        return (Math.random()>=0);
     }
 
     this.connectOpenRoom = function(){
@@ -481,40 +481,40 @@ var Map = function(map)
     }
 
     this.outOfMap = function(){
-        var mapXSize =21;
-        var mapYSize = 11;
+        var mapXSize =14;
+        var mapYSize = 8;
         if(this.player1.position.x==0){
             mapPositionY--;
             this.changeMap();
             this.init();
-            this.setPlayerPosition({x:20,y:5});
+            this.setPlayerPosition({x:13,y:4});
         }
         if(this.player1.position.x==mapXSize){
             mapPositionY++;
             this.changeMap();
             this.init();
-            this.setPlayerPosition({x:1,y:5});
+            this.setPlayerPosition({x:1,y:4});
         }
         if(this.player1.position.y==0){
             mapPositionX--;
             this.changeMap();
             this.init();
-            this.setPlayerPosition({x:10,y:10});
+            this.setPlayerPosition({x:7,y:7});
         }
         if(this.player1.position.y==mapYSize){
             mapPositionX++;
             this.changeMap();
             this.init();
-            this.setPlayerPosition({x:10,y:1});
+            this.setPlayerPosition({x:7,y:1});
         }
     }
 
     this.changeMap = function(){
         console.log(mapPositionX,mapPositionY);
         this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
-        this.mapArray[5][0] = this.thisMapState[mapPositionX][mapPositionY][1];
-        this.mapArray[0][10] = this.thisMapState[mapPositionX][mapPositionY][2];
-        this.mapArray[5][21] = this.thisMapState[mapPositionX][mapPositionY][3];
-        this.mapArray[11][10] = this.thisMapState[mapPositionX][mapPositionY][4];
+        this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
+        this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
+        this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
+        this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
     }
 }

@@ -1,4 +1,3 @@
-
 var Box = function(item) {
     this.sprite = new Framework.Sprite(define.imagePath + 'box.png'); 
     this.sprite.scale = 2;
@@ -34,4 +33,4 @@ Object.defineProperty(Box.prototype, 'position', {
     set: function(newValue) {
         this.mapPosition = newValue;
     }
-}); 
+});

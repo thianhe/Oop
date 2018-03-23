@@ -3,11 +3,12 @@ var Level2_change = Framework.Class(Framework.Level , {
     load: function() {
         var size = 7;
         this.mapArray = [];
+        var mapList = new Terrain();
         for(var i=0;i<size;i++){
             this.mapArray[i] = [];
             for(var j=0;j<size;j++){
-                if(i==(size-1)/2 && j==(size-1)/2)this.mapArray[i].push(0)
-                else this.mapArray[i].push(Math.floor((Math.random() * 9)));
+                if(i==(size-1)/2 && j==(size-1)/2)this.mapArray[i].push(0);
+                else this.mapArray[i].push(Math.floor((Math.random() * mapList.terrainList.length)));
             }
         }
         this.map = new Map(this.mapArray);
