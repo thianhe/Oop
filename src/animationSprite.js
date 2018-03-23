@@ -7,18 +7,18 @@ var Framework = (function (Framework) {
         * 支援播放連續圖片的Sprite
         *
         * @class AnimationSprite
-        * @constructor 
+        * @constructor
         * @extends GameObject
-        * @param  {Object} options 
-        * options.url為要載入的圖片, 當url為一個Array時表示為零散的多張圖片, 
-        * 當為string時表示是一張大張的連續動作圖, 
-        * 故需要在提供大張連續圖的row和col. 
-        * options.speed可以設定這個Sprite播放的速度(fps), 
+        * @param  {Object} options
+        * options.url為要載入的圖片, 當url為一個Array時表示為零散的多張圖片,
+        * 當為string時表示是一張大張的連續動作圖,
+        * 故需要在提供大張連續圖的row和col.
+        * options.speed可以設定這個Sprite播放的速度(fps),
         * options.loop 則可以設定這個Sprite是否需要不斷重複播放
         * @example
         *     new Framework.AnimationSprite({url:['image1.png', 'image2.bmp']}); //多張圖片
         *     new Framework.AnimationSprite({url:' bigImage.png', col: 10 , row: 7 , loop: true , speed: 6}); //只有一張大型的連續動作圖,speed和loop為非必要項
-        * 
+        *
         */
         __construct: function(options){
             // Define variable
@@ -37,8 +37,8 @@ var Framework = (function (Framework) {
             this._index = 0;
             this.speed = 10;
             this.loop = true;
-            this.maxIndex = 0;       
-            this.speedCounter = 0;     
+            this.maxIndex = 0;
+            this.speedCounter = 0;
             this.finishPlaying = function(){};
 
 
@@ -90,8 +90,8 @@ var Framework = (function (Framework) {
         },
         _nextFrame: function(){
             if(this._start){
-                this.index++;    
-                this._changeFrame = true;        
+                this.index++;
+                this._changeFrame = true;
                 if(this.index > this.to) {
                     if(this.loop) {
                         this.index = this.from;

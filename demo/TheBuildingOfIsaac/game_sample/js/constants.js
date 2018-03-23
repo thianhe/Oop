@@ -5,10 +5,17 @@ var Constants = function() {
         DOWN : 1,
         LEFT : 2,
         RIGHT : 3,
-        RIGHTDOWN: 4,
-        LEFTDOWN : 5,
-        LEFTUP: 6,
-        RIGHTUP: 7
+        LEFTUP: 4,
+        RIGHTUP : 5,
+        LEFTDOWN: 6,
+        RIGHTDOWN: 7
+    };
+
+    this.ShootingEnum = {
+        UP : 0,
+        DOWN : 1,
+        LEFT : 2,
+        RIGHT : 3,
     };
 
     this.ItemEnum = {

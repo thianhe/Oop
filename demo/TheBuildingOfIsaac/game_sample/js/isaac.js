@@ -1,16 +1,16 @@
 //由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
 //目前Class寫法都是以function的方式
 //只要是this.XXX皆會是Public的property
-var Isaac = function(file, options,file2 ,option2) {
+var Isaac = function(file,option) {
     this.url = file;
-    this.url2 = file2;
+    //this.url2 = file2;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
     this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:8 , loop:true , speed:12});
-    this.headSprite = new Framework.AnimationSprite({url2:this.url2, col:3 , row:4 , loop:true , speed:12});
+    //this.headSprite = new Framework.AnimationSprite({url2:this.url2, col:3 , row:4 , loop:true , speed:12});
     this.sprite.scale = 2;
     this.sprite.index = 1;
-    this.headSprite.scale = 2;
-    this.headSprite.index = 1;
+    //this.headSprite.scale = 2;
+    //this.headSprite.index = 1;
     var PIXEL_CONST = 64;
     //this.sprite.start({ from: 0, to: 2, loop: true});
     this.mapPosition = {x:0, y:0};
@@ -109,13 +109,12 @@ var Isaac = function(file, options,file2 ,option2) {
 
     this.update = function(){
         this.sprite.update();
-        this.headSprite.update();
+        //this.headSprite.update();
         if(this.isWalking){
             if(this.mapPosition.x * PIXEL_CONST === this.spritePosition.x && this.mapPosition.y * PIXEL_CONST === this.spritePosition.y){
                 this.isWalking = false;
                 this.sprite.stop();
                 this.sprite.index = this.playerDirection * 3 + 1;
-
                 //callback
                 for(var i=0; i<this.StepMovedCallBack.length; i++){
                     this.StepMovedCallBack[i](this);
@@ -126,11 +125,10 @@ var Isaac = function(file, options,file2 ,option2) {
         }
     }
 
-
     this.draw = function(ctx){
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         this.sprite.draw(ctx);
-        this.headSprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
+        //this.headSprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         //this.headSprite.draw(ctx);
     }
 
