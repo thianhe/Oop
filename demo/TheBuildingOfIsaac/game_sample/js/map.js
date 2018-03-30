@@ -2,6 +2,10 @@ var Map = function(map)
 {
     this.thisMapState = [];
     this.mapTerrain = map;
+    var mapNumber = 0;
+    var bossMapPsoitionX = (this.mapTerrain.length-1)/2;
+    var bossMapPsoitionY = (this.mapTerrain.length-1)/2;
+    var startingMapXY= (this.mapTerrain.length-1)/2;
     var mapPositionX=(this.mapTerrain.length-1)/2;
     var mapPositionY=(this.mapTerrain.length-1)/2;
     this.mapList = new Terrain();
@@ -9,9 +13,9 @@ var Map = function(map)
     this.load = function(){
         this.score = new Score();
         this.score.position = {x:1000,y:0};
-        this.mapFloor = new Framework.Sprite(define.imagePath + 'floor2.png');
+        this.mapFloor = new Framework.Sprite(define.imagePath + 'floor1.png');
         this.mapFloor.scale = 2;
-        this.mapWall = new Framework.Sprite(define.imagePath + 'treeStone.png');
+        this.mapWall = new Framework.Sprite(define.imagePath + 'wall.png');
         this.mapWall.scale = 2;
         var mapBoxPic = new Framework.Sprite(define.imagePath + 'box.png');
         var bombPic  = new Framework.Sprite(define.imagePath + 'bomb.png');
@@ -35,6 +39,7 @@ var Map = function(map)
         this.randomMapState();
         console.log(this.thisMapState);
         console.log(this.mapTerrain);
+        console.log("final map :" +bossMapPsoitionX,bossMapPsoitionY);
     }
 
     this.init = function()
@@ -407,15 +412,22 @@ var Map = function(map)
             }
         }
         var mapSize =this.mapTerrain.length;
-        var centerXY = (mapSize-1)/2;
-        this.thisMapState[centerXY][centerXY][0] = 0;
-        this.randomOpenMap(centerXY,centerXY,mapSize-1);
+        this.thisMapState[startingMapXY][startingMapXY][0] = 0;
+        while (mapNumber<9) {
+            this.randomOpenMap(bossMapPsoitionX,bossMapPsoitionY,mapSize-1);
+        }
         this.connectOpenRoom();
         this.changeMap()
-        this.init();
+        this.init()
     }
 
     this.randomOpenMap = function(tempX,tempY,size){
+        mapNumber = mapNumber+1;
+        if(this.isLongerPath(tempX,tempY)){
+            bossMapPsoitionX=tempX;
+            bossMapPsoitionY=tempY;
+        }
+        if(mapNumber === 9) return;
         if(tempX>0 && this.randomBool()){
             if( this.thisMapState[tempX-1][tempY][0] == -1){
                 this.thisMapState[tempX-1][tempY][0] = 0;
@@ -423,6 +435,7 @@ var Map = function(map)
                 this.randomOpenMap(tempX-1,tempY,size);
             }
         }
+        if(mapNumber === 9) return;
         if(tempX<size && this.randomBool()){
             if(this.thisMapState[tempX+1][tempY][0] == -1){
                 this.thisMapState[tempX+1][tempY][0] = 0;
@@ -430,6 +443,7 @@ var Map = function(map)
                 this.randomOpenMap(tempX+1,tempY,size);
             }
         }
+        if(mapNumber === 9) return;
         if(tempY>0 && this.randomBool()){
             if(this.thisMapState[tempX][tempY-1][0] == -1){
                 this.thisMapState[tempX][tempY-1][0] = 0;
@@ -437,6 +451,7 @@ var Map = function(map)
                 this.randomOpenMap(tempX,tempY-1,size);
             }
         }
+        if(mapNumber === 9) return;
         if(tempY<size && this.randomBool()){
             if(this.thisMapState[tempX][tempY+1][0] == -1){
                 this.thisMapState[tempX][tempY+1][0] = 0;
@@ -445,9 +460,15 @@ var Map = function(map)
             }
         }
     }
+    this.isLongerPath = function(tempX,tempY){
+        return this.PathLength(tempX,tempY)>this.PathLength(bossMapPsoitionX,bossMapPsoitionY);
+    }
 
+    this.PathLength = function(tempX,tempY){
+        return Math.pow(tempX-startingMapXY,2)+Math.pow(tempY-startingMapXY,2);
+    }
     this.randomBool = function(){
-        return (Math.random()>=0);
+        return (Math.random()>=0.7);
     }
 
     this.connectOpenRoom = function(){
@@ -467,6 +488,26 @@ var Map = function(map)
                 }else{
                     this.mapTerrain[i][j]=9;
                 }
+            }
+        }
+        var gateCount = 0;
+        for(var i=1;i<5;i++){
+            if(this.thisMapState[bossMapPsoitionX][bossMapPsoitionY][i]==0)
+                gateCount = gateCount+1;
+        }
+        while(gateCount > 1){
+            var randomClose = Math.floor((Math.random()*4)+1);
+            if(this.thisMapState[bossMapPsoitionX][bossMapPsoitionY][randomClose] == 0){
+                if(randomClose == 1)
+                    this.mapLeftToRightConnect(bossMapPsoitionX,bossMapPsoitionY-1,1)
+                if(randomClose == 2)
+                    this.mapUpToBottomConnect(bossMapPsoitionX-1,bossMapPsoitionY,1)
+                if(randomClose == 3)
+                    this.mapLeftToRightConnect(bossMapPsoitionX,bossMapPsoitionY,1)
+                if(randomClose == 4)
+                    this.mapUpToBottomConnect(bossMapPsoitionX,bossMapPsoitionY,1)
+                gateCount = gateCount -1;
+                console.log("closed: "+ randomClose);
             }
         }
     }
