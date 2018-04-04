@@ -3,7 +3,7 @@ var IsaacHead = function(file, options) {
     //Animationsprite1當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
     this.sprite1 = new Framework.AnimationSprite({url:this.url, col:3 , row:4 , loop:true , speed:12});
 
-    this.sprite1.scale = 2;
+    this.sprite1.scale = 1.5;
     this.sprite1.index = 1;
     var PIXEL_CONST = 64;
     //this.sprite1.start({ from: 0, to: 2, loop: true});

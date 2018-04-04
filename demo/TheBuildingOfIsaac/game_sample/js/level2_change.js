@@ -1,7 +1,7 @@
 var Level2_change = Framework.Class(Framework.Level , {
 
     load: function() {
-        var size = 9;
+        var size = 15;
         this.mapArray = [];
         var mapList = new Terrain();
         for(var i=0;i<size;i++){
@@ -18,12 +18,6 @@ var Level2_change = Framework.Class(Framework.Level , {
     initialize: function() {
         this.map.init();
         this.map.setPlayerPosition({x:6,y:6});
-        /*this.map.addMonster({x:3, y:4});
-        this.map.addMonster({x:3, y:9});
-        this.map.addMonster({x:9, y:4});
-        this.map.addMonster({x:13, y:7});
-        this.map.addMonster({x:17, y:9});
-        this.map.addMonster({x:15, y:1});*/
     },
 
     update: function() {

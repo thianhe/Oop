@@ -5,9 +5,8 @@ var Isaac = function(file,option) {
     this.url = file;
     //this.url2 = file2;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
-    this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:8 , loop:true , speed:12});
-    //this.headSprite = new Framework.AnimationSprite({url2:this.url2, col:3 , row:4 , loop:true , speed:12});
-    this.sprite.scale = 2;
+    this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:8 , loop:true , speed:3});
+    this.sprite.scale = 1.5;
     this.sprite.index = 1;
     //this.headSprite.scale = 2;
     //this.headSprite.index = 1;
@@ -27,6 +26,8 @@ var Isaac = function(file,option) {
     var m_bombMan = this;
 
     this.playerDirection = this.constants.DirectionEnum.DOWN;
+    this.isaacHead = new IsaacHead(define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+    this.isaacHead.position = {x:1, y:1};
     //以下這句話的意思是當options.position為undefined時this.sprite.position = x: 0, y: 0}
     //若options.position有值, 則this.sprite.position = options.position
     //原因是在JS中, undefined會被cast成false
@@ -69,6 +70,7 @@ var Isaac = function(file,option) {
             this.mapPosition = {x:this.mapPosition.x + moveStep.x, y:this.mapPosition.y + moveStep.y};
             this.sprite.start({ from: this.playerDirection * 3, to: this.playerDirection * 3 + 2, loop: true});
         }
+        this.isaacHead.walk(moveStep)
     }
 
     this.die = function(){
@@ -76,7 +78,8 @@ var Isaac = function(file,option) {
         Framework.Game.goToNextLevel();
     }
 
-    this.walkEnd = function(){    }
+    this.walkEnd = function(){
+    }
 
     var walkSpeed =8;
     this.walkAlittle = function(){
@@ -109,11 +112,11 @@ var Isaac = function(file,option) {
 
     this.update = function(){
         this.sprite.update();
-        //this.headSprite.update();
         if(this.isWalking){
             if(this.mapPosition.x * PIXEL_CONST === this.spritePosition.x && this.mapPosition.y * PIXEL_CONST === this.spritePosition.y){
                 this.isWalking = false;
                 this.sprite.stop();
+                this.playerDirection = this.constants.DirectionEnum.DOWN;
                 this.sprite.index = this.playerDirection * 3 + 1;
                 //callback
                 for(var i=0; i<this.StepMovedCallBack.length; i++){
@@ -123,25 +126,14 @@ var Isaac = function(file,option) {
                 this.walkAlittle();
             }
         }
+        this.isaacHead.update();
     }
 
     this.draw = function(ctx){
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         this.sprite.draw(ctx);
         //this.headSprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
-        //this.headSprite.draw(ctx);
-    }
-
-    this.increaseBombNum = function(){
-        this.maxBombNum += 1;
-    }
-
-    this.increaseBombPower = function(){
-        this.bombPower += 1;
-    }
-
-    this.bombExploredHandler = function(exploredArray, bomb){
-        m_bombMan.bombNum -= 1;
+        this.isaacHead.draw(ctx);
     }
 
     this.placeBomb = function(){

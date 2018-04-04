@@ -2,7 +2,7 @@ var Map = function(map)
 {
     this.thisMapState = [];
     this.mapTerrain = map;
-    var mapNumber = 0;
+    var mapNumber = 1;
     var bossMapPsoitionX = (this.mapTerrain.length-1)/2;
     var bossMapPsoitionY = (this.mapTerrain.length-1)/2;
     var startingMapXY= (this.mapTerrain.length-1)/2;
@@ -29,9 +29,9 @@ var Map = function(map)
         this.stopMonster  = new Framework.Sprite(define.imagePath + 'stopMonster.png');
         this.stopMonster.scale = 1.5;
         this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
-        this.player1Head = new IsaacHead(define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        //this.player1Head = new IsaacHead(define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         this.player1.position = {x:1, y:1};
-        this.player1Head.position = {x:1, y:1};
+        //this.player1Head.position = {x:1, y:1};
 
         this.monster = [];
         this.stopMonster = false;
@@ -85,7 +85,7 @@ var Map = function(map)
 
     this.setPlayerPosition = function(playerPosition){
         this.player1.position = playerPosition;
-        this.player1Head.position = {x:playerPosition.x,y:playerPosition.y-0.7}
+        this.player1.isaacHead.position = {x:playerPosition.x,y:playerPosition.y-0.45}
     }
     this.addMonster = function(monsterPosition)
     {
@@ -140,11 +140,11 @@ var Map = function(map)
             if(this.checkIsWalkAble(this.player1.position.x+this.playerWalkDirection.x,this.player1.position.y+this.playerWalkDirection.y))
             {
                 this.player1.walk(this.playerWalkDirection);
-                this.player1Head.walk(this.playerWalkDirection);
+                //this.player1Head.walk(this.playerWalkDirection);
             }
         }
         this.player1.update();
-        this.player1Head.update();
+        //this.player1Head.update();
         if(this.stopMonster === true)
         {
             this.stopMonsterCounter++;
@@ -189,7 +189,7 @@ var Map = function(map)
             this.monster[i].draw(ctx);
         }
         this.player1.draw(ctx);
-        this.player1Head.draw(ctx);
+        //this.player1Head.draw(ctx);
         this.score.draw(ctx);
 	}
 
@@ -422,7 +422,6 @@ var Map = function(map)
     }
 
     this.randomOpenMap = function(tempX,tempY,size){
-        mapNumber = mapNumber+1;
         if(this.isLongerPath(tempX,tempY)){
             bossMapPsoitionX=tempX;
             bossMapPsoitionY=tempY;
@@ -430,6 +429,7 @@ var Map = function(map)
         if(mapNumber === 9) return;
         if(tempX>0 && this.randomBool()){
             if( this.thisMapState[tempX-1][tempY][0] == -1){
+                mapNumber = mapNumber+1;
                 this.thisMapState[tempX-1][tempY][0] = 0;
                 this.mapUpToBottomConnect(tempX-1,tempY,0);
                 this.randomOpenMap(tempX-1,tempY,size);
@@ -438,6 +438,7 @@ var Map = function(map)
         if(mapNumber === 9) return;
         if(tempX<size && this.randomBool()){
             if(this.thisMapState[tempX+1][tempY][0] == -1){
+                mapNumber = mapNumber+1;
                 this.thisMapState[tempX+1][tempY][0] = 0;
                 this.mapUpToBottomConnect(tempX,tempY,0);
                 this.randomOpenMap(tempX+1,tempY,size);
@@ -446,6 +447,7 @@ var Map = function(map)
         if(mapNumber === 9) return;
         if(tempY>0 && this.randomBool()){
             if(this.thisMapState[tempX][tempY-1][0] == -1){
+                mapNumber = mapNumber+1;
                 this.thisMapState[tempX][tempY-1][0] = 0;
                 this.mapLeftToRightConnect(tempX,tempY-1,0);
                 this.randomOpenMap(tempX,tempY-1,size);
@@ -454,6 +456,7 @@ var Map = function(map)
         if(mapNumber === 9) return;
         if(tempY<size && this.randomBool()){
             if(this.thisMapState[tempX][tempY+1][0] == -1){
+                mapNumber = mapNumber+1;
                 this.thisMapState[tempX][tempY+1][0] = 0;
                 this.mapLeftToRightConnect(tempX,tempY,0);
                 this.randomOpenMap(tempX,tempY+1,size);
