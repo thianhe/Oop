@@ -146,10 +146,6 @@ var Isaac = function(file,option) {
         }
         return null;
     }
-
-    this.shootingUp = function(){
-
-    }
 };
 
 Object.defineProperty(Isaac.prototype, 'position', {
