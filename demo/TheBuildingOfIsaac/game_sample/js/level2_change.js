@@ -1,7 +1,7 @@
 var Level2_change = Framework.Class(Framework.Level , {
 
     load: function() {
-        var size = 15;
+        var size = 11;
         this.mapArray = [];
         var mapList = new Terrain();
         for(var i=0;i<size;i++){

@@ -11,9 +11,9 @@ var Bullet = function(file,shootDirection,startingPosition){
     this.bulletEnd = false;
     this.shootingDirection = shootDirection;
     this.update = function(){
-        if(this.time < 28)this.time++;
-        if(this.time == 28) this.bulletCrash();
-        this.walkAlittle()
+        if(Math.abs(startingPosition.x-this.spritePosition.x)>5 ||
+            Math.abs(startingPosition.y-this.spritePosition.y)>5) this.bulletEnd=true;
+        if(!(this.bulletEnd))this.walkAlittle()
         if(this.bulletEnd){return;}
     }
 

@@ -10,6 +10,12 @@ var Map = function(map)
     var mapPositionY=(this.mapTerrain.length-1)/2;
     this.mapList = new Terrain();
     this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
+
+    this.playerWalkDirection = {x:0,y:0};
+    this.pressWalk = false;
+    this.keyPress = "";
+    var walkDirection = [false,false,false,false];
+
     this.load = function(){
         this.score = new Score();
         this.score.position = {x:0,y:0};
@@ -20,12 +26,8 @@ var Map = function(map)
         
         var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         var mapBoxPic = new Framework.Sprite(define.imagePath + 'box.png');
-        /*this.increaseBombNum  = new Framework.Sprite(define.imagePath + 'increaseBombNum.png');
-        this.increaseBombNum.scale = 1.5;
-        this.increaseBombPower  = new Framework.Sprite(define.imagePath + 'increaseBombPower.png');
-        this.increaseBombPower.scale = 1.5;
-        this.stopMonster  = new Framework.Sprite(define.imagePath + 'stopMonster.png');
-        this.stopMonster.scale = 1.5;*/
+        var mapDoorPic = new Framework.Sprite(define.imagePath + 'door.png');
+        var mapNextLevelGatePic = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
         this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         this.player1.position = {x:1, y:1};
         var newBullet = new Bullet(define.imagePath + 'bullet.png',2,this.player1.position);
@@ -43,10 +45,10 @@ var Map = function(map)
         this.player1.StepMovedCallBack.push(this.playerMovedHandler);
         this.constants = new Constants();
         this.boxArray = [];
-        //this.itemArray = [];
         this.tileArray = [];
-        //this.exploreArray = [];
         this.bulletArray = [];
+        this.doorArray = [];
+        this.nextLevelGateArray = [];
 
         for(var i=0; i<this.mapArray.length; i++){
             var line = this.mapArray[i];
@@ -58,19 +60,15 @@ var Map = function(map)
                     var box = new Box(this.constants.ItemEnum.NONE);
                     box.position = {x:j, y:i};
                     this.boxArray.push(box);
-                }/*else if(line[j] === 3){
-                    var box = new Box(this.constants.ItemEnum.INCREASE_BOMB);
-                    box.position = {x:j, y:i};
-                    this.boxArray.push(box);
-                }else if(line[j] === 4){
-                    var box = new Box(this.constants.ItemEnum.INCREASE_POWER);
-                    box.position = {x:j, y:i};
-                    this.boxArray.push(box);
-                }else if(line[j] === 5){
-                    var box = new Box(this.constants.ItemEnum.STOP_MONSTER);
-                    box.position = {x:j, y:i};
-                    this.boxArray.push(box);
-                }*/else
+                }else if(line[j] === 3){
+                    var door = new Door();
+                    door.position = {x:j, y:i};
+                    this.doorArray.push(door);
+                }else if(line[j] === -1){
+                    var nextLevelGate = new NextLevelGate();
+                    nextLevelGate.position = {x:j, y:i};
+                    this.nextLevelGateArray.push(nextLevelGate);
+                }else
                 {
                     tile.tileType = line[j];
                 }
@@ -88,6 +86,12 @@ var Map = function(map)
         var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         newMonster.position = monsterPosition;
         this.monster.push(newMonster);
+    }
+    this.addBoss = function(monsterPosition)
+    {
+        var newBoss = new Boss1(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        newBoss.position = monsterPosition;
+        this.monster.push(newBoss);
     }
 
     this.playerMovedHandler = function(player){
@@ -119,48 +123,34 @@ var Map = function(map)
 
 	this.update = function()
 	{
+        this.outOfMap();
+        this.bulletHit();
+        this.monsterClean();
         for(var i=0; i<this.boxArray.length; i++)
         {
             this.boxArray[i].update();
         }
-        /*for(var i=0; i<this.exploreArray.length; i++)
+        for(var i=0; i<this.doorArray.length; i++)
         {
-            this.exploreArray[i].update();
-        }*/
+            this.doorArray[i].update();
+        }
         for(var i=0; i<this.bulletArray.length; i++)
         {
             this.bulletArray[i].update();
+        }
+        for(var i=0;i<this.monster.length;i++)
+        {
+            this.monster[i].update();
         }
         if(this.pressWalk === true && this.player1.isWalking === false)
         {
             if(this.checkIsWalkAble(this.player1.position.x+this.playerWalkDirection.x,this.player1.position.y+this.playerWalkDirection.y))
             {
                 this.player1.walk(this.playerWalkDirection);
-                //this.player1Head.walk(this.playerWalkDirection);
             }
         }
+        this.nextLevel();
         this.player1.update();
-        //this.player1Head.update();
-        if(this.stopMonster === true)
-        {
-            this.stopMonsterCounter++;
-            if(this.stopMonsterCounter > 1000)
-            {
-                this.stopMonster = false;
-            }
-        }else
-        {
-            for(var i=0;i<this.monster.length;i++)
-            {
-                this.monster[i].update();
-                if(this.monster[i].isDead == false && this.monster[i].position.x == this.player1.position.x && this.monster[i].position.y == this.player1.position.y)
-                {
-                    this.player1.die();
-                    break;
-                }
-            }
-        }
-        this.outOfMap();
 	}
 	this.draw = function(ctx) {
         for(var i=0; i<this.tileArray.length; i++)
@@ -172,10 +162,10 @@ var Map = function(map)
         {
             this.boxArray[i].draw(ctx);
         }
-        /*for(var i=0; i<this.exploreArray.length; i++)
+        for(var i=0; i<this.doorArray.length; i++)
         {
-            this.exploreArray[i].draw(ctx);
-        }*/
+            this.doorArray[i].draw(ctx);
+        }
         for(var i=0;i<this.monster.length;i++)
         {
             this.monster[i].draw(ctx);
@@ -184,8 +174,12 @@ var Map = function(map)
         {
             this.bulletArray[i].draw(ctx);
         }
+        for(var i=0;i<this.nextLevelGateArray.length;i++)
+        {
+            this.nextLevelGateArray[i].draw(ctx);
+        }
         this.player1.draw(ctx);
-        this.score.draw(ctx);
+        //this.score.draw(ctx);
 	}
 
     var m_map = this;
@@ -218,16 +212,12 @@ var Map = function(map)
         }
         return count;
     }
-
-    this.playerWalkDirection = {x:0,y:0};
-    this.pressWalk = false;
-    this.keyPress = "";
-    var walkDirection = [false,false,false,false];
     this.keydown = function(e, list){
         var playerPosition = this.player1.position;
         if(e.key === 'S') {
             walkDirection[2] = true;
             this.keyPress = "S";
+            
         }
 
         if(e.key === 'A') {
@@ -257,18 +247,22 @@ var Map = function(map)
         if(e.key === 'Up'){
             var newBullet = new Bullet(define.imagePath + 'bullet.png',0,this.player1.position);
             this.bulletArray.push(newBullet);
+            this.player1.turnFace(0);
         }
         if(e.key === 'Down'){
             var newBullet = new Bullet(define.imagePath + 'bullet.png',1,this.player1.position);
             this.bulletArray.push(newBullet);
+            this.player1.turnFace(1);
         }
         if(e.key === 'Left'){
             var newBullet = new Bullet(define.imagePath + 'bullet.png',2,this.player1.position);
             this.bulletArray.push(newBullet);
+            this.player1.turnFace(2);
         }
         if(e.key === 'Right'){
             var newBullet = new Bullet(define.imagePath + 'bullet.png',3,this.player1.position);
             this.bulletArray.push(newBullet);
+            this.player1.turnFace(3);
         }
 
         this.playerWalkFunction();
@@ -375,10 +369,11 @@ var Map = function(map)
             }
         }
         var mapSize =this.mapTerrain.length;
-        this.thisMapState[startingMapXY][startingMapXY][0] = 0;
+        this.thisMapState[startingMapXY][startingMapXY][0] = 2;
         while (mapNumber<9) {
             this.randomOpenMap(bossMapPsoitionX,bossMapPsoitionY,mapSize-1);
         }
+        this.mapTerrain[bossMapPsoitionX][bossMapPsoitionY] = 0;
         this.connectOpenRoom();
         this.changeMap()
         this.init()
@@ -515,7 +510,39 @@ var Map = function(map)
             this.setPlayerPosition({x:7,y:1});
         }
     }
-
+    this.bulletHit = function(){
+        for(var i=0;i<this.bulletArray.length;i++){
+            if(!(this.bulletArray[i].bulletEnd)){
+                if( this.bulletArray[i].spritePosition.x<0.5 ||
+                    this.bulletArray[i].spritePosition.x>13.5||
+                    this.bulletArray[i].spritePosition.y<0.5 ||
+                    this.bulletArray[i].spritePosition.y>7.5 ){
+                    this.bulletArray[i].bulletEnd = true;
+                }
+                this.bulletHitDeadArray(i,this.boxArray);
+                for(var j=0;j<this.monster.length;j++){
+                    if(this.monster[j].isdead === false){
+                    if(Math.abs(this.bulletArray[i].spritePosition.x-this.monster[j].mapPosition.x)<0.5&&
+                        Math.abs(this.bulletArray[i].spritePosition.y-this.monster[j].mapPosition.y)<0.5 ){
+                            this.monster[j].getHit()
+                            this.bulletArray[i].bulletEnd = true;
+                        }
+                    }
+                }
+                if(this.bulletArray[i].bulletEnd){
+                    
+                }
+            }
+        }
+    }
+    this.bulletHitDeadArray = function(i,tempArray){
+        for(var j=0;j<tempArray.length;j++){
+            if(Math.abs(this.bulletArray[i].spritePosition.x-tempArray[j].mapPosition.x)<0.5&&
+                Math.abs(this.bulletArray[i].spritePosition.y-tempArray[j].mapPosition.y)<0.5 ){
+                this.bulletArray[i].bulletEnd = true;
+            }
+        }
+    }
     this.changeMap = function(){
         console.log(mapPositionX,mapPositionY);
         this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
@@ -523,5 +550,50 @@ var Map = function(map)
         this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
         this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
         this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
+        if(this.thisMapState[mapPositionX][mapPositionY][0]===0){
+            if(this.thisMapState[mapPositionX][mapPositionY][1]===0)this.mapArray[4][0]=3;
+            if(this.thisMapState[mapPositionX][mapPositionY][2]===0)this.mapArray[0][7]=3;
+            if(this.thisMapState[mapPositionX][mapPositionY][3]===0)this.mapArray[4][14]=3;
+            if(this.thisMapState[mapPositionX][mapPositionY][4]===0)this.mapArray[8][7]=3;
+            this.createMonster()
+            this.thisMapState[mapPositionX][mapPositionY][0]=1;
+        }
+        if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY&&this.thisMapState[mapPositionX][mapPositionY][0]==2){
+                this.mapArray[4][7] = -1;
+        }else if(this.mapTerrain[mapPositionX][mapPositionY] ===0 ){
+            this.mapArray[4][7] = 0;
+        }
+    }
+    this.createMonster = function(){
+        if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY)
+        {
+            this.addBoss({x:5, y:4});
+        }
+        else{
+            this.addMonster({x:2, y:2});
+            this.addMonster({x:1, y:1});
+        }
+    }
+    this.monsterClean = function(){
+        if(this.thisMapState[mapPositionX][mapPositionY][0]===1 && this.getLeftMonsterNum()===0){
+            this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
+            this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
+            this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
+            this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
+            if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY){
+                this.mapArray[4][7] = -1;
+            }
+            this.thisMapState[mapPositionX][mapPositionY][0]=2
+            this.init();
+        }
+    }
+    this.nextLevel = function(){
+        if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY){
+            if(this.thisMapState[mapPositionX][mapPositionY][0]==2){
+                if(this.player1.position.x == 7 && this.player1.position.y == 4){
+                    Framework.Game.goToNextLevel();
+                }
+            }
+        }
     }
 }

@@ -1,9 +1,9 @@
-var GameOver = Framework.Class(Framework.Level , {
+var GameWin = Framework.Class(Framework.Level , {
             //初始化loadingProgress需要用到的圖片
     initializeProgressResource: function() {
         this.loading = new Framework.Sprite(define.imagePath + 'loading.png');
         this.loading.position = {x: Framework.Game.getCanvasWidth() / 2 , y: 200};
-
+        this.loading.scale=1.5;
         //為了或得到this.loading這個Sprite的絕對位置, 故需要先計算一次(在Game Loop執行時, 則會自動計算, 但因為loadingProgress只支援draw故需要自行計算)                  
     },
 
@@ -13,7 +13,7 @@ var GameOver = Framework.Class(Framework.Level , {
     },
 
     load: function() {
-        this.menu = new Framework.Sprite(define.imagePath + 'GameOver.png');
+        this.menu = new Framework.Sprite(define.imagePath + 'loading.png');
     },
 
     initialize: function() {
@@ -25,9 +25,9 @@ var GameOver = Framework.Class(Framework.Level , {
         //注意, Position都是用中心點
         this.menu.position = {
             x: Framework.Game.getCanvasWidth() / 2,
-            y: Framework.Game.getCanvasHeight() / 2
+            y: 200
         };
-        this.menu.scale = 2;
+        this.menu.scale = 1.5;
         this.rootScene.attach(this.menu);
 
         this.rectPosition = { 
@@ -40,6 +40,7 @@ var GameOver = Framework.Class(Framework.Level , {
         //this.rootScene.update();一定要在第一行
         this.rootScene.update(); 
 
+        
 
         if(this.counter > this.gameOverCount){
             //Framework.Game.goToLevel('menu');
@@ -53,12 +54,18 @@ var GameOver = Framework.Class(Framework.Level , {
         this.menu.draw(parentCtx);
         //this.rootScene.draw();
         //可支援畫各種單純的圖形和字
+        parentCtx.font = '65pt bold';
+        parentCtx.fillStyle = 'White';
+        parentCtx.textBaseline = 'top';
+        parentCtx.textAlign = 'center';
+        parentCtx.fillText('You Win!', this.rectPosition.x + 130, this.rectPosition.y, 260);
     },
 
     mouseup: function(e) {
     },
 
     mousedown: function(e) {
+        Framework.Game.goToLevel('menu');
     },
 
     mousemove: function(e) {        

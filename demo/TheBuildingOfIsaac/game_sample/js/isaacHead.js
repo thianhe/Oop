@@ -1,9 +1,9 @@
 var IsaacHead = function(file, options) {
     this.url = file;
     //Animationsprite1當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
-    this.sprite1 = new Framework.AnimationSprite({url:this.url, col:3 , row:4 , loop:true , speed:12});
+    this.sprite1 = new Framework.AnimationSprite({url:this.url, col:12 , row:4 , loop:true , speed:12});
 
-    this.sprite1.scale = 1.5;
+    this.sprite1.scale = 1.7;
     this.sprite1.index = 1;
     var PIXEL_CONST = 64;
     //this.sprite1.start({ from: 0, to: 2, loop: true});
@@ -25,9 +25,8 @@ var IsaacHead = function(file, options) {
     //由於0會被cast成false, 故不能用上面的方法來簡化
     //this.sprite1.rotation = (Framework.Util.isUndefined(options.rotation))?0:options.rotation;
 
-
+    this.sprite1.start({ from: this.shootingDirection * 12, to: this.shootingDirection * 12 + 11, loop: true, speed:12});
     //moveStep為位移量  格式範例{x:1,y:0}
-    this.sprite1.start({ from: this.shootingDirection * 3, to: this.shootingDirection * 3 + 2, loop: true});
     this.walk = function(moveStep){
         if(this.isWalking === false){
             if(moveStep.x > 0 && moveStep.y > 0){
@@ -104,17 +103,15 @@ var IsaacHead = function(file, options) {
             }
         }
     }
-
-
+    this.shootingAnimation = function(shootDirection){
+        this.shootingDirection = shootDirection;
+        this.sprite1.start({ from: this.shootingDirection * 12, to: this.shootingDirection * 12 + 11, loop: true, speed:12});
+    }
     this.draw = function(ctx){
-        this.sprite1.position = {x: this.sprite1Position.x, y: this.sprite1Position.y};
+        this.sprite1.position = {x: this.sprite1Position.x, y: this.sprite1Position.y+22};
         this.sprite1.draw(ctx);
     }
 
-
-    this.shootingUp = function(){
-
-    }
 };
 
 Object.defineProperty(IsaacHead.prototype, 'position', {

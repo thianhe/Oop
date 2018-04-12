@@ -6,7 +6,7 @@ var Isaac = function(file,option) {
     //this.url2 = file2;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
     this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:8 , loop:true , speed:3});
-    this.sprite.scale = 1.5;
+    this.sprite.scale = 1.3;
     this.sprite.index = 1;
     //this.headSprite.scale = 2;
     //this.headSprite.index = 1;
@@ -26,7 +26,7 @@ var Isaac = function(file,option) {
     var m_bombMan = this;
 
     this.playerDirection = this.constants.DirectionEnum.DOWN;
-    this.isaacHead = new IsaacHead(define.imagePath + 'isaacHead.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+    this.isaacHead = new IsaacHead(define.imagePath + 'isaacHead.png', {up: {from: 0, to: 11}, down: {from:12, to: 23}, left: {from: 24, to: 35}, right: {from: 36, to: 47}});
     this.isaacHead.position = {x:1, y:1};
     //以下這句話的意思是當options.position為undefined時this.sprite.position = x: 0, y: 0}
     //若options.position有值, 則this.sprite.position = options.position
@@ -130,12 +130,11 @@ var Isaac = function(file,option) {
     }
 
     this.draw = function(ctx){
-        this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
+        this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y+10};
         this.sprite.draw(ctx);
         //this.headSprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         this.isaacHead.draw(ctx);
     }
-
     this.placeBomb = function(){
         if(this.bombNum < this.maxBombNum){
             var bomb = new Bomb(this.bombPower);
@@ -145,6 +144,9 @@ var Isaac = function(file,option) {
             return bomb;
         }
         return null;
+    }
+    this.turnFace = function(shootDirection){
+        this.isaacHead.shootingAnimation(shootDirection);
     }
 };
 

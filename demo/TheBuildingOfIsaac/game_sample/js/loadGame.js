@@ -59,9 +59,12 @@ var loadGameEnd;
         { src: 'game_sample/js/isaac.js', lookFor: 'Isaac' },
         { src: 'game_sample/js/isaacHead.js', lookFor: 'IsaacHead' },
         { src: 'game_sample/js/monster.js', lookFor: 'Monster' },
+        { src: 'game_sample/js/boss1.js', lookFor: 'Boss1' },
         { src: 'game_sample/js/explore.js', lookFor: 'Explore' },
         { src: 'game_sample/js/bomb.js', lookFor: 'Bomb' },
         { src: 'game_sample/js/box.js', lookFor: 'Box' },
+        { src: 'game_sample/js/door.js', lookFor: 'Door' },
+        { src: 'game_sample/js/nextLevelGate.js', lookFor: 'NextLevelGate' },
         { src: 'game_sample/js/bullet.js', lookFor: 'Bullet' },
         { src: 'game_sample/js/terrain.js', lookFor: 'Terrain'},
         { src: 'game_sample/js/mapTile.js', lookFor: 'MapTile' },
@@ -69,6 +72,7 @@ var loadGameEnd;
         { src: 'game_sample/js/level2.js', lookFor: 'Level2' },
         { src: 'game_sample/js/level2_change.js', lookFor: 'Level2_change' },
         { src: 'game_sample/js/gameOver.js', lookFor: 'GameOver' },
+        { src: 'game_sample/js/gameWin.js', lookFor: 'GameWin' },
         { src: 'game_sample/js/mainGame.js'}
     ]
     importJS(listScript);

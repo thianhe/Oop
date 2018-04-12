@@ -1,11 +1,8 @@
-//由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
-//目前Class寫法都是以function的方式
-//只要是this.XXX皆會是Public的property
-var Monster = function(file, map, options) {
+var Boss1 = function(file, map, options) {
     this.url = file;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
     this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:4 , loop:true , speed:12}); 
-    this.sprite.scale = 2;
+    this.sprite.scale = 3;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
     this.mapPosition = {x:0, y:0};
@@ -16,7 +13,7 @@ var Monster = function(file, map, options) {
     this.isdieing = false;
     this.isdead = false;
     this.dieingCounter = 0;
-    this.HP = 2;
+    this.HP = 10;
     this.canWalking = true;
 
     this.StepMovedCallBack = [];
@@ -151,7 +148,7 @@ var Monster = function(file, map, options) {
 
 };
 
-Object.defineProperty(Monster.prototype, 'position', {
+Object.defineProperty(Boss1.prototype, 'position', {
     get: function() {
         return this.mapPosition;
     },
@@ -161,7 +158,7 @@ Object.defineProperty(Monster.prototype, 'position', {
     }
 }); 
 
-Object.defineProperty(Monster.prototype, 'isDead', {
+Object.defineProperty(Boss1.prototype, 'isDead', {
     get: function() {
         return this.isdead;
     }

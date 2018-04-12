@@ -1,23 +1,17 @@
-var StopMonster = function() {
-    this.url = file;
-    this.sprite = new Framework.Sprite(define.imagePath + 'stopMonster.png'); 
+var NextLevelGate = function() {
+    this.sprite = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
 
-    this.mapPosition = {x:0, y:0};
-
-
-    this.eaten = function(){
-
-    }
+    this.mapPosition = {x:1, y:1};
 
     //被炸彈炸到的function
     this.explored = function(){
 
     }
 
-    this.update = function()
+    this.update = function(){
 
     }
 
@@ -29,11 +23,11 @@ var StopMonster = function() {
 
 };
 
-Object.defineProperty(Box.prototype, 'position', {
+Object.defineProperty(NextLevelGate.prototype, 'position', {
     get: function() {
         return this.mapPosition;
     },
     set: function(newValue) {
         this.mapPosition = newValue;
     }
-}); 
+});
