@@ -21,17 +21,19 @@ var Map = function(map)
         this.score.position = {x:0,y:0};
         this.mapFloor = new Framework.Sprite(define.imagePath + 'floor1.png');
         this.mapFloor.scale = 2;
-        this.mapWall = new Framework.Sprite(define.imagePath + 'wall2.png');
+        this.mapWall = new Framework.Sprite(define.imagePath + 'wall.png');
         this.mapWall.scale = 2;
-
-        var newMonster = new Monster(define.imagePath + 'worm.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        
+        var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        var newBoss = new Boss1(define.imagePath + 'demon.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         var mapBoxPic = new Framework.Sprite(define.imagePath + 'poop.png');
-        var mapDoorPic = new Framework.Sprite(define.imagePath + 'doorOpen.png');
+        var mapDoorPic = new Framework.Sprite(define.imagePath + 'doorClose.png');
         var mapNextLevelGatePic = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
-        this.player1 = new Isaac(define.imagePath + 'player3.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         this.player1.position = {x:1, y:1};
         var newBullet = new Bullet(define.imagePath + 'bullet.png',2,this.player1.position);
         this.monster = [];
+        this.boss = []
         /*this.stopMonster = false;
         this.stopMonsterCounter =0;*/
         this.randomMapState();
@@ -83,15 +85,15 @@ var Map = function(map)
     }
     this.addMonster = function(monsterPosition)
     {
-        var newMonster = new Monster(define.imagePath + 'worm.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         newMonster.position = monsterPosition;
         this.monster.push(newMonster);
     }
     this.addBoss = function(monsterPosition)
     {
-        var newBoss = new Boss1(define.imagePath + 'worm.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        var newBoss = new Boss1(define.imagePath + 'demon.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         newBoss.position = monsterPosition;
-        this.monster.push(newBoss);
+        this.boss.push(newBoss);
     }
 
     this.playerMovedHandler = function(player){
@@ -142,6 +144,10 @@ var Map = function(map)
         {
             this.monster[i].update();
         }
+        for(var i=0;i<this.boss.length;i++)
+        {
+            this.boss[i].update();
+        }
         if(this.pressWalk === true && this.player1.isWalking === false)
         {
             if(this.checkIsWalkAble(this.player1.position.x+this.playerWalkDirection.x,this.player1.position.y+this.playerWalkDirection.y))
@@ -169,6 +175,10 @@ var Map = function(map)
         for(var i=0;i<this.monster.length;i++)
         {
             this.monster[i].draw(ctx);
+        }
+        for(var i=0;i<this.boss.length;i++)
+        {
+            this.boss[i].draw(ctx);
         }
         for(var i=0;i<this.bulletArray.length;i++)
         {
@@ -210,6 +220,13 @@ var Map = function(map)
                 count++;
             }
         }
+        for(var i=0;i<this.boss.length;i++)
+        {
+            if(this.boss[i].isDead === false)
+            {
+                count++;
+            }
+        }
         return count;
     }
     this.keydown = function(e, list){
@@ -217,7 +234,7 @@ var Map = function(map)
         if(e.key === 'S') {
             walkDirection[2] = true;
             this.keyPress = "S";
-
+            
         }
 
         if(e.key === 'A') {
@@ -384,6 +401,25 @@ var Map = function(map)
             bossMapPsoitionX=tempX;
             bossMapPsoitionY=tempY;
         }
+        if((tempX==bossMapPsoitionX&&Math.abs(tempY-bossMapPsoitionY)==1) || (tempY==bossMapPsoitionY&&Math.abs(tempX-bossMapPsoitionX)==1)){
+            var connectRoomCount = 0;
+            if(tempX>0){
+                if(this.thisMapState[tempX-1][tempY][0] == 0) connectRoomCount++;
+            }
+            if(tempX <this.mapTerrain.length-1){
+                if(this.thisMapState[tempX+1][tempY][0] == 0) connectRoomCount++;
+            }
+            if(tempY>0){
+                if(this.thisMapState[tempX][tempY-1][0] == 0) connectRoomCount++;
+            }
+            if(tempY <this.mapTerrain.length-1){
+                if(this.thisMapState[tempX][tempY+1][0] == 0) connectRoomCount++;
+            }
+            if(connectRoomCount == 1){
+                bossMapPsoitionX=tempX;
+                bossMapPsoitionY=tempY;
+            }
+        }
         if(mapNumber === 9) return;
         if(tempX>0 && this.randomBool()){
             if( this.thisMapState[tempX-1][tempY][0] == -1){
@@ -529,8 +565,17 @@ var Map = function(map)
                         }
                     }
                 }
+                for(var j=0;j<this.boss.length;j++){
+                    if(this.boss[j].isdead === false){
+                    if(Math.abs(this.bulletArray[i].spritePosition.x-this.boss[j].mapPosition.x)<1&&
+                        Math.abs(this.bulletArray[i].spritePosition.y-this.boss[j].mapPosition.y)<1 ){
+                            this.boss[j].getHit()
+                            this.bulletArray[i].bulletEnd = true;
+                        }
+                    }
+                }
                 if(this.bulletArray[i].bulletEnd){
-
+                    
                 }
             }
         }
@@ -559,9 +604,9 @@ var Map = function(map)
             this.thisMapState[mapPositionX][mapPositionY][0]=1;
         }
         if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY&&this.thisMapState[mapPositionX][mapPositionY][0]==2){
-                this.mapArray[4][7] = -1;
+                this.mapArray[4][6] = -1;
         }else if(this.mapTerrain[mapPositionX][mapPositionY] ===0 ){
-            this.mapArray[4][7] = 0;
+            this.mapArray[4][6] = 0;
         }
     }
     this.createMonster = function(){
@@ -581,7 +626,7 @@ var Map = function(map)
             this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
             this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
             if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY){
-                this.mapArray[4][7] = -1;
+                this.mapArray[4][6] = -1;
             }
             this.thisMapState[mapPositionX][mapPositionY][0]=2
             this.init();

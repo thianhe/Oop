@@ -1,5 +1,5 @@
 var Door = function() {
-    this.sprite = new Framework.Sprite(define.imagePath + 'doorOpen.png');
+    this.sprite = new Framework.Sprite(define.imagePath + 'doorClose.png');
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;

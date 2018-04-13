@@ -2,7 +2,7 @@ var Boss1 = function(file, map, options) {
     this.url = file;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
     this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:4 , loop:true , speed:12}); 
-    this.sprite.scale = 3;
+    this.sprite.scale = 1.5;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
     this.mapPosition = {x:0, y:0};

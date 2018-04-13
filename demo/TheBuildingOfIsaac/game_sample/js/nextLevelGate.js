@@ -17,7 +17,7 @@ var NextLevelGate = function() {
 
 
     this.draw = function(ctx){
-        this.sprite.position = {x: this.mapPosition.x * PIXEL_CONST, y: this.mapPosition.y * PIXEL_CONST};
+        this.sprite.position = {x: (this.mapPosition.x * PIXEL_CONST)+32, y: (this.mapPosition.y * PIXEL_CONST)-32};
         this.sprite.draw(ctx);
     }
 
