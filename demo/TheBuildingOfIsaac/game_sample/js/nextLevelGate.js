@@ -1,6 +1,6 @@
 var NextLevelGate = function() {
     this.sprite = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
-    this.sprite.scale = 2;
+    this.sprite.scale = 1;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
 

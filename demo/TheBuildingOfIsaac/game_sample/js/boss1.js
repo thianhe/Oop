@@ -139,7 +139,7 @@ var Boss1 = function(file, map, options) {
             walkDir = 0;
             return;
         }
-        
+
         if(this.map.checkIsWalkAble(this.mapPosition.x + walkStep.x,this.mapPosition.y + walkStep.y))
         {
             this.walk(walkStep);
@@ -156,10 +156,10 @@ Object.defineProperty(Boss1.prototype, 'position', {
         this.mapPosition = newValue;
         this.spritePosition = {x:this.mapPosition.x * 64, y: this.mapPosition.y * 64};
     }
-}); 
+});
 
 Object.defineProperty(Boss1.prototype, 'isDead', {
     get: function() {
         return this.isdead;
     }
-}); 
+});

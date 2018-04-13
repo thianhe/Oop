@@ -21,14 +21,14 @@ var Map = function(map)
         this.score.position = {x:0,y:0};
         this.mapFloor = new Framework.Sprite(define.imagePath + 'floor1.png');
         this.mapFloor.scale = 2;
-        this.mapWall = new Framework.Sprite(define.imagePath + 'wall.png');
+        this.mapWall = new Framework.Sprite(define.imagePath + 'wall2.png');
         this.mapWall.scale = 2;
-        
-        var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
-        var mapBoxPic = new Framework.Sprite(define.imagePath + 'box.png');
-        var mapDoorPic = new Framework.Sprite(define.imagePath + 'door.png');
+
+        var newMonster = new Monster(define.imagePath + 'worm.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        var mapBoxPic = new Framework.Sprite(define.imagePath + 'poop.png');
+        var mapDoorPic = new Framework.Sprite(define.imagePath + 'doorOpen.png');
         var mapNextLevelGatePic = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
-        this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        this.player1 = new Isaac(define.imagePath + 'player3.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         this.player1.position = {x:1, y:1};
         var newBullet = new Bullet(define.imagePath + 'bullet.png',2,this.player1.position);
         this.monster = [];
@@ -83,13 +83,13 @@ var Map = function(map)
     }
     this.addMonster = function(monsterPosition)
     {
-        var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        var newMonster = new Monster(define.imagePath + 'worm.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         newMonster.position = monsterPosition;
         this.monster.push(newMonster);
     }
     this.addBoss = function(monsterPosition)
     {
-        var newBoss = new Boss1(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
+        var newBoss = new Boss1(define.imagePath + 'worm.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         newBoss.position = monsterPosition;
         this.monster.push(newBoss);
     }
@@ -217,7 +217,7 @@ var Map = function(map)
         if(e.key === 'S') {
             walkDirection[2] = true;
             this.keyPress = "S";
-            
+
         }
 
         if(e.key === 'A') {
@@ -530,7 +530,7 @@ var Map = function(map)
                     }
                 }
                 if(this.bulletArray[i].bulletEnd){
-                    
+
                 }
             }
         }

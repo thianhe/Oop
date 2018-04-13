@@ -1,6 +1,6 @@
 
 var Bomb = function(power) {
-    this.sprite = new Framework.AnimationSprite({url:define.imagePath + 'bomb.png', col:2 , row:1 , loop:true , speed:6}); 
+    this.sprite = new Framework.AnimationSprite({url:define.imagePath + 'bomb.png', col:2 , row:1 , loop:true , speed:6});
     this.sprite.scale = 2;
     this.sprite.initialize();
     this.sprite.start({ from: 0, to: 1, loop: true })
