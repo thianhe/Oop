@@ -56,6 +56,7 @@ var loadGameEnd;
         { src: 'game_sample/js/myMenu.js', lookFor: 'MyMenu' },
         { src: 'game_sample/js/constants.js', lookFor: 'Constants' },
         { src: 'game_sample/js/score.js', lookFor: 'Score' },
+        { src: 'game_sample/js/gameState.js', lookFor: 'GameState' },
         { src: 'game_sample/js/isaac.js', lookFor: 'Isaac' },
         { src: 'game_sample/js/isaacHead.js', lookFor: 'IsaacHead' },
         { src: 'game_sample/js/monster.js', lookFor: 'Monster' },

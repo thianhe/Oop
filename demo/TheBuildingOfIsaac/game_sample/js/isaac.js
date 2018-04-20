@@ -77,7 +77,6 @@ var Isaac = function(file,option) {
         console.log('player die');
         Framework.Game.goToNextLevel();
     }
-
     this.walkEnd = function(){
     }
 

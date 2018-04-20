@@ -1,7 +1,30 @@
-var Map = function(map)
+var Map = function(map,state)
 {
+
+    this.audio = new Framework.Audio({
+            bgm: {
+                mp3: define.musicPath + 'bgm.mp3',
+                //ogg: define.musicPath + 'kick2.ogg',
+                //wav: define.musicPath + 'kick2.wav'
+            }, hurt1:{
+                //mp3: define.musicPath + 'easy.mp3',
+                //ogg: define.musicPath + 'Hot_Heat.ogg',
+                wav: define.musicPath + 'hurt_grunt.wav'
+            }, hurt2:{
+                //mp3: define.musicPath + 'easy.mp3',
+                //ogg: define.musicPath + 'Hot_Heat.ogg',
+                wav: define.musicPath + 'hurt_grunt_1.wav'
+            }, hurt3:{
+                //mp3: define.musicPath + 'easy.mp3',
+                //ogg: define.musicPath + 'Hot_Heat.ogg',
+                wav: define.musicPath + 'hurt_grunt_2.wav'
+            }
+        });
+
+    this.gameState = state;
     this.thisMapState = [];
     this.mapTerrain = map;
+    this.gettingDamge = false;
     var mapNumber = 1;
     var bossMapPsoitionX = (this.mapTerrain.length-1)/2;
     var bossMapPsoitionY = (this.mapTerrain.length-1)/2;
@@ -15,15 +38,15 @@ var Map = function(map)
     this.pressWalk = false;
     this.keyPress = "";
     var walkDirection = [false,false,false,false];
-
+    var timeCount = 100;
     this.load = function(){
+        this.audio.play({name: 'bgm',loop: true});
         this.score = new Score();
         this.score.position = {x:0,y:0};
         this.mapFloor = new Framework.Sprite(define.imagePath + 'floor1.png');
         this.mapFloor.scale = 2;
         this.mapWall = new Framework.Sprite(define.imagePath + 'wall.png');
         this.mapWall.scale = 2;
-        
         var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         var newBoss = new Boss1(define.imagePath + 'demon.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         var mapBoxPic = new Framework.Sprite(define.imagePath + 'poop.png');
@@ -155,6 +178,12 @@ var Map = function(map)
                 this.player1.walk(this.playerWalkDirection);
             }
         }
+        if(timeCount < 40){
+            timeCount++;
+            if(timeCount%5 === 0){
+                this.gettingDamge = !this.gettingDamge;
+            }
+        }
         this.nextLevel();
         this.player1.update();
 	}
@@ -188,27 +217,28 @@ var Map = function(map)
         {
             this.nextLevelGateArray[i].draw(ctx);
         }
-        this.player1.draw(ctx);
-        //this.score.draw(ctx);
+        if(this.gettingDamge){
+
+        }else {
+            this.player1.draw(ctx);
+        }
+
 	}
 
     var m_map = this;
 
-    /*this.checkBoxExplore = function(explorePos)
-    {
-        for(var j=0; j<m_map.boxArray.length; j++){
-            if(m_map.boxArray[j] != undefined){
-                var boxPosition = m_map.boxArray[j].position;
-                if(boxPosition.x === explorePos.x && boxPosition.y === explorePos.y){
-                    m_map.boxArray[j].explored();
-                    m_map.mapArray[explorePos.y][explorePos.x] = m_map.boxArray[j].item;
-                    //m_map.tileArray[explorePos.y*22+explorePos.x].tileType = m_map.boxArray[j].item;
-                    m_map.boxArray.splice(j,1);
-                    m_map.score.addScore(100);
-                }
-            }
+    this.getDamge = function(){
+        timeCount =0;
+        var randomSound = Math.floor(Math.random()*3)+1;
+        console.log(randomSound);
+        if(randomSound == 1){
+            this.audio.play({name: 'hurt1',loop : false});
+        }else if(randomSound == 2){
+            this.audio.play({name: 'hurt2',loop : false});
+        }else{
+            this.audio.play({name: 'hurt3',loop : false});
         }
-    }*/
+    }
 
     this.getLeftMonsterNum = function()
     {
@@ -250,7 +280,12 @@ var Map = function(map)
             walkDirection[0] = true;
             this.keyPress = "W";
         }
-
+        if(e.key === 'N') {
+            Framework.Game.goToNextLevel();
+        }
+        if(e.key === 'T') {
+            this.getDamge();
+        }
         /*if(e.key === 'Space'){
             var bomb = this.player1.placeBomb();
             if(!Framework.Util.isNull(bomb))
