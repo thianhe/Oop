@@ -5,7 +5,7 @@ var Box = function(item) {
     var PIXEL_CONST = 64;
 
     this.mapPosition = {x:1, y:1};
-
+//test
     this.constants = new Constants();
     this.item = item;
 
