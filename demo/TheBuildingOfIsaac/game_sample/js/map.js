@@ -1,9 +1,9 @@
 var Map = function(map,state)
 {
-
+    console.log(state)
     this.audio = new Framework.Audio({
-            bgm: {
-                mp3: define.musicPath + 'bgm.mp3',
+        bgm: {
+            mp3: define.musicPath + 'bgm.mp3',
                 //ogg: define.musicPath + 'kick2.ogg',
                 //wav: define.musicPath + 'kick2.wav'
             }, hurt1:{
@@ -25,6 +25,7 @@ var Map = function(map,state)
     this.thisMapState = [];
     this.mapTerrain = map;
     this.gettingDamge = false;
+    this.shooting = false;
     var mapNumber = 1;
     var bossMapPsoitionX = (this.mapTerrain.length-1)/2;
     var bossMapPsoitionY = (this.mapTerrain.length-1)/2;
@@ -38,7 +39,8 @@ var Map = function(map,state)
     this.pressWalk = false;
     this.keyPress = "";
     var walkDirection = [false,false,false,false];
-    var timeCount = 100;
+    var deadTimeCount = 40;
+    var shootTimeCount = 100;
     this.load = function(){
         this.audio.play({name: 'bgm',loop: true});
         this.score = new Score();
@@ -100,7 +102,7 @@ var Map = function(map,state)
                 this.tileArray.push(tile);
             }
         }
-	};
+    };
 
     this.setPlayerPosition = function(playerPosition){
         this.player1.position = playerPosition;
@@ -146,8 +148,8 @@ var Map = function(map,state)
         m_map.draw(Framework.Game._context);
     }*/
 
-	this.update = function()
-	{
+    this.update = function()
+    {
         this.outOfMap();
         this.bulletHit();
         this.monsterClean();
@@ -166,10 +168,14 @@ var Map = function(map,state)
         for(var i=0;i<this.monster.length;i++)
         {
             this.monster[i].update();
+            if(this.player1.position.x == this.monster[i].position.x &&this.player1.position.y == this.monster[i].position.y)
+                if(this.monster[i].isdead == false)this.getDamge();
         }
         for(var i=0;i<this.boss.length;i++)
         {
             this.boss[i].update();
+            if(Math.abs(this.player1.position.x-this.boss[i].position.x)<=1 &&Math.abs(this.player1.position.y-this.boss[i].position.y)<=1)
+                if(this.boss[i].isdead == false)this.getDamge();
         }
         if(this.pressWalk === true && this.player1.isWalking === false)
         {
@@ -178,16 +184,11 @@ var Map = function(map,state)
                 this.player1.walk(this.playerWalkDirection);
             }
         }
-        if(timeCount < 40){
-            timeCount++;
-            if(timeCount%5 === 0){
-                this.gettingDamge = !this.gettingDamge;
-            }
-        }
+        this.runTimeFunction();
         this.nextLevel();
         this.player1.update();
-	}
-	this.draw = function(ctx) {
+    }
+    this.draw = function(ctx) {
         for(var i=0; i<this.tileArray.length; i++)
         {
             this.tileArray[i].draw(ctx);
@@ -223,20 +224,37 @@ var Map = function(map,state)
             this.player1.draw(ctx);
         }
 
-	}
+    }
 
     var m_map = this;
-
+    this.runTimeFunction = function(){
+        if(deadTimeCount < 40){
+            deadTimeCount++;
+            if(deadTimeCount%5 === 0){
+                this.gettingDamge = !this.gettingDamge;
+                if(this.gameState.hp == 0) Framework.Game.goToLevel("gameOver");
+            }
+        }
+        if(shootTimeCount < 17){
+            shootTimeCount++;
+            if(shootTimeCount==1){
+                this.shooting = false;
+            }
+        }
+    }
     this.getDamge = function(){
-        timeCount =0;
-        var randomSound = Math.floor(Math.random()*3)+1;
-        console.log(randomSound);
-        if(randomSound == 1){
-            this.audio.play({name: 'hurt1',loop : false});
-        }else if(randomSound == 2){
-            this.audio.play({name: 'hurt2',loop : false});
-        }else{
-            this.audio.play({name: 'hurt3',loop : false});
+        if(deadTimeCount == 40){
+            deadTimeCount =0;
+            var randomSound = Math.floor(Math.random()*3)+1;
+            if(randomSound == 1){
+                this.audio.play({name: 'hurt1',loop : false});
+            }else if(randomSound == 2){
+                this.audio.play({name: 'hurt2',loop : false});
+            }else{
+                this.audio.play({name: 'hurt3',loop : false});
+            }
+            this.gameState.hp = this.gameState.hp-1;
+            console.log("hp: "+this.gameState.hp);
         }
     }
 
@@ -264,7 +282,7 @@ var Map = function(map,state)
         if(e.key === 'S') {
             walkDirection[2] = true;
             this.keyPress = "S";
-            
+
         }
 
         if(e.key === 'A') {
@@ -297,24 +315,40 @@ var Map = function(map,state)
             }
         }*/
         if(e.key === 'Up'){
-            var newBullet = new Bullet(define.imagePath + 'bullet.png',0,this.player1.position);
-            this.bulletArray.push(newBullet);
-            this.player1.turnFace(0);
+            if(this.shooting == false){
+                shootTimeCount = 0;
+                this.shooting = true;
+                var newBullet = new Bullet(define.imagePath + 'bullet.png',0,this.player1.position);
+                this.bulletArray.push(newBullet);
+                this.player1.turnFace(0);
+            }
         }
         if(e.key === 'Down'){
-            var newBullet = new Bullet(define.imagePath + 'bullet.png',1,this.player1.position);
-            this.bulletArray.push(newBullet);
-            this.player1.turnFace(1);
+            if(this.shooting == false){
+                shootTimeCount = 0;
+                this.shooting = true;
+                var newBullet = new Bullet(define.imagePath + 'bullet.png',1,this.player1.position);
+                this.bulletArray.push(newBullet);
+                this.player1.turnFace(1);
+            }
         }
         if(e.key === 'Left'){
-            var newBullet = new Bullet(define.imagePath + 'bullet.png',2,this.player1.position);
-            this.bulletArray.push(newBullet);
-            this.player1.turnFace(2);
+            if(this.shooting == false){
+                shootTimeCount = 0;
+                this.shooting = true;
+                var newBullet = new Bullet(define.imagePath + 'bullet.png',2,this.player1.position);
+                this.bulletArray.push(newBullet);
+                this.player1.turnFace(2);
+            }
         }
         if(e.key === 'Right'){
-            var newBullet = new Bullet(define.imagePath + 'bullet.png',3,this.player1.position);
-            this.bulletArray.push(newBullet);
-            this.player1.turnFace(3);
+            if(this.shooting == false){
+                shootTimeCount = 0;
+                this.shooting = true;
+                var newBullet = new Bullet(define.imagePath + 'bullet.png',3,this.player1.position);
+                this.bulletArray.push(newBullet);
+                this.player1.turnFace(3);
+            }
         }
 
         this.playerWalkFunction();
@@ -589,91 +623,91 @@ var Map = function(map,state)
                     this.bulletArray[i].spritePosition.y<0.5 ||
                     this.bulletArray[i].spritePosition.y>7.5 ){
                     this.bulletArray[i].bulletEnd = true;
-                }
-                this.bulletHitDeadArray(i,this.boxArray);
-                for(var j=0;j<this.monster.length;j++){
-                    if(this.monster[j].isdead === false){
+            }
+            this.bulletHitDeadArray(i,this.boxArray);
+            for(var j=0;j<this.monster.length;j++){
+                if(this.monster[j].isdead === false){
                     if(Math.abs(this.bulletArray[i].spritePosition.x-this.monster[j].mapPosition.x)<0.5&&
                         Math.abs(this.bulletArray[i].spritePosition.y-this.monster[j].mapPosition.y)<0.5 ){
-                            this.monster[j].getHit()
-                            this.bulletArray[i].bulletEnd = true;
-                        }
-                    }
-                }
-                for(var j=0;j<this.boss.length;j++){
-                    if(this.boss[j].isdead === false){
-                    if(Math.abs(this.bulletArray[i].spritePosition.x-this.boss[j].mapPosition.x)<1&&
-                        Math.abs(this.bulletArray[i].spritePosition.y-this.boss[j].mapPosition.y)<1 ){
-                            this.boss[j].getHit()
-                            this.bulletArray[i].bulletEnd = true;
-                        }
-                    }
-                }
-                if(this.bulletArray[i].bulletEnd){
-                    
+                        this.monster[j].getHit()
+                    this.bulletArray[i].bulletEnd = true;
                 }
             }
         }
-    }
-    this.bulletHitDeadArray = function(i,tempArray){
-        for(var j=0;j<tempArray.length;j++){
-            if(Math.abs(this.bulletArray[i].spritePosition.x-tempArray[j].mapPosition.x)<0.5&&
-                Math.abs(this.bulletArray[i].spritePosition.y-tempArray[j].mapPosition.y)<0.5 ){
+        for(var j=0;j<this.boss.length;j++){
+            if(this.boss[j].isdead === false){
+                if(Math.abs(this.bulletArray[i].spritePosition.x-this.boss[j].mapPosition.x)<1&&
+                    Math.abs(this.bulletArray[i].spritePosition.y-this.boss[j].mapPosition.y)<1 ){
+                    this.boss[j].getHit()
                 this.bulletArray[i].bulletEnd = true;
             }
         }
     }
-    this.changeMap = function(){
-        console.log(mapPositionX,mapPositionY);
-        this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
+    if(this.bulletArray[i].bulletEnd){
+
+    }
+}
+}
+}
+this.bulletHitDeadArray = function(i,tempArray){
+    for(var j=0;j<tempArray.length;j++){
+        if(Math.abs(this.bulletArray[i].spritePosition.x-tempArray[j].mapPosition.x)<0.5&&
+            Math.abs(this.bulletArray[i].spritePosition.y-tempArray[j].mapPosition.y)<0.5 ){
+            this.bulletArray[i].bulletEnd = true;
+    }
+}
+}
+this.changeMap = function(){
+    console.log(mapPositionX,mapPositionY);
+    this.mapArray = this.mapList.terrainList[this.mapTerrain[mapPositionX][mapPositionY]];
+    this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
+    this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
+    this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
+    this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
+    if(this.thisMapState[mapPositionX][mapPositionY][0]===0){
+        if(this.thisMapState[mapPositionX][mapPositionY][1]===0)this.mapArray[4][0]=3;
+        if(this.thisMapState[mapPositionX][mapPositionY][2]===0)this.mapArray[0][7]=3;
+        if(this.thisMapState[mapPositionX][mapPositionY][3]===0)this.mapArray[4][14]=3;
+        if(this.thisMapState[mapPositionX][mapPositionY][4]===0)this.mapArray[8][7]=3;
+        this.createMonster()
+        this.thisMapState[mapPositionX][mapPositionY][0]=1;
+    }
+    if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY&&this.thisMapState[mapPositionX][mapPositionY][0]==2){
+        this.mapArray[4][6] = -1;
+    }else if(this.mapTerrain[mapPositionX][mapPositionY] ===0 ){
+        this.mapArray[4][6] = 0;
+    }
+}
+this.createMonster = function(){
+    if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY)
+    {
+        this.addBoss({x:5, y:4});
+    }
+    else{
+        this.addMonster({x:2, y:2});
+        this.addMonster({x:1, y:1});
+    }
+}
+this.monsterClean = function(){
+    if(this.thisMapState[mapPositionX][mapPositionY][0]===1 && this.getLeftMonsterNum()===0){
         this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
         this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
         this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
         this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
-        if(this.thisMapState[mapPositionX][mapPositionY][0]===0){
-            if(this.thisMapState[mapPositionX][mapPositionY][1]===0)this.mapArray[4][0]=3;
-            if(this.thisMapState[mapPositionX][mapPositionY][2]===0)this.mapArray[0][7]=3;
-            if(this.thisMapState[mapPositionX][mapPositionY][3]===0)this.mapArray[4][14]=3;
-            if(this.thisMapState[mapPositionX][mapPositionY][4]===0)this.mapArray[8][7]=3;
-            this.createMonster()
-            this.thisMapState[mapPositionX][mapPositionY][0]=1;
-        }
-        if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY&&this.thisMapState[mapPositionX][mapPositionY][0]==2){
-                this.mapArray[4][6] = -1;
-        }else if(this.mapTerrain[mapPositionX][mapPositionY] ===0 ){
-            this.mapArray[4][6] = 0;
-        }
-    }
-    this.createMonster = function(){
-        if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY)
-        {
-            this.addBoss({x:5, y:4});
-        }
-        else{
-            this.addMonster({x:2, y:2});
-            this.addMonster({x:1, y:1});
-        }
-    }
-    this.monsterClean = function(){
-        if(this.thisMapState[mapPositionX][mapPositionY][0]===1 && this.getLeftMonsterNum()===0){
-            this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
-            this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
-            this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
-            this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
-            if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY){
-                this.mapArray[4][6] = -1;
-            }
-            this.thisMapState[mapPositionX][mapPositionY][0]=2
-            this.init();
-        }
-    }
-    this.nextLevel = function(){
         if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY){
-            if(this.thisMapState[mapPositionX][mapPositionY][0]==2){
-                if(this.player1.position.x == 7 && this.player1.position.y == 4){
-                    Framework.Game.goToNextLevel();
-                }
+            this.mapArray[4][6] = -1;
+        }
+        this.thisMapState[mapPositionX][mapPositionY][0]=2
+        this.init();
+    }
+}
+this.nextLevel = function(){
+    if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY){
+        if(this.thisMapState[mapPositionX][mapPositionY][0]==2){
+            if(this.player1.position.x == 7 && this.player1.position.y == 4){
+                Framework.Game.goToNextLevel();
             }
         }
     }
+}
 }

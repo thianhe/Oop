@@ -3,7 +3,7 @@ var GameOver = Framework.Class(Framework.Level , {
     initializeProgressResource: function() {
         this.loading = new Framework.Sprite(define.imagePath + 'loading.png');
         this.loading.position = {x: Framework.Game.getCanvasWidth() / 2 , y: 200};
-
+        Level2_change.state= {hpLimit:3,hp:3,money:0};
         //為了或得到this.loading這個Sprite的絕對位置, 故需要先計算一次(在Game Loop執行時, 則會自動計算, 但因為loadingProgress只支援draw故需要自行計算)                  
     },
 
@@ -13,7 +13,7 @@ var GameOver = Framework.Class(Framework.Level , {
     },
 
     load: function() {
-        this.menu = new Framework.Sprite(define.imagePath + 'GameOver.png');
+        this.menu = new Framework.Sprite(define.imagePath + 'loading.png');
     },
 
     initialize: function() {
@@ -25,7 +25,7 @@ var GameOver = Framework.Class(Framework.Level , {
         //注意, Position都是用中心點
         this.menu.position = {
             x: Framework.Game.getCanvasWidth() / 2,
-            y: Framework.Game.getCanvasHeight() / 2
+            y: Framework.Game.getCanvasHeight() / 2-50
         };
         this.menu.scale = 2;
         this.rootScene.attach(this.menu);
@@ -47,22 +47,34 @@ var GameOver = Framework.Class(Framework.Level , {
         this.counter++;
     },
 
-    draw: function(parentCtx) { 
+    draw: function(parentCtx) {
         //this.rootScene.draw();一定要在第一行
         this.rootScene.draw(parentCtx);
         this.menu.draw(parentCtx);
         //this.rootScene.draw();
         //可支援畫各種單純的圖形和字
+        parentCtx.font = '65pt bold';
+        parentCtx.fillStyle = 'White';
+        parentCtx.textBaseline = 'top';
+        parentCtx.textAlign = 'center';
+        parentCtx.fillText('Game Over', this.rectPosition.x + 130, this.rectPosition.y, 260);
     },
 
     mouseup: function(e) {
     },
 
     mousedown: function(e) {
+        //console.log為Browser提供的function, 可以在debugger的console內看到被印出的訊息
+        Framework.Game.goToLevel("menu");
     },
 
-    mousemove: function(e) {        
-        
+    click:function(e){
+        Framework.Game.goToLevel("menu");
+
+    },
+
+    mousemove: function(e) {
+
     },
 
     mouseup: function(e) {
