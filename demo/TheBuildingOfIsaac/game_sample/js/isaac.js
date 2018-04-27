@@ -118,9 +118,9 @@ var Isaac = function(file,option) {
                 this.playerDirection = this.constants.DirectionEnum.DOWN;
                 this.sprite.index = this.playerDirection * 3 + 1;
                 //callback
-                for(var i=0; i<this.StepMovedCallBack.length; i++){
+                /*for(var i=0; i<this.StepMovedCallBack.length; i++){
                     this.StepMovedCallBack[i](this);
-                }
+                }*/
             }else{
                 this.walkAlittle();
             }

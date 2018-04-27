@@ -1,4 +1,4 @@
-var Box = function(item) {
+var Box = function() {
     this.sprite = new Framework.Sprite(define.imagePath + 'poop.png');
     this.sprite.scale = 2;
     this.sprite.index = 1;
@@ -7,7 +7,6 @@ var Box = function(item) {
     this.mapPosition = {x:1, y:1};
 //test
     this.constants = new Constants();
-    this.item = item;
 
     //被炸彈炸到的function
     this.explored = function(){
