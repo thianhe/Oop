@@ -3,12 +3,12 @@ var Door = function() {
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
-
+    var doorOpen = false;
     this.mapPosition = {x:1, y:1};
 
     //被炸彈炸到的function
-    this.explored = function(){
-
+    this.mapClean = function(){
+        doorOpen = true;
     }
 
     this.update = function(){
@@ -17,6 +17,7 @@ var Door = function() {
 
 
     this.draw = function(ctx){
+        if(doorOpen) return;
         this.sprite.position = {x: this.mapPosition.x * PIXEL_CONST, y: this.mapPosition.y * PIXEL_CONST};
         this.sprite.draw(ctx);
     }

@@ -689,12 +689,10 @@ this.createMonster = function(){
 }
 this.monsterClean = function(){
     if(this.thisMapState[mapPositionX][mapPositionY][0]===1 && this.getLeftMonsterNum()===0){
-        this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
-        this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
-        this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
-        this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
-        this.thisMapState[mapPositionX][mapPositionY][0]=2
-        this.init();
+        for(var i=0;i<this.doorArray;i++){
+            this.doorArray[i].mapClean();
+        }
+        this.thisMapState[mapPositionX][mapPositionY][0]=2;
     }
     if(this.thisMapState[mapPositionX][mapPositionY][0]===2){
         if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY && this.nextLevelGateArray.length ==0){

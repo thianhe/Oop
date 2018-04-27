@@ -1,4 +1,3 @@
-
 var MapTile = function() {
     this.mapFloor = new Framework.Sprite(define.imagePath + 'floor1.png');
     this.mapFloor.scale = 2.1;
