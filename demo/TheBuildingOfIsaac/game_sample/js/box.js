@@ -1,6 +1,5 @@
-var Box = function(item) {
-    var path = 'poop.png';
-    this.sprite = new Framework.Sprite(define.imagePath + path);
+var Box = function() {
+    this.sprite = new Framework.Sprite(define.imagePath + 'poop.png');
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
@@ -12,7 +11,6 @@ var Box = function(item) {
     };
     //test
     this.constants = new Constants();
-    this.item = item;
 
     //被炸彈炸到的function
     this.explored = function() {

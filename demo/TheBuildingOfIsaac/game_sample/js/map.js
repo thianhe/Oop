@@ -58,7 +58,8 @@ var Map = function(map,state)
         this.player1.position = {x:1, y:1};
         var newBullet = new Bullet(define.imagePath + 'bullet.png',2,this.player1.position);
         this.monster = [];
-        this.boss = []
+        this.boss = [];
+        this.mapItem = new MapItem();
         /*this.stopMonster = false;
         this.stopMonsterCounter =0;*/
         this.randomMapState();
@@ -84,7 +85,7 @@ var Map = function(map,state)
                 tile.tileType = 0;
                 tile.position = {x:j,y:i}
                 if(line[j] === 2){
-                    var box = new Box(this.constants.ItemEnum.NONE);
+                    var box = new Box();
                     box.position = {x:j, y:i};
                     this.boxArray.push(box);
                 }else if(line[j] === 3){
@@ -121,8 +122,8 @@ var Map = function(map,state)
         this.boss.push(newBoss);
     }
 
-    this.playerMovedHandler = function(player){
-        /*var constants = new Constants();
+     /*this.playerMovedHandler = function(player){
+       var constants = new Constants();
         var item = m_map.mapArray[player.position.y][player.position.x];
         if(item === constants.ItemEnum.INCREASE_BOMB){
             player.increaseBombNum();
@@ -139,8 +140,8 @@ var Map = function(map,state)
             m_map.mapArray[player.position.y][player.position.x] = 0;
             m_map.tileArray[player.position.y*22+player.position.x].tileType = 0;
             m_map.score.addScore(200);
-        }*/
-    }
+        }
+    }*/
 
     /*this.exploreEndHandler = function(explore){
         var index = m_map.exploreArray.indexOf(explore);
@@ -184,6 +185,7 @@ var Map = function(map,state)
                 this.player1.walk(this.playerWalkDirection);
             }
         }
+        
         this.runTimeFunction();
         this.nextLevel();
         this.player1.update();
@@ -218,6 +220,8 @@ var Map = function(map,state)
         {
             this.nextLevelGateArray[i].draw(ctx);
         }
+        if(mapPositionX == startingMapXY && mapPositionY == startingMapXY)
+            this.mapItem.draw(ctx);
         if(this.gettingDamge){
 
         }else {
@@ -237,7 +241,7 @@ var Map = function(map,state)
         }
         if(shootTimeCount < 17){
             shootTimeCount++;
-            if(shootTimeCount==1){
+            if(shootTimeCount==17){
                 this.shooting = false;
             }
         }
@@ -672,11 +676,6 @@ this.changeMap = function(){
         this.createMonster()
         this.thisMapState[mapPositionX][mapPositionY][0]=1;
     }
-    if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY&&this.thisMapState[mapPositionX][mapPositionY][0]==2){
-        this.mapArray[4][6] = -1;
-    }else if(this.mapTerrain[mapPositionX][mapPositionY] ===0 ){
-        this.mapArray[4][6] = 0;
-    }
 }
 this.createMonster = function(){
     if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY)
@@ -694,11 +693,15 @@ this.monsterClean = function(){
         this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
         this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
         this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
-        if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY){
-            this.mapArray[4][6] = -1;
-        }
         this.thisMapState[mapPositionX][mapPositionY][0]=2
         this.init();
+    }
+    if(this.thisMapState[mapPositionX][mapPositionY][0]===2){
+        if(mapPositionX==bossMapPsoitionX && mapPositionY==bossMapPsoitionY && this.nextLevelGateArray.length ==0){
+            var nextLevelGate = new NextLevelGate();
+            nextLevelGate.position = {x:6, y:4};
+            this.nextLevelGateArray.push(nextLevelGate);
+        }
     }
 }
 this.nextLevel = function(){

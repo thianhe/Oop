@@ -6,15 +6,6 @@ var MapTile = function() {
     this.mapWall = new Framework.Sprite(define.imagePath + 'wall2.png');
     this.mapWall.scale = 2.1;
 
-    this.increaseBombNum  = new Framework.Sprite(define.imagePath + 'increaseBombNum.png');
-    this.increaseBombNum.scale = 1.5;
-
-    this.increaseBombPower  = new Framework.Sprite(define.imagePath + 'increaseBombPower.png');
-    this.increaseBombPower.scale = 1.5;
-
-    this.stopMonster  = new Framework.Sprite(define.imagePath + 'stopMonster.png');
-    this.stopMonster.scale = 1.5;
-
     this.mapPosition = {x:0, y:0};
     this.spritePosition = {}
     this._tileType = 0;
@@ -24,16 +15,9 @@ var MapTile = function() {
     }
 
     this.draw = function(ctx){
-
         this.mapFloor.draw(ctx);
         if(this._tileType === 1){
             this.mapWall.draw(ctx);
-        }else if(this._tileType === -1){
-            this.increaseBombNum.draw(ctx);
-        }else if(this._tileType === -2){
-            this.increaseBombPower.draw(ctx);
-        }else if(this._tileType === -3){
-            this.stopMonster.draw(ctx);
         }
     }
 
@@ -47,9 +31,6 @@ Object.defineProperty(MapTile.prototype, 'position', {
         this.mapPosition = newValue;
         this.mapFloor.position = {x: this.mapPosition.x * 64, y: this.mapPosition.y * 64};
         this.mapWall.position = {x: this.mapPosition.x * 64, y: this.mapPosition.y * 64};
-        this.increaseBombNum.position = {x: this.mapPosition.x * 64, y: this.mapPosition.y * 64};
-        this.increaseBombPower.position = {x: this.mapPosition.x * 64, y: this.mapPosition.y * 64};
-        this.stopMonster.position = {x: this.mapPosition.x * 64, y: this.mapPosition.y * 64};
     }
 });
 
