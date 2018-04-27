@@ -52,6 +52,11 @@ var Map = function(map,state)
         var newMonster = new Monster(define.imagePath + 'monster.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         var newBoss = new Boss1(define.imagePath + 'demon.png',this, {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         var mapBoxPic = new Framework.Sprite(define.imagePath + 'poop.png');
+        var mapBoxPic1 = new Framework.Sprite(define.imagePath + 'stone1.png');
+        var mapBoxPic2 = new Framework.Sprite(define.imagePath + 'stone2.png');
+        var mapBoxPic3 = new Framework.Sprite(define.imagePath + 'stone3.png');
+        var mapBoxPic4 = new Framework.Sprite(define.imagePath + 'stone4.png');
+        var mapBoxPic5 = new Framework.Sprite(define.imagePath + 'stone5.png');
         var mapDoorPic = new Framework.Sprite(define.imagePath + 'doorClose.png');
         var mapNextLevelGatePic = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
         this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
@@ -185,7 +190,7 @@ var Map = function(map,state)
                 this.player1.walk(this.playerWalkDirection);
             }
         }
-        
+
         this.runTimeFunction();
         this.nextLevel();
         this.player1.update();
