@@ -20,7 +20,7 @@ var Map = function(map,state)
                 wav: define.musicPath + 'hurt_grunt_2.wav'
             }
         });
-
+    
     this.gameState = state;
     this.thisMapState = [];
     this.mapTerrain = map;
@@ -42,7 +42,10 @@ var Map = function(map,state)
     var deadTimeCount = 40;
     var shootTimeCount = 100;
     this.load = function(){
+        this.playerHpBar = new PlayerHpBar();
+        this.playerHpBar.load(this.gameState.hpLimit,this.gameState.hp);
         this.audio.play({name: 'bgm',loop: true});
+        this.audio.setVolume('bgm', 0.08);
         this.score = new Score();
         this.score.position = {x:0,y:0};
         this.mapFloor = new Framework.Sprite(define.imagePath + 'floor1.png');
@@ -58,6 +61,9 @@ var Map = function(map,state)
         var mapBoxPic4 = new Framework.Sprite(define.imagePath + 'stone4.png');
         var mapBoxPic5 = new Framework.Sprite(define.imagePath + 'stone5.png');
         var mapDoorPic = new Framework.Sprite(define.imagePath + 'doorClose.png');
+        var fullHpPic = new Framework.Sprite(define.imagePath + 'fullHp.png');
+        var halfHpPic = new Framework.Sprite(define.imagePath + 'halfHp.png');
+        var emptyHpPic = new Framework.Sprite(define.imagePath + 'emptyHp.png');
         var mapNextLevelGatePic = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
         this.player1 = new Isaac(define.imagePath + 'player1.png', {down: {from: 0, to: 2}, left: {from:3, to: 5}, right: {from: 6, to: 8}, up: {from: 9, to: 11}});
         this.player1.position = {x:1, y:1};
@@ -227,6 +233,7 @@ var Map = function(map,state)
         {
             this.bulletArray[i].draw(ctx);
         }
+        this.playerHpBar.draw(ctx)
         if(this.gettingDamge){
 
         }else {
@@ -262,7 +269,8 @@ var Map = function(map,state)
             }else{
                 this.audio.play({name: 'hurt3',loop : false});
             }
-            this.gameState.hp = this.gameState.hp-1;
+            this.gameState.hp = this.gameState.hp-0.5;
+            this.playerHpBar.upDateHP( this.gameState.hp);
             console.log("hp: "+this.gameState.hp);
         }
     }
