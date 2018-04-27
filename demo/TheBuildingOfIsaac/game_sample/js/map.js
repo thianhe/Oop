@@ -217,16 +217,16 @@ var Map = function(map,state)
         {
             this.boss[i].draw(ctx);
         }
-        for(var i=0;i<this.bulletArray.length;i++)
-        {
-            this.bulletArray[i].draw(ctx);
-        }
         for(var i=0;i<this.nextLevelGateArray.length;i++)
         {
             this.nextLevelGateArray[i].draw(ctx);
         }
         if(mapPositionX == startingMapXY && mapPositionY == startingMapXY)
             this.mapItem.draw(ctx);
+        for(var i=0;i<this.bulletArray.length;i++)
+        {
+            this.bulletArray[i].draw(ctx);
+        }
         if(this.gettingDamge){
 
         }else {
@@ -561,7 +561,7 @@ var Map = function(map,state)
                         }
                     }
                 }else{
-                    this.mapTerrain[i][j]=9;
+                    this.mapTerrain[i][j]=-1;
                 }
             }
         }
@@ -694,7 +694,11 @@ this.createMonster = function(){
 }
 this.monsterClean = function(){
     if(this.thisMapState[mapPositionX][mapPositionY][0]===1 && this.getLeftMonsterNum()===0){
-        for(var i=0;i<this.doorArray;i++){
+        for(var i=0;i<this.doorArray.length;i++){
+            this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
+            this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
+            this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
+            this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
             this.doorArray[i].mapClean();
         }
         this.thisMapState[mapPositionX][mapPositionY][0]=2;
