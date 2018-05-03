@@ -8,10 +8,7 @@ var Isaac = function(file,option) {
     this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:8 , loop:true , speed:3});
     this.sprite.scale = 1.3;
     this.sprite.index = 1;
-    //this.headSprite.scale = 2;
-    //this.headSprite.index = 1;
     var PIXEL_CONST = 64;
-    //this.sprite.start({ from: 0, to: 2, loop: true});
     this.mapPosition = {x:0, y:0};
     this.spritePosition = {x:0, y:0};
     this.constants = new Constants();
@@ -70,7 +67,7 @@ var Isaac = function(file,option) {
             this.mapPosition = {x:this.mapPosition.x + moveStep.x, y:this.mapPosition.y + moveStep.y};
             this.sprite.start({ from: this.playerDirection * 3, to: this.playerDirection * 3 + 2, loop: true});
         }
-        this.isaacHead.walk(moveStep)
+        //this.isaacHead.walk(moveStep)
     }
 
     this.die = function(){
@@ -125,13 +122,12 @@ var Isaac = function(file,option) {
                 this.walkAlittle();
             }
         }
-        this.isaacHead.update();
+        this.isaacHead.update(this.sprite.position);
     }
 
     this.draw = function(ctx){
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y+10};
         this.sprite.draw(ctx);
-        //this.headSprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         this.isaacHead.draw(ctx);
     }
     this.placeBomb = function(){

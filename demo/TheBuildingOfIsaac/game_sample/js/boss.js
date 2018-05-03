@@ -1,4 +1,4 @@
-var Boss1 = function(file, map, options) {
+var Boss = function(file, map, options) {
     this.url = file;
     //AnimationSprite當圖片是一整張圖片(連續圖), 而非Array時一定要給col, row三個(url是一定要的)
     this.sprite = new Framework.AnimationSprite({url:this.url, col:3 , row:4 , loop:true , speed:12}); 
@@ -13,7 +13,8 @@ var Boss1 = function(file, map, options) {
     this.isdieing = false;
     this.isdead = false;
     this.dieingCounter = 0;
-    this.HP = 10;
+    this.maxHP = 20;
+    this.HP = this.maxHP;
     this.canWalking = true;
 
     this.StepMovedCallBack = [];
@@ -114,6 +115,20 @@ var Boss1 = function(file, map, options) {
         if(this.isdead){ return; }
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
         this.sprite.draw(ctx);
+        this.drawHpBar(ctx);
+    }
+    this.drawHpBar = function(ctx){
+        var hpBarWith = 200*(this.HP/this.maxHP)
+        ctx.beginPath();
+        ctx.lineWidth="6";
+        ctx.strokeStyle="black";
+        ctx.rect(350,10,200,15);
+        ctx.stroke();
+        ctx.stroke();
+        ctx.fillStyle = "#333333";
+        ctx.fillRect(350,10,200,15);
+        ctx.fillStyle = "#8B0000";
+        ctx.fillRect(350,10,hpBarWith,15);
     }
     var walkDir = 0;
     this.randomWalk = function()
@@ -148,7 +163,7 @@ var Boss1 = function(file, map, options) {
 
 };
 
-Object.defineProperty(Boss1.prototype, 'position', {
+Object.defineProperty(Boss.prototype, 'position', {
     get: function() {
         return this.mapPosition;
     },
@@ -158,7 +173,7 @@ Object.defineProperty(Boss1.prototype, 'position', {
     }
 });
 
-Object.defineProperty(Boss1.prototype, 'isDead', {
+Object.defineProperty(Boss.prototype, 'isDead', {
     get: function() {
         return this.isdead;
     }

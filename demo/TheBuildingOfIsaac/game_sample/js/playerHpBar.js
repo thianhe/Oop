@@ -3,10 +3,6 @@ var PlayerHpBar = function(){
     this.halfHpArray = [];
     this.emptyHpArray = [];
 
-    this.update = function(){
-
-    }
-
     this.load = function(totalHp,tempHp){
         this.addTotalHp(totalHp)
         this.upDateHP(tempHp)
@@ -34,6 +30,7 @@ var PlayerHpBar = function(){
             console.log("bb")
             var fullHp = new Framework.Sprite(define.imagePath + 'fullHp.png');
             fullHp.scale = 2.1;
+            
             fullHp.position = {x: i*64, y: 16};
             this.fullHpArray.push(fullHp);
             i+=1;
