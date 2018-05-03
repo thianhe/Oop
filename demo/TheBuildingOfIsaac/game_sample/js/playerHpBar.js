@@ -27,7 +27,6 @@ var PlayerHpBar = function(){
         this.halfHpArray = [];
         console.log(this.fullHpArray.length,tempHp)
         while(this.fullHpArray.length < Math.floor(tempHp)){
-            console.log("bb")
             var fullHp = new Framework.Sprite(define.imagePath + 'fullHp.png');
             fullHp.scale = 2.1;
             
@@ -36,7 +35,6 @@ var PlayerHpBar = function(){
             i+=1;
         }
         if(Math.floor(tempHp)-tempHp != 0){
-            console.log("cc")
             var halfHp = new Framework.Sprite(define.imagePath + 'halfHp.png');
             halfHp.scale = 2.1;
             halfHp.position = {x: i*64, y: 16};

@@ -500,16 +500,6 @@ var Map = function(map, state) {
             this.changeMap();
             this.init();
         }
-        /*if(e.key === 'Space'){
-                var bomb = this.player1.placeBomb();
-                if(!Framework.Util.isNull(bomb))
-                {
-                    bomb.ExploredCallBack.push(Framework.Game._currentLevel.map.bombExploredHandler);
-                    this.bombArray.push(bomb);
-                    var bombPosition = bomb.position;
-                    this.mapArray[bombPosition.y][bombPosition.x] = 3;
-                }
-            }*/
         if (e.key === "Up") {
             if (this.shooting == false) {
                 shootTimeCount = 0;
