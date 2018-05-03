@@ -13,7 +13,7 @@ var Boss = function(file, map, options) {
     this.isdieing = false;
     this.isdead = false;
     this.dieingCounter = 0;
-    this.maxHP = 20;
+    this.maxHP = 5;
     this.HP = this.maxHP;
     this.canWalking = true;
 
