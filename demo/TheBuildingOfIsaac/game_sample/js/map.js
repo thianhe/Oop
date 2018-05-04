@@ -41,9 +41,6 @@ var Map = function(map, state) {
         },
         plop: {
             wav: define.musicPath + "plop.wav"
-        },
-        died: {
-            mp3: define.musicPath + "youdied.mp3"
         }
     });
 
