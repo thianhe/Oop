@@ -41,11 +41,7 @@ var Map = function(map, state) {
         },
         plop: {
             wav: define.musicPath + "plop.wav"
-        },
-        died: {
-            mp3: define.musicPath + "youdied.mp3"
         }
-
     });
 
 
@@ -412,11 +408,8 @@ var Map = function(map, state) {
                             loop: false
                         });
                     }
-                    this.audio.pause({
-                        name: "bgm",
-                    });
+                    this.audio.pause("bgm");
                     Framework.Game.goToLevel("gameOver");
-
 
                 }
             }
