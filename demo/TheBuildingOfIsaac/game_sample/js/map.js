@@ -43,7 +43,7 @@ var Map = function(map, state) {
             wav: define.musicPath + "plop.wav"
         }
     });
-
+    this.mapPoopStateArray = [];
     this.gameState = state;
     this.thisMapState = [];
     this.mapTerrain = map;
@@ -184,7 +184,22 @@ var Map = function(map, state) {
         this.doorArray = [];
         this.nextLevelGateArray = [];
         this.poopArray = [];
-
+        this.poopMapPosition;
+        if(this.thisMapState[mapPositionX][mapPositionY][0]===1){
+            this.mapPoopState = [];
+            this.mapPoopState.push(mapPositionX);
+            this.mapPoopState.push(mapPositionY);
+            this.poopList = [];
+            this.mapPoopState.push(this.poopList);
+            this.mapPoopStateArray.push(this.mapPoopState);
+        }
+        var poopNumber = 0;
+        for(var i=0;i< this.mapPoopStateArray.length;i++){
+            if(this.mapPoopStateArray[i][0] == mapPositionX && this.mapPoopStateArray[i][1] == mapPositionY){
+                this.poopMapPosition = i;
+            }
+        }
+        console.log(this.mapPoopStateArray[this.poopMapPosition]);
         for (var i = 0; i < this.mapArray.length; i++) {
             var line = this.mapArray[i];
             for (var j = 0; j < line.length; j++) {
@@ -215,11 +230,16 @@ var Map = function(map, state) {
                             to: 4
                         }
                     });
+                    if(this.thisMapState[mapPositionX][mapPositionY][0]===2){
+                        while(poop.HP>this.mapPoopStateArray[this.poopMapPosition][2][poopNumber])
+                            poop.getHit();
+                    }
                     poop.position = {
                         x: j,
                         y: i
                     };
                     this.poopArray.push(poop);
+                    poopNumber+=1;
                 } else {
                     tile.tileType = line[j];
                 }
@@ -750,7 +770,7 @@ var Map = function(map, state) {
             }
         }
         var mapSize = this.mapTerrain.length;
-        this.thisMapState[startingMapXY][startingMapXY][0] = 2;
+        this.thisMapState[startingMapXY][startingMapXY][0] = 1;
         while (mapNumber < 9) {
             this.randomOpenMap(bossMapPsoitionX, bossMapPsoitionY, mapSize - 1);
         }
@@ -923,6 +943,7 @@ var Map = function(map, state) {
         if (this.player1.position.x == 0) {
             mapPositionY--;
             this.changeMap();
+            this.updatePoopState();
             this.init();
             this.setPlayerPosition({
                 x: 13,
@@ -932,6 +953,7 @@ var Map = function(map, state) {
         if (this.player1.position.x == mapXSize) {
             mapPositionY++;
             this.changeMap();
+            this.updatePoopState();
             this.init();
             this.setPlayerPosition({
                 x: 1,
@@ -941,6 +963,7 @@ var Map = function(map, state) {
         if (this.player1.position.y == 0) {
             mapPositionX--;
             this.changeMap();
+            this.updatePoopState();
             this.init();
             this.setPlayerPosition({
                 x: 7,
@@ -950,6 +973,7 @@ var Map = function(map, state) {
         if (this.player1.position.y == mapYSize) {
             mapPositionX++;
             this.changeMap();
+            this.updatePoopState();
             this.init();
             this.setPlayerPosition({
                 x: 7,
@@ -1049,6 +1073,13 @@ var Map = function(map, state) {
             }
         }
     };
+
+    this.updatePoopState = function(){
+        this.mapPoopStateArray[this.poopMapPosition][2] = [];
+        for(var i=0;i<this.poopArray.length;i++){
+            this.mapPoopStateArray[this.poopMapPosition][2].push(this.poopArray[i].HP);
+        }
+    }
     this.changeMap = function() {
         console.log(mapPositionX, mapPositionY);
         this.mapArray = this.mapList.terrainList[
@@ -1079,7 +1110,7 @@ var Map = function(map, state) {
             this.addBoss({
                 x: 5,
                 y: 4
-            });
+                });
         } else {
             this.addMonster({
                 x: 2,
