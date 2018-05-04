@@ -4,6 +4,7 @@ var GameWin = Framework.Class(Framework.Level , {
         this.loading = new Framework.Sprite(define.imagePath + 'loading.png');
         this.loading.position = {x: Framework.Game.getCanvasWidth() / 2 , y: 200};
         this.loading.scale=1.5;
+        Level2_change.state= {hpLimit:3,hp:3,money:0};
         //為了或得到this.loading這個Sprite的絕對位置, 故需要先計算一次(在Game Loop執行時, 則會自動計算, 但因為loadingProgress只支援draw故需要自行計算)                  
     },
 
