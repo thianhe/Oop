@@ -133,7 +133,7 @@ var Map = function(map, state) {
         );
         var fullHpPic = new Framework.Sprite(define.imagePath + "fullHp.png");
         var halfHpPic = new Framework.Sprite(define.imagePath + "halfHp.png");
-        var emptyHpPic = new Framework.Sprite(define.imagePath + "emptyHp.png");
+        var emptyHpPic = new Framework.Sprite(define.imagePath + "emptyHP.png");
         var poopPic = new Framework.Sprite(define.imagePath + "poop.png");
         var mapNextLevelGatePic = new Framework.Sprite(
             define.imagePath + "nextLevelGate.png"
