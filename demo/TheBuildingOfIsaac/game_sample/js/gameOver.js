@@ -14,12 +14,11 @@ var GameOver = Framework.Class(Framework.Level , {
     },
 
     load: function() {
-      this.audio = new Framework.Audio({
-        died: {
-            mp3: define.musicPath + "youdied.mp3"
-        }
-
-    });
+        this.audio = new Framework.Audio({
+            died: {
+                mp3: define.musicPath + "youdied.mp3"
+            }
+        });
         this.menu = new Framework.Sprite(define.imagePath + 'loading.png');
     },
 

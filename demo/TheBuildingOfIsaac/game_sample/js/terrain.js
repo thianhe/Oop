@@ -3,7 +3,7 @@ var Terrain = function() {
     //0 空地  1牆壁  2空木箱  3增加炸彈木箱  4增加威力木箱  -1大便  -2增加炸彈power
     this.map0 = [];
     this.map0.push([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //1
-    this.map0.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //2
+    this.map0.push([1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //2
     this.map0.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //3
     this.map0.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //4
     this.map0.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //5
@@ -204,5 +204,5 @@ var Terrain = function() {
     this.terrainList.push(this.map13);
     this.terrainList.push(this.map14);
     this.terrainList.push(this.map15);
-    this.terrainList.push(this.map16aaaaaaaaaa);
+    this.terrainList.push(this.map16);
 }

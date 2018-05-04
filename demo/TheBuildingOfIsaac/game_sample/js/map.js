@@ -943,6 +943,12 @@ var Map = function(map, state) {
                             ) < 0.5
                         ) {
                             this.poopArray[j].getHit();
+                            if(this.poopArray[j].isdead){
+                                this.audio.play({
+                                    name: "plop",
+                                    loop: false
+                                });
+                            }
                             this.bulletArray[i].bulletEnd = true;
                         }
                     }
