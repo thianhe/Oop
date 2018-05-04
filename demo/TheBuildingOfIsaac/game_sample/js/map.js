@@ -412,11 +412,11 @@ var Map = function(map, state) {
                             loop: false
                         });
                     }
+                    this.audio.pause({
+                        name: "bgm",
+                    });
                     Framework.Game.goToLevel("gameOver");
-                    /*this.audio.play({
-                        name: "died",
-                        loop: true
-                    });*/
+
 
                 }
             }
