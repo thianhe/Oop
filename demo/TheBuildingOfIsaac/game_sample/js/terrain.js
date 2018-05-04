@@ -204,5 +204,5 @@ var Terrain = function() {
     this.terrainList.push(this.map13);
     this.terrainList.push(this.map14);
     this.terrainList.push(this.map15);
-    this.terrainList.push(this.map16aaaaaaaaaa);
-}
+    this.terrainList.push(this.map16);
+};

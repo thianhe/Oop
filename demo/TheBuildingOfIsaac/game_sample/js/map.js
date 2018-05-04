@@ -45,9 +45,7 @@ var Map = function(map, state) {
         died: {
             mp3: define.musicPath + "youdied.mp3"
         }
-
     });
-
 
     this.gameState = state;
     this.thisMapState = [];
@@ -132,7 +130,9 @@ var Map = function(map, state) {
         var mapBoxPic3 = new Framework.Sprite(define.imagePath + "stone3.png");
         var mapBoxPic4 = new Framework.Sprite(define.imagePath + "stone4.png");
         var mapBoxPic5 = new Framework.Sprite(define.imagePath + "stone5.png");
-        var mapDoorPic = new Framework.Sprite(define.imagePath + "doorClose.png");
+        var mapDoorPic = new Framework.Sprite(
+            define.imagePath + "doorClose.png"
+        );
         var fullHpPic = new Framework.Sprite(define.imagePath + "fullHp.png");
         var halfHpPic = new Framework.Sprite(define.imagePath + "halfHp.png");
         var emptyHpPic = new Framework.Sprite(define.imagePath + "emptyHp.png");
@@ -334,7 +334,8 @@ var Map = function(map, state) {
         for (var i = 0; i < this.boss.length; i++) {
             this.boss[i].update();
             if (
-                Math.abs(this.player1.position.x - this.boss[i].position.x) <= 1 &&
+                Math.abs(this.player1.position.x - this.boss[i].position.x) <=
+                    1 &&
                 Math.abs(this.player1.position.y - this.boss[i].position.y) <= 1
             )
                 if (this.boss[i].isdead == false) this.getDamge();
@@ -383,7 +384,8 @@ var Map = function(map, state) {
             this.bulletArray[i].draw(ctx);
         }
         this.playerHpBar.draw(ctx);
-        if (this.gettingDamge) {} else {
+        if (this.gettingDamge) {
+        } else {
             this.player1.draw(ctx);
         }
     };
@@ -412,12 +414,8 @@ var Map = function(map, state) {
                             loop: false
                         });
                     }
-                    this.audio.pause({
-                        name: "bgm",
-                    });
+                    this.audio.pause("bgm");
                     Framework.Game.goToLevel("gameOver");
-
-
                 }
             }
         }
@@ -550,7 +548,6 @@ var Map = function(map, state) {
                     loop: false
                 });
             }
-
         }
         if (e.key === "Right") {
             if (this.shooting == false) {
@@ -580,31 +577,39 @@ var Map = function(map, state) {
             !walkDirection[2] &&
             !walkDirection[3]
         ) {
-            if (this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y - 1)) {
+            if (
+                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y - 1)
+            ) {
                 this.playerWalkDirection = {
                     x: -1,
                     y: -1
                 };
                 this.pressWalk = true;
             }
-        } else if (!walkDirection[0] &&
+        } else if (
+            !walkDirection[0] &&
             walkDirection[1] &&
             walkDirection[2] &&
             !walkDirection[3]
         ) {
-            if (this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y + 1)) {
+            if (
+                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y + 1)
+            ) {
                 this.playerWalkDirection = {
                     x: -1,
                     y: 1
                 };
                 this.pressWalk = true;
             }
-        } else if (!walkDirection[0] &&
+        } else if (
+            !walkDirection[0] &&
             !walkDirection[1] &&
             walkDirection[2] &&
             walkDirection[3]
         ) {
-            if (this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y + 1)) {
+            if (
+                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y + 1)
+            ) {
                 this.playerWalkDirection = {
                     x: 1,
                     y: 1
@@ -617,7 +622,9 @@ var Map = function(map, state) {
             !walkDirection[2] &&
             walkDirection[3]
         ) {
-            if (this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y - 1)) {
+            if (
+                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y - 1)
+            ) {
                 this.playerWalkDirection = {
                     x: 1,
                     y: -1
@@ -637,7 +644,8 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (!walkDirection[0] &&
+        } else if (
+            !walkDirection[0] &&
             walkDirection[1] &&
             !walkDirection[2] &&
             !walkDirection[3]
@@ -649,7 +657,8 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (!walkDirection[0] &&
+        } else if (
+            !walkDirection[0] &&
             !walkDirection[1] &&
             walkDirection[2] &&
             !walkDirection[3]
@@ -661,7 +670,8 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (!walkDirection[0] &&
+        } else if (
+            !walkDirection[0] &&
             !walkDirection[1] &&
             !walkDirection[2] &&
             walkDirection[3]
@@ -713,7 +723,8 @@ var Map = function(map, state) {
             if (e.key === "S") walkDirection[2] = false;
             if (e.key === "D") walkDirection[3] = false;
             this.playerWalkFunction();
-            if (!walkDirection[0] &&
+            if (
+                !walkDirection[0] &&
                 !walkDirection[1] &&
                 !walkDirection[2] &&
                 !walkDirection[3]
@@ -758,21 +769,27 @@ var Map = function(map, state) {
             bossMapPsoitionY = tempY;
         }
         if (
-            (tempX == bossMapPsoitionX && Math.abs(tempY - bossMapPsoitionY) == 1) ||
-            (tempY == bossMapPsoitionY && Math.abs(tempX - bossMapPsoitionX) == 1)
+            (tempX == bossMapPsoitionX &&
+                Math.abs(tempY - bossMapPsoitionY) == 1) ||
+            (tempY == bossMapPsoitionY &&
+                Math.abs(tempX - bossMapPsoitionX) == 1)
         ) {
             var connectRoomCount = 0;
             if (tempX > 0) {
-                if (this.thisMapState[tempX - 1][tempY][0] == 0) connectRoomCount++;
+                if (this.thisMapState[tempX - 1][tempY][0] == 0)
+                    connectRoomCount++;
             }
             if (tempX < this.mapTerrain.length - 1) {
-                if (this.thisMapState[tempX + 1][tempY][0] == 0) connectRoomCount++;
+                if (this.thisMapState[tempX + 1][tempY][0] == 0)
+                    connectRoomCount++;
             }
             if (tempY > 0) {
-                if (this.thisMapState[tempX][tempY - 1][0] == 0) connectRoomCount++;
+                if (this.thisMapState[tempX][tempY - 1][0] == 0)
+                    connectRoomCount++;
             }
             if (tempY < this.mapTerrain.length - 1) {
-                if (this.thisMapState[tempX][tempY + 1][0] == 0) connectRoomCount++;
+                if (this.thisMapState[tempX][tempY + 1][0] == 0)
+                    connectRoomCount++;
             }
             if (connectRoomCount == 1) {
                 bossMapPsoitionX = tempX;
@@ -825,7 +842,8 @@ var Map = function(map, state) {
 
     this.PathLength = function(tempX, tempY) {
         return (
-            Math.pow(tempX - startingMapXY, 2) + Math.pow(tempY - startingMapXY, 2)
+            Math.pow(tempX - startingMapXY, 2) +
+            Math.pow(tempY - startingMapXY, 2)
         );
     };
     this.randomBool = function() {
@@ -859,16 +877,34 @@ var Map = function(map, state) {
         while (gateCount > 1) {
             var randomClose = Math.floor(Math.random() * 4 + 1);
             if (
-                this.thisMapState[bossMapPsoitionX][bossMapPsoitionY][randomClose] == 0
+                this.thisMapState[bossMapPsoitionX][bossMapPsoitionY][
+                    randomClose
+                ] == 0
             ) {
                 if (randomClose == 1)
-                    this.mapLeftToRightConnect(bossMapPsoitionX, bossMapPsoitionY - 1, 1);
+                    this.mapLeftToRightConnect(
+                        bossMapPsoitionX,
+                        bossMapPsoitionY - 1,
+                        1
+                    );
                 if (randomClose == 2)
-                    this.mapUpToBottomConnect(bossMapPsoitionX - 1, bossMapPsoitionY, 1);
+                    this.mapUpToBottomConnect(
+                        bossMapPsoitionX - 1,
+                        bossMapPsoitionY,
+                        1
+                    );
                 if (randomClose == 3)
-                    this.mapLeftToRightConnect(bossMapPsoitionX, bossMapPsoitionY, 1);
+                    this.mapLeftToRightConnect(
+                        bossMapPsoitionX,
+                        bossMapPsoitionY,
+                        1
+                    );
                 if (randomClose == 4)
-                    this.mapUpToBottomConnect(bossMapPsoitionX, bossMapPsoitionY, 1);
+                    this.mapUpToBottomConnect(
+                        bossMapPsoitionX,
+                        bossMapPsoitionY,
+                        1
+                    );
                 gateCount = gateCount - 1;
                 console.log("closed: " + randomClose);
             }
@@ -942,11 +978,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                this.poopArray[j].mapPosition.x
+                                    this.poopArray[j].mapPosition.x
                             ) < 0.5 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                this.poopArray[j].mapPosition.y
+                                    this.poopArray[j].mapPosition.y
                             ) < 0.5
                         ) {
                             this.poopArray[j].getHit();
@@ -960,11 +996,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                this.monster[j].mapPosition.x
+                                    this.monster[j].mapPosition.x
                             ) < 0.5 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                this.monster[j].mapPosition.y
+                                    this.monster[j].mapPosition.y
                             ) < 0.5
                         ) {
                             this.monster[j].getHit();
@@ -977,11 +1013,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                this.boss[j].mapPosition.x
+                                    this.boss[j].mapPosition.x
                             ) < 1 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                this.boss[j].mapPosition.y
+                                    this.boss[j].mapPosition.y
                             ) < 1
                         ) {
                             this.boss[j].getHit();
@@ -989,7 +1025,8 @@ var Map = function(map, state) {
                         }
                     }
                 }
-                if (this.bulletArray[i].bulletEnd) {}
+                if (this.bulletArray[i].bulletEnd) {
+                }
             }
         }
     };
@@ -997,10 +1034,12 @@ var Map = function(map, state) {
         for (var j = 0; j < tempArray.length; j++) {
             if (
                 Math.abs(
-                    this.bulletArray[i].spritePosition.x - tempArray[j].mapPosition.x
+                    this.bulletArray[i].spritePosition.x -
+                        tempArray[j].mapPosition.x
                 ) < 0.5 &&
                 Math.abs(
-                    this.bulletArray[i].spritePosition.y - tempArray[j].mapPosition.y
+                    this.bulletArray[i].spritePosition.y -
+                        tempArray[j].mapPosition.y
                 ) < 0.5
             ) {
                 this.bulletArray[i].bulletEnd = true;
@@ -1030,7 +1069,10 @@ var Map = function(map, state) {
         }
     };
     this.createMonster = function() {
-        if (mapPositionX == bossMapPsoitionX && mapPositionY == bossMapPsoitionY) {
+        if (
+            mapPositionX == bossMapPsoitionX &&
+            mapPositionY == bossMapPsoitionY
+        ) {
             this.addBoss({
                 x: 5,
                 y: 4
@@ -1052,10 +1094,18 @@ var Map = function(map, state) {
             this.getLeftMonsterNum() === 0
         ) {
             for (var i = 0; i < this.doorArray.length; i++) {
-                this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
-                this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
-                this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
-                this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
+                this.mapArray[4][0] = this.thisMapState[mapPositionX][
+                    mapPositionY
+                ][1];
+                this.mapArray[0][7] = this.thisMapState[mapPositionX][
+                    mapPositionY
+                ][2];
+                this.mapArray[4][14] = this.thisMapState[mapPositionX][
+                    mapPositionY
+                ][3];
+                this.mapArray[8][7] = this.thisMapState[mapPositionX][
+                    mapPositionY
+                ][4];
                 this.doorArray[i].mapClean();
             }
             this.thisMapState[mapPositionX][mapPositionY][0] = 2;
@@ -1076,9 +1126,15 @@ var Map = function(map, state) {
         }
     };
     this.nextLevel = function() {
-        if (mapPositionX == bossMapPsoitionX && mapPositionY == bossMapPsoitionY) {
+        if (
+            mapPositionX == bossMapPsoitionX &&
+            mapPositionY == bossMapPsoitionY
+        ) {
             if (this.thisMapState[mapPositionX][mapPositionY][0] == 2) {
-                if (this.player1.position.x == 7 && this.player1.position.y == 4) {
+                if (
+                    this.player1.position.x == 7 &&
+                    this.player1.position.y == 4
+                ) {
                     Framework.Game.goToNextLevel();
                 }
             }
