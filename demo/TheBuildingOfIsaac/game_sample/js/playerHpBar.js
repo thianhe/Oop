@@ -13,7 +13,7 @@ var PlayerHpBar = function(){
         console.log(this.emptyHpArray.length,totalHp)
         while(this.emptyHpArray.length < totalHp){
             console.log("aa")
-            var emptyHp = new Framework.Sprite(define.imagePath + 'emptyHp.png');
+            var emptyHp = new Framework.Sprite(define.imagePath + 'emptyHP.png');
             emptyHp.scale = 2.1;
             emptyHp.position = {x: i*64, y: 16};
             this.emptyHpArray.push(emptyHp);
