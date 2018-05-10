@@ -1,4 +1,4 @@
-var Box = function(item) {
+var Box = function() {
     var path;
     var randomstone = Math.floor(Math.random() * 5);
     if (randomstone == 0) {
@@ -23,9 +23,6 @@ var Box = function(item) {
         x: 1,
         y: 1
     };
-    //test
-    this.constants = new Constants();
-    this.item = item;
 
     //被炸彈炸到的function
     this.explored = function() {

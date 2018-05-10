@@ -2,17 +2,21 @@ var PlayerHpBar = function(){
     this.fullHpArray = [];
     this.halfHpArray = [];
     this.emptyHpArray = [];
-
-    this.load = function(totalHp,tempHp){
+    this.coinIcon =  new Framework.Sprite(define.imagePath + 'coins.png');
+    this.coinIcon.scale = 2;
+    this.coinIcon.index = 1;
+    this.money = 10;
+    this.coinIcon.position = {x:10*64,y:16}
+    this.coinTextPosition = {x:10*64+24,y:4};
+    this.load = function(totalHp,tempHp,money){
         this.addTotalHp(totalHp)
         this.upDateHP(tempHp)
+        this.upDateMoney(money)
     }
-
     this.addTotalHp = function(totalHp){
         var i=1;
-        console.log(this.emptyHpArray.length,totalHp)
+        this.emptyHpArray=[];
         while(this.emptyHpArray.length < totalHp){
-            console.log("aa")
             var emptyHp = new Framework.Sprite(define.imagePath + 'emptyHP.png');
             emptyHp.scale = 2.1;
             emptyHp.position = {x: i*64, y: 16};
@@ -20,16 +24,16 @@ var PlayerHpBar = function(){
             i+=1;
         }
     }
-
+    this.upDateMoney = function(tempMoney){
+        this.money = tempMoney;
+    }
     this.upDateHP = function(tempHp){
         var i=1;
         this.fullHpArray = [];
         this.halfHpArray = [];
-        console.log(this.fullHpArray.length,tempHp)
         while(this.fullHpArray.length < Math.floor(tempHp)){
             var fullHp = new Framework.Sprite(define.imagePath + 'fullHp.png');
             fullHp.scale = 2.1;
-            
             fullHp.position = {x: i*64, y: 16};
             this.fullHpArray.push(fullHp);
             i+=1;
@@ -42,7 +46,7 @@ var PlayerHpBar = function(){
             i+=1;
         }
     }
-
+    
     this.draw = function(ctx){
         for(var i=0;i<this.emptyHpArray.length;i++){
             this.emptyHpArray[i].draw(ctx);
@@ -53,5 +57,13 @@ var PlayerHpBar = function(){
         for(var i=0;i<this.halfHpArray.length;i++){
             this.halfHpArray[i].draw(ctx);
         }
+        this.coinIcon.draw(ctx);
+        ctx.globalAlpha=0.8;
+        ctx.font = '18pt Algerian';
+        ctx.globalAlpha=1;
+        ctx.fillStyle = 'yellow';
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillText(":" + this.money, this.coinTextPosition.x, this.coinTextPosition.y);
     }
 };

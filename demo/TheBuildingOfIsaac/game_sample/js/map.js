@@ -3,37 +3,23 @@ var Map = function(map, state) {
     this.audio = new Framework.Audio({
         bgm: {
             mp3: define.musicPath + "bgm.mp3"
-            //ogg: define.musicPath + 'kick2.ogg',
-            //wav: define.musicPath + 'kick2.wav'
         },
         hurt1: {
-            //mp3: define.musicPath + 'easy.mp3',
-            //ogg: define.musicPath + 'Hot_Heat.ogg',
             wav: define.musicPath + "hurt_grunt.wav"
         },
         hurt2: {
-            //mp3: define.musicPath + 'easy.mp3',
-            //ogg: define.musicPath + 'Hot_Heat.ogg',
             wav: define.musicPath + "hurt_grunt_1.wav"
         },
         hurt3: {
-            //mp3: define.musicPath + 'easy.mp3',
-            //ogg: define.musicPath + 'Hot_Heat.ogg',
             wav: define.musicPath + "hurt_grunt_2.wav"
         },
         isaacdie1: {
-            //mp3: define.musicPath + 'easy.mp3',
-            //ogg: define.musicPath + 'Hot_Heat.ogg',
             wav: define.musicPath + "isaacdie1.wav"
         },
         isaacdie2: {
-            //mp3: define.musicPath + 'easy.mp3',
-            //ogg: define.musicPath + 'Hot_Heat.ogg',
             wav: define.musicPath + "isaacdie2.wav"
         },
         isaacdie3: {
-            //mp3: define.musicPath + 'easy.mp3',
-            //ogg: define.musicPath + 'Hot_Heat.ogg',
             wav: define.musicPath + "isaacdie3.wav"
         },
         bubble: {
@@ -44,6 +30,7 @@ var Map = function(map, state) {
         }
     });
     this.mapPoopStateArray = [];
+    this.mapItemStateArray = [];
     this.gameState = state;
     this.thisMapState = [];
     this.mapTerrain = map;
@@ -59,7 +46,6 @@ var Map = function(map, state) {
     this.mapArray = this.mapList.terrainList[
         this.mapTerrain[mapPositionX][mapPositionY]
     ];
-
     this.playerWalkDirection = {
         x: 0,
         y: 0
@@ -72,7 +58,7 @@ var Map = function(map, state) {
     var turnFaceCount = 100;
     this.load = function() {
         this.playerHpBar = new PlayerHpBar();
-        this.playerHpBar.load(this.gameState.hpLimit, this.gameState.hp);
+        this.playerHpBar.load(this.gameState.hpLimit, this.gameState.hp, this.gameState.money);
         this.audio.play({
             name: "bgm",
             loop: true
@@ -123,11 +109,23 @@ var Map = function(map, state) {
                 to: 11
             }
         });
+        this.isPee = false;
+        this.pee = new Framework.Sprite(define.imagePath + "pee.png");
+        this.pee.scale = 0.8;
+        this.pee.position = {
+            x: 0 * 64-32,
+            y: 0 * 64-32
+        };
         var mapBoxPic1 = new Framework.Sprite(define.imagePath + "stone1.png");
         var mapBoxPic2 = new Framework.Sprite(define.imagePath + "stone2.png");
         var mapBoxPic3 = new Framework.Sprite(define.imagePath + "stone3.png");
         var mapBoxPic4 = new Framework.Sprite(define.imagePath + "stone4.png");
         var mapBoxPic5 = new Framework.Sprite(define.imagePath + "stone5.png");
+        var itemPic1 = new Framework.Sprite(define.imagePath + "addLife.png");
+        var itemPic2 = new Framework.Sprite(define.imagePath + "life.png");
+        var itemPic3 = new Framework.Sprite(define.imagePath + "halflife.png");
+        var itemPic4 = new Framework.Sprite(define.imagePath + "coins.png");
+        var itemPic4 = new Framework.Sprite(define.imagePath + "bullet.png");
         var mapDoorPic = new Framework.Sprite(
             define.imagePath + "doorClose.png"
         );
@@ -135,6 +133,7 @@ var Map = function(map, state) {
         var halfHpPic = new Framework.Sprite(define.imagePath + "halfHp.png");
         var emptyHpPic = new Framework.Sprite(define.imagePath + "emptyHP.png");
         var poopPic = new Framework.Sprite(define.imagePath + "poop.png");
+        var bulletExplorPic = new Framework.Sprite(define.imagePath + "teareffect.png");
         var mapNextLevelGatePic = new Framework.Sprite(
             define.imagePath + "nextLevelGate.png"
         );
@@ -160,14 +159,8 @@ var Map = function(map, state) {
             x: 1,
             y: 1
         };
-        var newBullet = new Bullet(
-            define.imagePath + "bullet.png",
-            2,
-            this.player1.position
-        );
-        this.monster = [];
         this.boss = [];
-        this.mapItem = new MapItem();
+        this.StartingMapItem = new StartingMapItem();
         /*this.stopMonster = false;
             this.stopMonsterCounter =0;*/
         this.randomMapState();
@@ -175,6 +168,7 @@ var Map = function(map, state) {
         console.log(this.mapTerrain);
         console.log("final map :" + bossMapPsoitionX, bossMapPsoitionY);
     };
+    this.monster = [];
 
     this.init = function() {
         this.player1.StepMovedCallBack.push(this.playerMovedHandler);
@@ -185,7 +179,8 @@ var Map = function(map, state) {
         this.doorArray = [];
         this.nextLevelGateArray = [];
         this.poopArray = [];
-        this.poopMapPosition;
+        this.bulletExploreArray = [];
+        this.stateMapPosition;
         if (this.thisMapState[mapPositionX][mapPositionY][0] === 1) {
             this.mapPoopState = [];
             this.mapPoopState.push(mapPositionX);
@@ -193,17 +188,28 @@ var Map = function(map, state) {
             this.poopList = [];
             this.mapPoopState.push(this.poopList);
             this.mapPoopStateArray.push(this.mapPoopState);
+
+            this.mapItemState = [];
+            this.mapItemState.push(mapPositionX);
+            this.mapItemState.push(mapPositionY);
+            this.itemList = [];
+            this.mapItemState.push(this.itemList);
+            this.mapItemStateArray.push(this.mapItemState);
         }
+        
         var poopNumber = 0;
         for (var i = 0; i < this.mapPoopStateArray.length; i++) {
             if (
                 this.mapPoopStateArray[i][0] == mapPositionX &&
                 this.mapPoopStateArray[i][1] == mapPositionY
             ) {
-                this.poopMapPosition = i;
+                this.stateMapPosition = i;
             }
         }
-        console.log(this.mapPoopStateArray[this.poopMapPosition]);
+        this.itemArray = []
+        for(var i = 0; i < this.mapItemStateArray[this.stateMapPosition][2].length; i++){
+            this.itemArray.push(this.mapItemStateArray[this.stateMapPosition][2][i]);
+        }
         for (var i = 0; i < this.mapArray.length; i++) {
             var line = this.mapArray[i];
             for (var j = 0; j < line.length; j++) {
@@ -239,7 +245,7 @@ var Map = function(map, state) {
                     ) {
                         while (
                             poop.HP >
-                            this.mapPoopStateArray[this.poopMapPosition][2][
+                            this.mapPoopStateArray[this.stateMapPosition][2][
                                 poopNumber
                             ]
                         )
@@ -350,6 +356,22 @@ var Map = function(map, state) {
         }
         for (var i = 0; i < this.bulletArray.length; i++) {
             this.bulletArray[i].update();
+            if(this.bulletArray[i].bulletEnd==false){
+                if(Math.abs(this.bulletArray[i].startPosition.x-this.bulletArray[i].spritePosition.x)>5 ||
+                Math.abs(this.bulletArray[i].startPosition.y-this.bulletArray[i].spritePosition.y)>5) this.bulletArray[i].bulletEnd=true;
+                if (this.bulletArray[i].bulletEnd) {
+                    var newBulletExplore= new BulletExplore(define.imagePath + "teareffect.png", {
+                        down: {
+                            from: 0,
+                            to: 13
+                        }});
+                    newBulletExplore.position ={x:this.bulletArray[i].spritePosition.x,y:this.bulletArray[i].spritePosition.y};
+                    this.bulletExploreArray.push(newBulletExplore);
+                }
+            }
+        }
+        for (var i = 0; i < this.bulletExploreArray.length; i++) {
+            this.bulletExploreArray[i].update();
         }
         for (var i = 0; i < this.monster.length; i++) {
             this.monster[i].update();
@@ -358,6 +380,13 @@ var Map = function(map, state) {
                 this.player1.position.y == this.monster[i].position.y
             )
                 if (this.monster[i].isdead == false) this.getDamge();
+        }
+        for (var i = 0; i < this.itemArray.length; i++) {
+            if (
+                this.player1.position.x == this.itemArray[i].position.x &&
+                this.player1.position.y == this.itemArray[i].position.y
+            )
+                if (this.itemArray[i].ate == false) this.eatItem(i);
         }
         for (var i = 0; i < this.boss.length; i++) {
             this.boss[i].update();
@@ -387,12 +416,15 @@ var Map = function(map, state) {
         for (var i = 0; i < this.tileArray.length; i++) {
             this.tileArray[i].draw(ctx);
         }
-
         for (var i = 0; i < this.boxArray.length; i++) {
             this.boxArray[i].draw(ctx);
         }
+        if(this.isPee)this.pee.draw(ctx);
         for (var i = 0; i < this.poopArray.length; i++) {
             this.poopArray[i].draw(ctx);
+        }
+        for (var i = 0; i < this.itemArray.length; i++) {
+            this.itemArray[i].draw(ctx);
         }
         for (var i = 0; i < this.doorArray.length; i++) {
             this.doorArray[i].draw(ctx);
@@ -407,9 +439,12 @@ var Map = function(map, state) {
             this.nextLevelGateArray[i].draw(ctx);
         }
         if (mapPositionX == startingMapXY && mapPositionY == startingMapXY)
-            this.mapItem.draw(ctx);
+            this.StartingMapItem.draw(ctx);
         for (var i = 0; i < this.bulletArray.length; i++) {
             this.bulletArray[i].draw(ctx);
+        }
+        for (var i = 0; i < this.bulletExploreArray.length; i++) {
+            this.bulletExploreArray[i].draw(ctx);
         }
         this.playerHpBar.draw(ctx);
         if (this.gettingDamge) {
@@ -482,9 +517,26 @@ var Map = function(map, state) {
             }
             this.gameState.hp = this.gameState.hp - 0.5;
             this.playerHpBar.upDateHP(this.gameState.hp);
-            console.log("hp: " + this.gameState.hp);
         }
     };
+    this.eatItem = function(i){
+        if(this.itemArray[i].itemType == 1){
+            if(this.gameState.hp == this.gameState.hpLimit && this.gameState.hpLimit==5) return;
+            this.gameState.hp += 1;
+            this.gameState.hpLimit+=1;
+        }
+        if(this.itemArray[i].itemType == 2||this.itemArray[i].itemType == 3){
+            if(this.gameState.hp == this.gameState.hpLimit) return;
+            this.gameState.hp += ((this.itemArray[i].itemType-1)/2);
+        }
+        if(this.itemArray[i].itemType == 4) this.gameState.money+=1;
+        if(this.gameState.hpLimit>5) this.gameState.hpLimit=5;
+        if(this.gameState.hp>this.gameState.hpLimit) this.gameState.hp=this.gameState.hpLimit;
+        this.itemArray[i].ate = true;
+        this.playerHpBar.addTotalHp(this.gameState.hpLimit);
+        this.playerHpBar.upDateHP(this.gameState.hp);
+        this.playerHpBar.upDateMoney(this.gameState.money)
+    }
 
     this.getLeftMonsterNum = function() {
         var count = 0;
@@ -835,7 +887,7 @@ var Map = function(map, state) {
             }
         }
         if (mapNumber === 9) return;
-        if (tempX > 0 && this.randomBool()) {
+        if (tempX > 0 && this.randomBool(0.7)) {
             if (this.thisMapState[tempX - 1][tempY][0] == -1) {
                 mapNumber = mapNumber + 1;
                 this.thisMapState[tempX - 1][tempY][0] = 0;
@@ -844,7 +896,7 @@ var Map = function(map, state) {
             }
         }
         if (mapNumber === 9) return;
-        if (tempX < size && this.randomBool()) {
+        if (tempX < size && this.randomBool(0.7)) {
             if (this.thisMapState[tempX + 1][tempY][0] == -1) {
                 mapNumber = mapNumber + 1;
                 this.thisMapState[tempX + 1][tempY][0] = 0;
@@ -853,7 +905,7 @@ var Map = function(map, state) {
             }
         }
         if (mapNumber === 9) return;
-        if (tempY > 0 && this.randomBool()) {
+        if (tempY > 0 && this.randomBool(0.7)) {
             if (this.thisMapState[tempX][tempY - 1][0] == -1) {
                 mapNumber = mapNumber + 1;
                 this.thisMapState[tempX][tempY - 1][0] = 0;
@@ -862,7 +914,7 @@ var Map = function(map, state) {
             }
         }
         if (mapNumber === 9) return;
-        if (tempY < size && this.randomBool()) {
+        if (tempY < size && this.randomBool(0.7)) {
             if (this.thisMapState[tempX][tempY + 1][0] == -1) {
                 mapNumber = mapNumber + 1;
                 this.thisMapState[tempX][tempY + 1][0] = 0;
@@ -884,8 +936,8 @@ var Map = function(map, state) {
             Math.pow(tempY - startingMapXY, 2)
         );
     };
-    this.randomBool = function() {
-        return Math.random() >= 0.7;
+    this.randomBool = function(p) {
+        return Math.random() >= p;
     };
 
     this.connectOpenRoom = function() {
@@ -963,45 +1015,61 @@ var Map = function(map, state) {
         var mapYSize = 8;
         if (this.player1.position.x == 0) {
             mapPositionY--;
-            this.changeMap();
-            this.updatePoopState();
-            this.init();
+            this.outOfMapUpdate();
             this.setPlayerPosition({
                 x: 13,
                 y: 4
             });
+            this.pee.position = {
+                x: 13 * 64,
+                y: 4 * 64
+            };
         }
         if (this.player1.position.x == mapXSize) {
             mapPositionY++;
-            this.changeMap();
-            this.updatePoopState();
-            this.init();
+            this.outOfMapUpdate();
             this.setPlayerPosition({
                 x: 1,
                 y: 4
             });
+            this.pee.position = {
+                x: 1 * 64,
+                y: 4 * 64
+            };
         }
         if (this.player1.position.y == 0) {
             mapPositionX--;
-            this.changeMap();
-            this.updatePoopState();
-            this.init();
+            this.outOfMapUpdate();
             this.setPlayerPosition({
                 x: 7,
                 y: 7
             });
+            this.pee.position = {
+                x: 7 * 64,
+                y: 7 * 64
+            };
         }
         if (this.player1.position.y == mapYSize) {
             mapPositionX++;
-            this.changeMap();
-            this.updatePoopState();
-            this.init();
+            this.outOfMapUpdate();
             this.setPlayerPosition({
                 x: 7,
                 y: 1
             });
+            this.pee.position = {
+                x: 7 * 64,
+                y: 1 * 64
+            };
         }
     };
+    this.outOfMapUpdate = function(){
+        this.updatePoopState();
+        this.updateItemState();
+        this.changeMap();
+        this.init();
+        if(this.gameState.hp/this.gameState.hpLimit<=0.5) this.isPee = true;
+        else this.isPee = false;
+    }
     this.bulletHit = function() {
         for (var i = 0; i < this.bulletArray.length; i++) {
             if (!this.bulletArray[i].bulletEnd) {
@@ -1033,6 +1101,7 @@ var Map = function(map, state) {
                                     name: "plop",
                                     loop: false
                                 });
+                                if(this.randomBool(0.5))this.addNewItem(0,this.poopArray[j].position.x,this.poopArray[j].position.y);
                             }
                             this.bulletArray[i].bulletEnd = true;
                         }
@@ -1052,6 +1121,9 @@ var Map = function(map, state) {
                             ) < 0.5
                         ) {
                             this.monster[j].getHit();
+                            if(this.monster[j].isdead){
+                                if(this.randomBool(0.5))this.addNewItem(0,this.monster[j].position.x,this.monster[j].position.y);
+                            }
                             this.bulletArray[i].bulletEnd = true;
                         }
                     }
@@ -1073,7 +1145,15 @@ var Map = function(map, state) {
                         }
                     }
                 }
+                
                 if (this.bulletArray[i].bulletEnd) {
+                    var newBulletExplore= new BulletExplore(define.imagePath + "teareffect.png", {
+                        down: {
+                            from: 0,
+                            to: 13
+                        }});
+                    newBulletExplore.position ={x:this.bulletArray[i].spritePosition.x,y:this.bulletArray[i].spritePosition.y};
+                    this.bulletExploreArray.push(newBulletExplore);
                 }
             }
         }
@@ -1094,13 +1174,20 @@ var Map = function(map, state) {
             }
         }
     };
-
     this.updatePoopState = function() {
-        this.mapPoopStateArray[this.poopMapPosition][2] = [];
+        this.mapPoopStateArray[this.stateMapPosition][2] = [];
         for (var i = 0; i < this.poopArray.length; i++) {
-            this.mapPoopStateArray[this.poopMapPosition][2].push(
+            this.mapPoopStateArray[this.stateMapPosition][2].push(
                 this.poopArray[i].HP
             );
+        }
+    };
+    this.updateItemState = function() {
+        this.mapItemStateArray[this.stateMapPosition][2] = [];
+        for (var i = 0; i < this.itemArray.length; i++) {
+            if(this.itemArray[i].ate == false){
+                this.mapItemStateArray[this.stateMapPosition][2].push(this.itemArray[i]);
+            }
         }
     };
     this.changeMap = function() {
@@ -1121,6 +1208,7 @@ var Map = function(map, state) {
                 this.mapArray[4][14] = 3;
             if (this.thisMapState[mapPositionX][mapPositionY][4] === 0)
                 this.mapArray[8][7] = 3;
+            this.monster = [];
             this.createMonster();
             this.thisMapState[mapPositionX][mapPositionY][0] = 1;
         }
@@ -1197,4 +1285,9 @@ var Map = function(map, state) {
             }
         }
     };
+    this.addNewItem = function(item,tempX,tempY){
+        var newItem = new MapItem(item);
+        newItem.position = {x:tempX,y:tempY}
+        this.itemArray.push(newItem);
+    }
 };
