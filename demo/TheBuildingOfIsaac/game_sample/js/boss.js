@@ -10,6 +10,10 @@ var Boss = function(file, map, options) {
     });
     this.sprite.scale = 1.5;
     this.sprite.index = 1;
+    this.hpBarHead = new Framework.Sprite(define.imagePath + "hp_head.png");
+    this.hpBarHead.scale=1.5;
+    this.hpBarHead.index = 1; 
+    this.hpBarHead.position={x:355,y:15};
     var PIXEL_CONST = 64;
     this.mapPosition = {
         x: 0,
@@ -151,19 +155,21 @@ var Boss = function(file, map, options) {
         };
         this.sprite.draw(ctx);
         this.drawHpBar(ctx);
+        this.hpBarHead.draw(ctx);
     }
     this.drawHpBar = function(ctx) {
+        
         var hpBarWith = 200 * (this.HP / this.maxHP)
         ctx.beginPath();
         ctx.lineWidth = "6";
         ctx.strokeStyle = "black";
-        ctx.rect(350, 10, 200, 15);
+        ctx.rect(370, 10, 200, 15);
         ctx.stroke();
         ctx.stroke();
         ctx.fillStyle = "#333333";
-        ctx.fillRect(350, 10, 200, 15);
+        ctx.fillRect(370, 10, 200, 15);
         ctx.fillStyle = "#8B0000";
-        ctx.fillRect(350, 10, hpBarWith, 15);
+        ctx.fillRect(370, 10, hpBarWith, 15);
     }
     var walkDir = 0;
     this.randomWalk = function() {

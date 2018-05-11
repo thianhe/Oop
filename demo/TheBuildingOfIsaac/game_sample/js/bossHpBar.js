@@ -5,7 +5,7 @@ var BossHpBar = function(){
         this.sq.bodyWidth = 50;
         this.sq.bodyHeight = 50;
     }
-
+    
     this.upDateHP = function(tempHp){
 
     }

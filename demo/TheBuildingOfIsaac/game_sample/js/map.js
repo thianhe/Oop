@@ -126,6 +126,7 @@ var Map = function(map, state) {
         var itemPic3 = new Framework.Sprite(define.imagePath + "halflife.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "coins.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "bullet.png");
+        var bossHpBarHead = new Framework.Sprite(define.imagePath + "hp_head.png");
         var mapDoorPic = new Framework.Sprite(
             define.imagePath + "doorClose.png"
         );
