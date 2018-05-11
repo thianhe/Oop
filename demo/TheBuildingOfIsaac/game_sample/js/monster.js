@@ -13,7 +13,6 @@ var Monster = function(file, map, options) {
     this.spritePosition = {x:0, y:0};
     this.constants = new Constants();
     this.map = map;
-    this.isdieing = false;
     this.isdead = false;
     this.dieingCounter = 0;
     this.HP = 2;
@@ -61,6 +60,7 @@ var Monster = function(file, map, options) {
     }
     this.getHit = function(){
         this.HP--;
+        if(this.HP<=0)this.die()
     }
     this.stopWalk = function()
     {
@@ -88,7 +88,7 @@ var Monster = function(file, map, options) {
 
     this.update = function(){
         if(this.isdead ){ return; }
-        if(this.HP<=0)this.die()
+        
         this.sprite.update();
         if(this.isWalking){
             if(this.walkTarget.x * PIXEL_CONST === this.spritePosition.x && this.walkTarget.y * PIXEL_CONST === this.spritePosition.y){

@@ -5,14 +5,13 @@ var Bullet = function(file,shootDirection,startingPosition){
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
     this.constants = new Constants();
+    this.startPosition = startingPosition;
     this.spritePosition = startingPosition;
     this.mapPosition = startingPosition;
     this.time = 0;
     this.bulletEnd = false;
     this.shootingDirection = shootDirection;
     this.update = function(){
-        if(Math.abs(startingPosition.x-this.spritePosition.x)>5 ||
-            Math.abs(startingPosition.y-this.spritePosition.y)>5) this.bulletEnd=true;
         if(!(this.bulletEnd))this.walkAlittle()
         if(this.bulletEnd){return;}
     }
