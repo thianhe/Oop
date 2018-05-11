@@ -575,8 +575,12 @@ var Map = function(map, state) {
         if (e.key === "N") {
             Framework.Game.goToNextLevel();
         }
-        if (e.key === "T") {
+        if (e.key === "G") {
             this.getDamge();
+        }
+        if(e.key === "R"){
+            this.gameState.hp = this.gameState.hp +0.5;
+            this.playerHpBar.upDateHP(this.gameState.hp)
         }
         if (e.key === "B") {
             mapPositionX = bossMapPsoitionX;
@@ -1067,7 +1071,7 @@ var Map = function(map, state) {
         this.updateItemState();
         this.changeMap();
         this.init();
-        if(this.gameState.hp/this.gameState.hpLimit<=0.5) this.isPee = true;
+        if(this.gameState.hp<=0.5) this.isPee = true;
         else this.isPee = false;
     }
     this.bulletHit = function() {
