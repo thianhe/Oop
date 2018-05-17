@@ -30,6 +30,9 @@ var Map = function(map, state) {
         },
         coinslot: {
             wav: define.musicPath + "coinslot.wav"
+        },
+        pickup: {
+            wav: define.musicPath + "pickup.wav"
         }
     });
     var boughtThings = false;
@@ -81,7 +84,7 @@ var Map = function(map, state) {
         this.mapFloor.scale = 2;
         this.mapWall = new Framework.Sprite(define.imagePath + "wall2.png");
         this.mapWall.scale = 2;
-        var newMonster = new Worm(define.imagePath + "monster.png", this,3, {
+        var newMonster = new Worm(define.imagePath + "monster.png", this, 3, {
             down: {
                 from: 0,
                 to: 2
@@ -99,7 +102,7 @@ var Map = function(map, state) {
                 to: 11
             }
         });
-        var newMonster1 = new Fly(define.imagePath + "fly.png", this,3, {
+        var newMonster1 = new Fly(define.imagePath + "fly.png", this, 3, {
             down: {
                 from: 0,
                 to: 3
@@ -117,7 +120,7 @@ var Map = function(map, state) {
                 to: 15
             }
         });
-        var newMonster2 = new SmallFly(define.imagePath + "smallFly.png", this,3, {
+        var newMonster2 = new SmallFly(define.imagePath + "smallFly.png", this, 3, {
             down: {
                 from: 0,
                 to: 1
@@ -157,8 +160,8 @@ var Map = function(map, state) {
         var itemPic2 = new Framework.Sprite(define.imagePath + "life.png");
         var itemPic3 = new Framework.Sprite(define.imagePath + "halflife.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "coins.png");
-        var itemPic4 = new Framework.Sprite(define.imagePath + "bullet.png");
-        var itemPic5 = new Framework.Sprite(define.imagePath + "enemyBullet.png");
+        var itemPic5 = new Framework.Sprite(define.imagePath + "bullet.png");
+        var itemPic6 = new Framework.Sprite(define.imagePath + "enemyBullet.png");
         var bossHpBarHead = new Framework.Sprite(
             define.imagePath + "hp_head.png"
         );
@@ -332,53 +335,53 @@ var Map = function(map, state) {
             y: playerPosition.y - 0.45
         };
     };
-    this.addMonster = function(monster,monsterPosition) {
-        var newMonster 
-        if(monster == 1)
-        newMonster = new Worm(define.imagePath + "monster.png", this,3, {
-            down: {
-                from: 0,
-                to: 2
-            },
-            left: {
-                from: 3,
-                to: 5
-            },
-            right: {
-                from: 6,
-                to: 8
-            },
-            up: {
-                from: 9,
-                to: 11
-            }
-        });
-        if(monster == 2)
-        newMonster = new Fly(define.imagePath + "fly.png", this,3, {
-            down: {
-                from: 0,
-                to: 3
-            },
-            left: {
-                from: 4,
-                to: 7
-            },
-            right: {
-                from: 8,
-                to: 11
-            },
-            up: {
-                from: 12,
-                to: 15
-            }
-        });
-        if(monster == 3)
-        newMonster = new SmallFly(define.imagePath + "smallFly.png", this,3, {
-            down: {
-                from: 0,
-                to: 1
-            }
-        });
+    this.addMonster = function(monster, monsterPosition) {
+        var newMonster
+        if (monster == 1)
+            newMonster = new Worm(define.imagePath + "monster.png", this, 3, {
+                down: {
+                    from: 0,
+                    to: 2
+                },
+                left: {
+                    from: 3,
+                    to: 5
+                },
+                right: {
+                    from: 6,
+                    to: 8
+                },
+                up: {
+                    from: 9,
+                    to: 11
+                }
+            });
+        if (monster == 2)
+            newMonster = new Fly(define.imagePath + "fly.png", this, 3, {
+                down: {
+                    from: 0,
+                    to: 3
+                },
+                left: {
+                    from: 4,
+                    to: 7
+                },
+                right: {
+                    from: 8,
+                    to: 11
+                },
+                up: {
+                    from: 12,
+                    to: 15
+                }
+            });
+        if (monster == 3)
+            newMonster = new SmallFly(define.imagePath + "smallFly.png", this, 3, {
+                down: {
+                    from: 0,
+                    to: 1
+                }
+            });
         newMonster.position = monsterPosition;
         this.monster.push(newMonster);
     };
@@ -483,8 +486,9 @@ var Map = function(map, state) {
                 }
             }
         }
-        for(var i = 0; i < this.enemyBulletArray.length; i++){
-            this.enemyBulletArray[i].update();}
+        for (var i = 0; i < this.enemyBulletArray.length; i++) {
+            this.enemyBulletArray[i].update();
+        }
         for (var i = 0; i < this.bulletExploreArray.length; i++) {
             this.bulletExploreArray[i].update();
         }
@@ -592,6 +596,10 @@ var Map = function(map, state) {
                     this.StartingMapItem.slotMachine_money_Position.x,
                     this.StartingMapItem.slotMachine_money_Position.y + 1
                 );
+                this.audio.play({
+                    name: "coinslot",
+                    loop: false
+                });
             }
             if (
                 this.player1.position.x ==
@@ -611,7 +619,12 @@ var Map = function(map, state) {
                     this.StartingMapItem.slotMachine_hp_Position.x,
                     this.StartingMapItem.slotMachine_hp_Position.y + 1
                 );
+                this.audio.play({
+                    name: "coinslot",
+                    loop: false
+                });
             }
+
         }
     };
     this.runTimeFunction = function() {
@@ -654,12 +667,12 @@ var Map = function(map, state) {
                 this.player1.turnFace(1);
             }
         }
-        for(var i=0;i<this.monster.length;i++){
-            if(this.monster[i].isShooting){
+        for (var i = 0; i < this.monster.length; i++) {
+            if (this.monster[i].isShooting) {
                 this.monster[i].isShootingCounter += 1;
-                if(this.monster[i].isShootingCounter == 100){
-                    this.monster[i].isShooting=false;
-                    this.monster[i].isShootingCounter =0;
+                if (this.monster[i].isShootingCounter == 100) {
+                    this.monster[i].isShooting = false;
+                    this.monster[i].isShootingCounter = 0;
                 }
             }
         }
@@ -689,6 +702,10 @@ var Map = function(map, state) {
         }
     };
     this.eatItem = function(i) {
+        this.audio.play({
+            name: "pickup",
+            loop: false
+        });
         if (boughtThings) boughtThings = false;
         if (this.itemArray[i].itemType == 1) {
             if (
@@ -984,10 +1001,10 @@ var Map = function(map, state) {
     };
 
     this.checkIsFlyAble = function(x, y) {
-        if (x < 1 || x > this.mapArray[0].length-2) {
+        if (x < 1 || x > this.mapArray[0].length - 2) {
             return false;
         }
-        if (y < 1 || y > this.mapArray.length-2) {
+        if (y < 1 || y > this.mapArray.length - 2) {
             return false;
         }
         return true;
@@ -1467,15 +1484,15 @@ var Map = function(map, state) {
                 y: 4
             });
         } else {
-            this.addMonster(1,{
+            this.addMonster(1, {
                 x: 2,
                 y: 2
             });
-            this.addMonster(2,{
+            this.addMonster(2, {
                 x: 1,
                 y: 1
             });
-            this.addMonster(3,{
+            this.addMonster(3, {
                 x: 4,
                 y: 4
             });
