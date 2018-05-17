@@ -125,8 +125,6 @@ var Worm = function(file, map, hp, options) {
                     this.mapPosition.y + walkStep.y
                 )
             ) {
-                console.log(this.mapPosition.x + walkStep.x,
-                    this.mapPosition.y + walkStep.y)
                 this.walk(walkStep);
             }
             else{

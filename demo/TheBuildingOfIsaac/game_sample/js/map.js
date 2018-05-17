@@ -1,5 +1,5 @@
 var Map = function(map, state) {
-    console.log(state);
+    
     this.audio = new Framework.Audio({
         bgm: {
             mp3: define.musicPath + "bgm.mp3"
@@ -39,6 +39,9 @@ var Map = function(map, state) {
     this.mapPoopStateArray = [];
     this.mapItemStateArray = [];
     this.gameState = state;
+    this.gameState.gameLevel += 1;
+    
+    console.log("Monster HP: ",this.monsterHP )
     this.thisMapState = [];
     this.mapTerrain = map;
     this.gettingDamge = false;
@@ -64,11 +67,15 @@ var Map = function(map, state) {
     var shootTimeCount = 100;
     var turnFaceCount = 100;
     this.load = function() {
+        this.monsterHP = 3+ ((this.gameState.gameLevel-1)*2);
+        console.log("HP Started: ",this.monsterHP)
         this.playerHpBar = new PlayerHpBar();
         this.playerHpBar.load(
             this.gameState.hpLimit,
             this.gameState.hp,
-            this.gameState.money
+            this.gameState.money,
+            this.gameState.dmg,
+            this.gameState.atks
         );
         this.audio.play({
             name: "bgm",
@@ -84,7 +91,7 @@ var Map = function(map, state) {
         this.mapFloor.scale = 2;
         this.mapWall = new Framework.Sprite(define.imagePath + "wall2.png");
         this.mapWall.scale = 2;
-        var newMonster = new Worm(define.imagePath + "monster.png", this, 3, {
+        var newMonster0 = new Worm(define.imagePath + "monster.png", this, this.monsterHP, {
             down: {
                 from: 0,
                 to: 2
@@ -102,7 +109,7 @@ var Map = function(map, state) {
                 to: 11
             }
         });
-        var newMonster1 = new Fly(define.imagePath + "fly.png", this, 3, {
+        var newMonster1 = new Fly(define.imagePath + "fly.png", this, this.monsterHP, {
             down: {
                 from: 0,
                 to: 3
@@ -120,13 +127,13 @@ var Map = function(map, state) {
                 to: 15
             }
         });
-        var newMonster2 = new SmallFly(define.imagePath + "smallFly.png", this, 3, {
+        var newMonster2 = new SmallFly(define.imagePath + "smallFly.png", this, this.monsterHP, {
             down: {
                 from: 0,
                 to: 1
             }}
         )
-        var newMonster3 = new ShylyMonster(define.imagePath + "shy.png", this, 3, {
+        var newMonster3 = new ShylyMonster(define.imagePath + "shy.png", this, this.monsterHP, {
             down: {
                 from: 0,
                 to: 2
@@ -168,6 +175,8 @@ var Map = function(map, state) {
         var itemPic4 = new Framework.Sprite(define.imagePath + "coins.png");
         var itemPic5 = new Framework.Sprite(define.imagePath + "bullet.png");
         var itemPic6 = new Framework.Sprite(define.imagePath + "enemyBullet.png");
+        var itemPic7 = new Framework.Sprite(define.imagePath + "damageLogo.png");
+        var itemPic8 = new Framework.Sprite(define.imagePath + "speedLogo.png");
         var bossHpBarHead = new Framework.Sprite(
             define.imagePath + "hp_head.png"
         );
@@ -183,6 +192,20 @@ var Map = function(map, state) {
         });
         var slotMachine_money = new Framework.AnimationSprite({
             url: define.imagePath + "slotMachine_money.png",
+            col: 4,
+            row: 1,
+            loop: true,
+            speed: 1
+        });
+        var slotMachine_dmg = new Framework.AnimationSprite({
+            url: define.imagePath + "slotMachine_dmg.png",
+            col: 4,
+            row: 1,
+            loop: true,
+            speed: 1
+        });
+        var slotMachine_atks = new Framework.AnimationSprite({
+            url: define.imagePath + "slotMachine_atkspeed.png",
             col: 4,
             row: 1,
             loop: true,
@@ -226,8 +249,8 @@ var Map = function(map, state) {
         /*this.stopMonster = false;
             this.stopMonsterCounter =0;*/
         this.randomMapState();
-        console.log(this.thisMapState);
-        console.log(this.mapTerrain);
+        /*console.log(this.thisMapState);
+        console.log(this.mapTerrain);*/
         console.log("final map :" + bossMapPsoitionX, bossMapPsoitionY);
     };
     this.monster = [];
@@ -344,7 +367,7 @@ var Map = function(map, state) {
     this.addMonster = function(monster, monsterPosition) {
         var newMonster
         if (monster == 1)
-            newMonster = new Worm(define.imagePath + "monster.png", this, 3, {
+            newMonster = new Worm(define.imagePath + "monster.png", this, this.monsterHP, {
                 down: {
                     from: 0,
                     to: 2
@@ -363,7 +386,7 @@ var Map = function(map, state) {
                 }
             });
         if (monster == 2)
-            newMonster = new Fly(define.imagePath + "fly.png", this, 3, {
+            newMonster = new Fly(define.imagePath + "fly.png", this, this.monsterHP, {
                 down: {
                     from: 0,
                     to: 3
@@ -382,19 +405,20 @@ var Map = function(map, state) {
                 }
             });
         if (monster == 3)
-            newMonster = new SmallFly(define.imagePath + "smallFly.png", this, 3, {
+            newMonster = new SmallFly(define.imagePath + "smallFly.png", this,this.monsterHP, {
                 down: {
                     from: 0,
                     to: 1
                 }
             });
         if( monster== 4)
-         newMonster = new ShylyMonster(define.imagePath + "shy.png", this, 3, {
+         newMonster = new ShylyMonster(define.imagePath + "shy.png", this,this.monsterHP, {
             down: {
                 from: 0,
                 to: 2
             }}
         )
+        newMonster.Hp = this.monsterHP;
         newMonster.position = monsterPosition;
         this.monster.push(newMonster);
     };
@@ -626,13 +650,61 @@ var Map = function(map, state) {
                 this.gameState.money > 0
             ) {
                 this.gameState.money -= 1;
-                this.playerHpBar.upDateMoney(this.gameState.money);
+                this.playerHpBar.upDateMoney(this.gameState.money,this.gameState.dmg,this.gameState.atks);
                 boughtThings = true;
                 this.StartingMapItem.hpAnimation();
                 this.addNewItem(
                     3,
                     this.StartingMapItem.slotMachine_hp_Position.x,
                     this.StartingMapItem.slotMachine_hp_Position.y + 1
+                );
+                this.audio.play({
+                    name: "coinslot",
+                    loop: false
+                });
+            }
+
+            if (
+                this.player1.position.x ==
+                    this.StartingMapItem.slotMachine_dmg_Position.x &&
+                this.player1.position.y ==
+                    this.StartingMapItem.slotMachine_dmg_Position.y &&
+                !this.StartingMapItem.dmgDestoryed &&
+                !boughtThings &&
+                this.gameState.money > 0 && this.gameState.dmg <5
+            ) {
+                this.gameState.money -= 1;
+                this.playerHpBar.upDateMoney(this.gameState.money,this.gameState.dmg,this.gameState.atks);
+                boughtThings = true;
+                this.StartingMapItem.dmgAnimation();
+                this.addNewItem(
+                    5,
+                    this.StartingMapItem.slotMachine_dmg_Position.x,
+                    this.StartingMapItem.slotMachine_dmg_Position.y + 1
+                );
+                this.audio.play({
+                    name: "coinslot",
+                    loop: false
+                });
+            }
+
+            if (
+                this.player1.position.x ==
+                    this.StartingMapItem.slotMachine_atks_Position.x &&
+                this.player1.position.y ==
+                    this.StartingMapItem.slotMachine_atks_Position.y &&
+                !this.StartingMapItem.atksDestoryed &&
+                !boughtThings &&
+                this.gameState.money > 0 && this.gameState.atks <5
+            ) {
+                this.gameState.money -= 1;
+                this.playerHpBar.upDateMoney(this.gameState.money,this.gameState.dmg,this.gameState.atks);
+                boughtThings = true;
+                this.StartingMapItem.atksAnimation();
+                this.addNewItem(
+                    6,
+                    this.StartingMapItem.slotMachine_atks_Position.x,
+                    this.StartingMapItem.slotMachine_atks_Position.y + 1
                 );
                 this.audio.play({
                     name: "coinslot",
@@ -670,9 +742,9 @@ var Map = function(map, state) {
                 }
             }
         }
-        if (shootTimeCount < 17) {
+        if (shootTimeCount < 20 - (this.gameState.atks)*3) {
             shootTimeCount++;
-            if (shootTimeCount == 17) {
+            if (shootTimeCount == 20 - ((this.gameState.atks))*3) {
                 this.shooting = false;
             }
         }
@@ -738,7 +810,11 @@ var Map = function(map, state) {
             this.gameState.hp += (this.itemArray[i].itemType - 1) / 2;
         }
         if (this.itemArray[i].itemType == 4) this.gameState.money += 1;
+        if(this.itemArray[i].itemType == 5) this.gameState.dmg += 1;
+        if(this.itemArray[i].itemType == 6) this.gameState.atks += 1;
         if (this.gameState.hpLimit > 5) this.gameState.hpLimit = 5;
+        if (this.gameState.dmg > 5) this.gameState.hpLimit = 5;
+        if (this.gameState.atks > 5) this.gameState.hpLimit = 5;
         if (this.gameState.hp > this.gameState.hpLimit)
             this.gameState.hp = this.gameState.hpLimit;
         this.itemArray[i].ate = true;
@@ -750,7 +826,7 @@ var Map = function(map, state) {
         }
         this.playerHpBar.addTotalHp(this.gameState.hpLimit);
         this.playerHpBar.upDateHP(this.gameState.hp);
-        this.playerHpBar.upDateMoney(this.gameState.money);
+        this.playerHpBar.upDateMoney(this.gameState.money,this.gameState.dmg,this.gameState.atks);
     };
 
     this.getLeftMonsterNum = function() {
@@ -1244,7 +1320,6 @@ var Map = function(map, state) {
                         1
                     );
                 gateCount = gateCount - 1;
-                console.log("closed: " + randomClose);
             }
         }
     };
@@ -1455,6 +1530,46 @@ var Map = function(map, state) {
                         this.bulletArray[i].bulletEnd = true;
                     }
                 }
+                if (
+                    this.StartingMapItem.dmgDestoryed == false &&
+                    mapPositionX == startingMapXY &&
+                    mapPositionY == startingMapXY &&
+                    !this.bulletArray[i].bulletEnd
+                ) {
+                    if (
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.x -
+                                this.StartingMapItem.slotMachine_dmg_Position.x
+                        ) < 0.5 &&
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.y -
+                                this.StartingMapItem.slotMachine_dmg_Position.y
+                        ) < 0.5
+                    ) {
+                        this.StartingMapItem.dmgSoltHP -= 1;
+                        this.bulletArray[i].bulletEnd = true;
+                    }
+                }
+                if (
+                    this.StartingMapItem.atksDestoryed == false &&
+                    mapPositionX == startingMapXY &&
+                    mapPositionY == startingMapXY &&
+                    !this.bulletArray[i].bulletEnd
+                ) {
+                    if (
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.x -
+                                this.StartingMapItem.slotMachine_atks_Position.x
+                        ) < 0.5 &&
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.y -
+                                this.StartingMapItem.slotMachine_atks_Position.y
+                        ) < 0.5
+                    ) {
+                        this.StartingMapItem.atksSoltHP -= 1;
+                        this.bulletArray[i].bulletEnd = true;
+                    }
+                }
                 if (this.bulletArray[i].bulletEnd) {
                     var newBulletExplore = new BulletExplore(
                         define.imagePath + "teareffect.png",
@@ -1477,7 +1592,6 @@ var Map = function(map, state) {
             if (this.enemyBulletArray[i].bulletEnd == false) {
                 if(this.enemyBulletArray[i].sprite.position.x<0 || this.enemyBulletArray[i].sprite.position.x>14*64)this.enemyBulletArray[i].bulletEnd = true;
                 if(this.enemyBulletArray[i].sprite.position.y<0 || this.enemyBulletArray[i].sprite.position.y>10*64)this.enemyBulletArray[i].bulletEnd = true;
-                console.log(this.enemyBulletArray[i].spritePosition,this.player1.sprite.position)
                 if (
                     Math.abs(
                         this.enemyBulletArray[i].spritePosition.x -
@@ -1561,6 +1675,7 @@ var Map = function(map, state) {
                 y: 4
             });
         } else {
+
             this.addMonster(1, {
                 x: 2,
                 y: 2

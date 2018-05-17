@@ -8,6 +8,8 @@ var MapItem = function(itemNum){
     if(this.itemType == 2) path = 'halflife.png';
     if(this.itemType == 3) path = 'life.png';
     if(this.itemType == 4) path = 'coins.png';
+    if(this.itemType == 5) path = 'damageLogo.png';
+    if(this.itemType == 6) path = 'speedLogo.png';
     this.ate = false;
     this.sprite = new Framework.Sprite(define.imagePath + path);
     this.sprite.scale = 2;

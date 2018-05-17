@@ -5,13 +5,31 @@ var PlayerHpBar = function(){
     this.coinIcon =  new Framework.Sprite(define.imagePath + 'coins.png');
     this.coinIcon.scale = 2;
     this.coinIcon.index = 1;
+
+    this.dmgIcon = new Framework.Sprite(define.imagePath+ 'damageLogo.png')
+    this.dmgIcon.scale = 2;
+    this.dmgIcon.index = 1;
+
+    this.atksIcon = new Framework.Sprite(define.imagePath+ 'speedLogo.png')
+    this.atksIcon.scale = 2;
+    this.atksIcon.index = 1;
+
     this.money = 10;
-    this.coinIcon.position = {x:10*64,y:16}
-    this.coinTextPosition = {x:10*64+24,y:4};
-    this.load = function(totalHp,tempHp,money){
+    this.dmg = 1;
+    this.atks= 1 ;
+    this.coinIcon.position = {x:9*64,y:16}
+    this.coinTextPosition = {x:9*64+24,y:4};
+
+    this.dmgIcon.position = {x:10.5*64,y:16}
+    this.dmgTextPosition = {x:10.5*64+24,y:4};
+
+    this.atksIcon.position = {x:12*64,y:16}
+    this.atksTextPosition = {x:12*64+24,y:4};
+
+    this.load = function(totalHp,tempHp,money,dmg,atks){
         this.addTotalHp(totalHp)
         this.upDateHP(tempHp)
-        this.upDateMoney(money)
+        this.upDateMoney(money,dmg,atks)
     }
     this.addTotalHp = function(totalHp){
         var i=1;
@@ -24,8 +42,10 @@ var PlayerHpBar = function(){
             i+=1;
         }
     }
-    this.upDateMoney = function(tempMoney){
+    this.upDateMoney = function(tempMoney,tempDmg,tempAtks){
         this.money = tempMoney;
+        this.dmg = tempDmg;
+        this.atks = tempAtks;
     }
     this.upDateHP = function(tempHp){
         var i=1;
@@ -65,5 +85,23 @@ var PlayerHpBar = function(){
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillText(":" + this.money, this.coinTextPosition.x, this.coinTextPosition.y);
+
+        this.dmgIcon.draw(ctx)
+        ctx.globalAlpha=0.8;
+        ctx.font = '18pt Algerian';
+        ctx.globalAlpha=1;
+        ctx.fillStyle = 'yellow';
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillText(":" + this.dmg, this.dmgTextPosition.x, this.dmgTextPosition.y);
+
+        this.atksIcon.draw(ctx)
+        ctx.globalAlpha=0.8;
+        ctx.font = '18pt Algerian';
+        ctx.globalAlpha=1;
+        ctx.fillStyle = 'yellow';
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillText(":" + this.atks, this.atksTextPosition.x, this.atksTextPosition.y);
     }
 };

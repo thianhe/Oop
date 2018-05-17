@@ -18,7 +18,7 @@ var Monster = function(map,hp) {
         this.isdead = true;
     }
     this.getHit = function(){
-        this.HP--;
+        this.HP-= this.map.gameState.dmg;
         if(this.HP<=0)this.die()
     }
     this.stopWalk = function()

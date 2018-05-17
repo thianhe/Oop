@@ -33,8 +33,8 @@ var ShylyMonster = function(file, map, hp, options) {
             return;
         }
         if (
-            Math.abs(this.mapPosition.x - this.map.player1.mapPosition.x) < 4 &&
-            Math.abs(this.mapPosition.y - this.map.player1.mapPosition.y) < 4
+            Math.abs(this.mapPosition.x - this.map.player1.mapPosition.x) < 3 &&
+            Math.abs(this.mapPosition.y - this.map.player1.mapPosition.y) < 3
         ) {
             if (this.getHited == false) this.sprite.index = 0;
         } else if (

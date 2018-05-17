@@ -22,7 +22,7 @@ var Fly = function(file, map, hp, options) {
 
     this.playerDirection = this.constants.DirectionEnum.DOWN;
     this.getHit = function() {
-        this.HP--;
+        this.HP-=this.map.gameState.dmg;
         if (this.HP <= 0) {
             this.die();
             this.map.addFlyDie(this.mapPosition);
