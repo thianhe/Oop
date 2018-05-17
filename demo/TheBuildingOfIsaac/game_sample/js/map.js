@@ -27,7 +27,7 @@ var Map = function(map, state) {
         },
         plop: {
             wav: define.musicPath + "plop.wav"
-        }
+        },
         coinslot: {
             wav: define.musicPath + "coinslot.wav"
         }
@@ -81,7 +81,7 @@ var Map = function(map, state) {
         this.mapFloor.scale = 2;
         this.mapWall = new Framework.Sprite(define.imagePath + "wall2.png");
         this.mapWall.scale = 2;
-        var newMonster = new Monster(define.imagePath + "monster.png", this, {
+        var newMonster = new Worm(define.imagePath + "monster.png", this,3, {
             down: {
                 from: 0,
                 to: 2
@@ -97,6 +97,30 @@ var Map = function(map, state) {
             up: {
                 from: 9,
                 to: 11
+            }
+        });
+        var newMonster1 = new Fly(define.imagePath + "fly.png", this,3, {
+            down: {
+                from: 0,
+                to: 3
+            },
+            left: {
+                from: 4,
+                to: 7
+            },
+            right: {
+                from: 8,
+                to: 11
+            },
+            up: {
+                from: 12,
+                to: 15
+            }
+        });
+        var newMonster2 = new SmallFly(define.imagePath + "smallFly.png", this,3, {
+            down: {
+                from: 0,
+                to: 1
             }
         });
         var newBoss = new Boss(define.imagePath + "demon.png", this, {
@@ -134,6 +158,7 @@ var Map = function(map, state) {
         var itemPic3 = new Framework.Sprite(define.imagePath + "halflife.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "coins.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "bullet.png");
+        var itemPic5 = new Framework.Sprite(define.imagePath + "enemyBullet.png");
         var bossHpBarHead = new Framework.Sprite(
             define.imagePath + "hp_head.png"
         );
@@ -160,6 +185,9 @@ var Map = function(map, state) {
         var poopPic = new Framework.Sprite(define.imagePath + "poop.png");
         var bulletExplorPic = new Framework.Sprite(
             define.imagePath + "teareffect.png"
+        );
+        var flyDiewPic = new Framework.Sprite(
+            define.imagePath + "dieFly.png"
         );
         var mapNextLevelGatePic = new Framework.Sprite(
             define.imagePath + "nextLevelGate.png"
@@ -203,6 +231,7 @@ var Map = function(map, state) {
         this.boxArray = [];
         this.tileArray = [];
         this.bulletArray = [];
+        this.enemyBulletArray = [];
         this.doorArray = [];
         this.nextLevelGateArray = [];
         this.poopArray = [];
@@ -303,8 +332,10 @@ var Map = function(map, state) {
             y: playerPosition.y - 0.45
         };
     };
-    this.addMonster = function(monsterPosition) {
-        var newMonster = new Monster(define.imagePath + "monster.png", this, {
+    this.addMonster = function(monster,monsterPosition) {
+        var newMonster 
+        if(monster == 1)
+        newMonster = new Worm(define.imagePath + "monster.png", this,3, {
             down: {
                 from: 0,
                 to: 2
@@ -320,6 +351,32 @@ var Map = function(map, state) {
             up: {
                 from: 9,
                 to: 11
+            }
+        });
+        if(monster == 2)
+        newMonster = new Fly(define.imagePath + "fly.png", this,3, {
+            down: {
+                from: 0,
+                to: 3
+            },
+            left: {
+                from: 4,
+                to: 7
+            },
+            right: {
+                from: 8,
+                to: 11
+            },
+            up: {
+                from: 12,
+                to: 15
+            }
+        });
+        if(monster == 3)
+        newMonster = new SmallFly(define.imagePath + "smallFly.png", this,3, {
+            down: {
+                from: 0,
+                to: 1
             }
         });
         newMonster.position = monsterPosition;
@@ -346,6 +403,16 @@ var Map = function(map, state) {
         });
         newBoss.position = monsterPosition;
         this.boss.push(newBoss);
+    };
+    this.addFlyDie = function(diePosition) {
+        var flyDie = new FlyDie(define.imagePath + "dieFly.png", this, {
+            down: {
+                from: 0,
+                to: 10
+            }
+        });
+        flyDie.position = diePosition;
+        this.bulletExploreArray.push(flyDie);
     };
 
     /*this.playerMovedHandler = function(player){
@@ -416,6 +483,8 @@ var Map = function(map, state) {
                 }
             }
         }
+        for(var i = 0; i < this.enemyBulletArray.length; i++){
+            this.enemyBulletArray[i].update();}
         for (var i = 0; i < this.bulletExploreArray.length; i++) {
             this.bulletExploreArray[i].update();
         }
@@ -488,6 +557,9 @@ var Map = function(map, state) {
             this.StartingMapItem.draw(ctx);
         for (var i = 0; i < this.bulletArray.length; i++) {
             this.bulletArray[i].draw(ctx);
+        }
+        for (var i = 0; i < this.enemyBulletArray.length; i++) {
+            this.enemyBulletArray[i].draw(ctx);
         }
         for (var i = 0; i < this.bulletExploreArray.length; i++) {
             this.bulletExploreArray[i].draw(ctx);
@@ -580,6 +652,15 @@ var Map = function(map, state) {
             turnFaceCount++;
             if (turnFaceCount == 50) {
                 this.player1.turnFace(1);
+            }
+        }
+        for(var i=0;i<this.monster.length;i++){
+            if(this.monster[i].isShooting){
+                this.monster[i].isShootingCounter += 1;
+                if(this.monster[i].isShootingCounter == 100){
+                    this.monster[i].isShooting=false;
+                    this.monster[i].isShootingCounter =0;
+                }
             }
         }
     };
@@ -902,6 +983,16 @@ var Map = function(map, state) {
         }
     };
 
+    this.checkIsFlyAble = function(x, y) {
+        if (x < 1 || x > this.mapArray[0].length-2) {
+            return false;
+        }
+        if (y < 1 || y > this.mapArray.length-2) {
+            return false;
+        }
+        return true;
+    };
+
     this.keyup = function(e, list) {
         if (e.key === "W" || e.key === "A" || e.key === "S" || e.key === "D") {
             if (e.key === "W") walkDirection[0] = false;
@@ -1179,7 +1270,7 @@ var Map = function(map, state) {
                 this.bulletHitDeadArray(i, this.boxArray);
 
                 for (var j = 0; j < this.poopArray.length; j++) {
-                    if (this.poopArray[j].isdead === false) {
+                    if (this.poopArray[j].isdead === false && !this.bulletArray[i].bulletEnd) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
@@ -1209,7 +1300,7 @@ var Map = function(map, state) {
                 }
 
                 for (var j = 0; j < this.monster.length; j++) {
-                    if (this.monster[j].isdead === false) {
+                    if (this.monster[j].isdead === false && !this.bulletArray[i].bulletEnd) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
@@ -1235,7 +1326,7 @@ var Map = function(map, state) {
                     }
                 }
                 for (var j = 0; j < this.boss.length; j++) {
-                    if (this.boss[j].isdead === false) {
+                    if (this.boss[j].isdead === false && !this.bulletArray[i].bulletEnd) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
@@ -1254,7 +1345,7 @@ var Map = function(map, state) {
                 if (
                     this.StartingMapItem.moneyDestoryed == false &&
                     mapPositionX == startingMapXY &&
-                    mapPositionY == startingMapXY
+                    mapPositionY == startingMapXY && !this.bulletArray[i].bulletEnd
                 ) {
                     if (
                         Math.abs(
@@ -1275,7 +1366,7 @@ var Map = function(map, state) {
                 if (
                     this.StartingMapItem.hpDestoryed == false &&
                     mapPositionX == startingMapXY &&
-                    mapPositionY == startingMapXY
+                    mapPositionY == startingMapXY && !this.bulletArray[i].bulletEnd
                 ) {
                     if (
                         Math.abs(
@@ -1376,13 +1467,17 @@ var Map = function(map, state) {
                 y: 4
             });
         } else {
-            this.addMonster({
+            this.addMonster(1,{
                 x: 2,
                 y: 2
             });
-            this.addMonster({
+            this.addMonster(2,{
                 x: 1,
                 y: 1
+            });
+            this.addMonster(3,{
+                x: 4,
+                y: 4
             });
         }
     };
