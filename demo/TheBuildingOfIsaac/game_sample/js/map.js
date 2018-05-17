@@ -126,6 +126,12 @@ var Map = function(map, state) {
                 to: 1
             }}
         )
+        var newMonster3 = new ShylyMonster(define.imagePath + "shy.png", this, 3, {
+            down: {
+                from: 0,
+                to: 2
+            }}
+        )
         var newBoss = new Boss(define.imagePath + "demon.png", this, {
             down: {
                 from: 0,
@@ -382,6 +388,13 @@ var Map = function(map, state) {
                     to: 1
                 }
             });
+        if( monster== 4)
+         newMonster = new ShylyMonster(define.imagePath + "shy.png", this, 3, {
+            down: {
+                from: 0,
+                to: 2
+            }}
+        )
         newMonster.position = monsterPosition;
         this.monster.push(newMonster);
     };
@@ -789,6 +802,9 @@ var Map = function(map, state) {
             mapPositionY = bossMapPsoitionY;
             this.changeMap();
             this.init();
+        }
+        if (e.key === "C") {
+            this.monster = []
         }
         if (e.key === "Up") {
             if (this.shooting == false) {
@@ -1553,7 +1569,7 @@ var Map = function(map, state) {
                 x: 1,
                 y: 1
             });
-            this.addMonster(3, {
+            this.addMonster(4, {
                 x: 4,
                 y: 4
             });
