@@ -28,6 +28,9 @@ var Map = function(map, state) {
         plop: {
             wav: define.musicPath + "plop.wav"
         }
+        coinslot: {
+            wav: define.musicPath + "coinslot.wav"
+        }
     });
     var boughtThings = false;
     this.mapPoopStateArray = [];
@@ -261,9 +264,7 @@ var Map = function(map, state) {
         }
         this.itemArray = [];
         for (
-            var i = 0;
-            i < this.mapItemStateArray[this.stateMapPosition][2].length;
-            i++
+            var i = 0; i < this.mapItemStateArray[this.stateMapPosition][2].length; i++
         ) {
             this.itemArray.push(
                 this.mapItemStateArray[this.stateMapPosition][2][i]
@@ -457,18 +458,17 @@ var Map = function(map, state) {
                 if (
                     Math.abs(
                         this.bulletArray[i].startPosition.x -
-                            this.bulletArray[i].spritePosition.x
+                        this.bulletArray[i].spritePosition.x
                     ) > 5 ||
                     Math.abs(
                         this.bulletArray[i].startPosition.y -
-                            this.bulletArray[i].spritePosition.y
+                        this.bulletArray[i].spritePosition.y
                     ) > 5
                 )
                     this.bulletArray[i].bulletEnd = true;
                 if (this.bulletArray[i].bulletEnd) {
                     var newBulletExplore = new BulletExplore(
-                        define.imagePath + "teareffect.png",
-                        {
+                        define.imagePath + "teareffect.png", {
                             down: {
                                 from: 0,
                                 to: 13
@@ -507,7 +507,7 @@ var Map = function(map, state) {
             this.boss[i].update();
             if (
                 Math.abs(this.player1.position.x - this.boss[i].position.x) <=
-                    1 &&
+                1 &&
                 Math.abs(this.player1.position.y - this.boss[i].position.y) <= 1
             )
                 if (this.boss[i].isdead == false) this.getDamge();
@@ -565,8 +565,7 @@ var Map = function(map, state) {
             this.bulletExploreArray[i].draw(ctx);
         }
         this.playerHpBar.draw(ctx);
-        if (this.gettingDamge) {
-        } else {
+        if (this.gettingDamge) {} else {
             this.player1.draw(ctx);
         }
     };
@@ -577,9 +576,9 @@ var Map = function(map, state) {
         if (mapPositionX == startingMapXY && mapPositionY == startingMapXY) {
             if (
                 this.player1.position.x ==
-                    this.StartingMapItem.slotMachine_money_Position.x &&
+                this.StartingMapItem.slotMachine_money_Position.x &&
                 this.player1.position.y ==
-                    this.StartingMapItem.slotMachine_money_Position.y &&
+                this.StartingMapItem.slotMachine_money_Position.y &&
                 !this.StartingMapItem.moneyDestoryed &&
                 !boughtThings &&
                 this.gameState.hp > 1
@@ -596,9 +595,9 @@ var Map = function(map, state) {
             }
             if (
                 this.player1.position.x ==
-                    this.StartingMapItem.slotMachine_hp_Position.x &&
+                this.StartingMapItem.slotMachine_hp_Position.x &&
                 this.player1.position.y ==
-                    this.StartingMapItem.slotMachine_hp_Position.y &&
+                this.StartingMapItem.slotMachine_hp_Position.y &&
                 !this.StartingMapItem.hpDestoryed &&
                 !boughtThings &&
                 this.gameState.money > 0
@@ -859,8 +858,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             walkDirection[1] &&
             walkDirection[2] &&
             !walkDirection[3]
@@ -874,8 +872,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             !walkDirection[1] &&
             walkDirection[2] &&
             walkDirection[3]
@@ -917,8 +914,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             walkDirection[1] &&
             !walkDirection[2] &&
             !walkDirection[3]
@@ -930,8 +926,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             !walkDirection[1] &&
             walkDirection[2] &&
             !walkDirection[3]
@@ -943,8 +938,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             !walkDirection[1] &&
             !walkDirection[2] &&
             walkDirection[3]
@@ -1006,8 +1000,7 @@ var Map = function(map, state) {
             if (e.key === "S") walkDirection[2] = false;
             if (e.key === "D") walkDirection[3] = false;
             this.playerWalkFunction();
-            if (
-                !walkDirection[0] &&
+            if (!walkDirection[0] &&
                 !walkDirection[1] &&
                 !walkDirection[2] &&
                 !walkDirection[3]
@@ -1281,11 +1274,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                    this.poopArray[j].mapPosition.x
+                                this.poopArray[j].mapPosition.x
                             ) < 0.5 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                    this.poopArray[j].mapPosition.y
+                                this.poopArray[j].mapPosition.y
                             ) < 0.5
                         ) {
                             this.poopArray[j].getHit();
@@ -1311,11 +1304,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                    this.monster[j].mapPosition.x
+                                this.monster[j].mapPosition.x
                             ) < 0.5 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                    this.monster[j].mapPosition.y
+                                this.monster[j].mapPosition.y
                             ) < 0.5
                         ) {
                             this.monster[j].getHit();
@@ -1337,11 +1330,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                    this.boss[j].mapPosition.x
+                                this.boss[j].mapPosition.x
                             ) < 1 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                    this.boss[j].mapPosition.y
+                                this.boss[j].mapPosition.y
                             ) < 1
                         ) {
                             this.boss[j].getHit();
@@ -1357,13 +1350,13 @@ var Map = function(map, state) {
                     if (
                         Math.abs(
                             this.bulletArray[i].spritePosition.x -
-                                this.StartingMapItem.slotMachine_money_Position
-                                    .x
+                            this.StartingMapItem.slotMachine_money_Position
+                            .x
                         ) < 0.5 &&
                         Math.abs(
                             this.bulletArray[i].spritePosition.y -
-                                this.StartingMapItem.slotMachine_money_Position
-                                    .y
+                            this.StartingMapItem.slotMachine_money_Position
+                            .y
                         ) < 0.5
                     ) {
                         this.StartingMapItem.moneySoltHP -= 1;
@@ -1378,11 +1371,11 @@ var Map = function(map, state) {
                     if (
                         Math.abs(
                             this.bulletArray[i].spritePosition.x -
-                                this.StartingMapItem.slotMachine_hp_Position.x
+                            this.StartingMapItem.slotMachine_hp_Position.x
                         ) < 0.5 &&
                         Math.abs(
                             this.bulletArray[i].spritePosition.y -
-                                this.StartingMapItem.slotMachine_hp_Position.y
+                            this.StartingMapItem.slotMachine_hp_Position.y
                         ) < 0.5
                     ) {
                         this.StartingMapItem.hpSoltHP -= 1;
@@ -1391,8 +1384,7 @@ var Map = function(map, state) {
                 }
                 if (this.bulletArray[i].bulletEnd) {
                     var newBulletExplore = new BulletExplore(
-                        define.imagePath + "teareffect.png",
-                        {
+                        define.imagePath + "teareffect.png", {
                             down: {
                                 from: 0,
                                 to: 13
@@ -1413,11 +1405,11 @@ var Map = function(map, state) {
             if (
                 Math.abs(
                     this.bulletArray[i].spritePosition.x -
-                        tempArray[j].mapPosition.x
+                    tempArray[j].mapPosition.x
                 ) < 0.5 &&
                 Math.abs(
                     this.bulletArray[i].spritePosition.y -
-                        tempArray[j].mapPosition.y
+                    tempArray[j].mapPosition.y
                 ) < 0.5
             ) {
                 this.bulletArray[i].bulletEnd = true;
@@ -1543,7 +1535,10 @@ var Map = function(map, state) {
     };
     this.addNewItem = function(item, tempX, tempY) {
         var newItem = new MapItem(item);
-        newItem.position = { x: tempX, y: tempY };
+        newItem.position = {
+            x: tempX,
+            y: tempY
+        };
         this.itemArray.push(newItem);
     };
 };
