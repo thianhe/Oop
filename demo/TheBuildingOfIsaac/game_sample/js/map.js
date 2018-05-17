@@ -30,6 +30,9 @@ var Map = function(map, state) {
         },
         coinslot: {
             wav: define.musicPath + "coinslot.wav"
+        },
+        pickup: {
+            wav: define.musicPath + "pickup.wav"
         }
     });
     var boughtThings = false;
@@ -117,17 +120,12 @@ var Map = function(map, state) {
                 to: 15
             }
         });
-        var newMonster2 = new SmallFly(
-            define.imagePath + "smallFly.png",
-            this,
-            3,
-            {
-                down: {
-                    from: 0,
-                    to: 1
-                }
-            }
-        );
+        var newMonster2 = new SmallFly(define.imagePath + "smallFly.png", this, 3, {
+            down: {
+                from: 0,
+                to: 1
+            }}
+        )
         var newBoss = new Boss(define.imagePath + "demon.png", this, {
             down: {
                 from: 0,
@@ -162,10 +160,8 @@ var Map = function(map, state) {
         var itemPic2 = new Framework.Sprite(define.imagePath + "life.png");
         var itemPic3 = new Framework.Sprite(define.imagePath + "halflife.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "coins.png");
-        var itemPic4 = new Framework.Sprite(define.imagePath + "bullet.png");
-        var itemPic5 = new Framework.Sprite(
-            define.imagePath + "enemyBullet.png"
-        );
+        var itemPic5 = new Framework.Sprite(define.imagePath + "bullet.png");
+        var itemPic6 = new Framework.Sprite(define.imagePath + "enemyBullet.png");
         var bossHpBarHead = new Framework.Sprite(
             define.imagePath + "hp_head.png"
         );
@@ -340,7 +336,7 @@ var Map = function(map, state) {
         };
     };
     this.addMonster = function(monster, monsterPosition) {
-        var newMonster;
+        var newMonster
         if (monster == 1)
             newMonster = new Worm(define.imagePath + "monster.png", this, 3, {
                 down: {
@@ -380,17 +376,12 @@ var Map = function(map, state) {
                 }
             });
         if (monster == 3)
-            newMonster = new SmallFly(
-                define.imagePath + "smallFly.png",
-                this,
-                3,
-                {
-                    down: {
-                        from: 0,
-                        to: 1
-                    }
+            newMonster = new SmallFly(define.imagePath + "smallFly.png", this, 3, {
+                down: {
+                    from: 0,
+                    to: 1
                 }
-            );
+            });
         newMonster.position = monsterPosition;
         this.monster.push(newMonster);
     };
@@ -607,6 +598,10 @@ var Map = function(map, state) {
                     this.StartingMapItem.slotMachine_money_Position.x,
                     this.StartingMapItem.slotMachine_money_Position.y + 1
                 );
+                this.audio.play({
+                    name: "coinslot",
+                    loop: false
+                });
             }
             if (
                 this.player1.position.x ==
@@ -626,7 +621,12 @@ var Map = function(map, state) {
                     this.StartingMapItem.slotMachine_hp_Position.x,
                     this.StartingMapItem.slotMachine_hp_Position.y + 1
                 );
+                this.audio.play({
+                    name: "coinslot",
+                    loop: false
+                });
             }
+
         }
     };
     this.runTimeFunction = function() {
@@ -706,6 +706,7 @@ var Map = function(map, state) {
         }
     };
     this.eatItem = function(i) {
+
         if (boughtThings) boughtThings = false;
         if (this.itemArray[i].itemType == 1) {
             if (
@@ -728,6 +729,12 @@ var Map = function(map, state) {
         if (this.gameState.hp > this.gameState.hpLimit)
             this.gameState.hp = this.gameState.hpLimit;
         this.itemArray[i].ate = true;
+        if (this.itemArray[i].ate = true) {
+            this.audio.play({
+                name: "pickup",
+                loop: false
+            });
+        }
         this.playerHpBar.addTotalHp(this.gameState.hpLimit);
         this.playerHpBar.upDateHP(this.gameState.hp);
         this.playerHpBar.upDateMoney(this.gameState.money);
