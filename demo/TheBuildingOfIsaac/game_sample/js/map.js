@@ -702,10 +702,7 @@ var Map = function(map, state) {
         }
     };
     this.eatItem = function(i) {
-        this.audio.play({
-            name: "pickup",
-            loop: false
-        });
+
         if (boughtThings) boughtThings = false;
         if (this.itemArray[i].itemType == 1) {
             if (
@@ -728,6 +725,12 @@ var Map = function(map, state) {
         if (this.gameState.hp > this.gameState.hpLimit)
             this.gameState.hp = this.gameState.hpLimit;
         this.itemArray[i].ate = true;
+        if (this.itemArray[i].ate = true) {
+            this.audio.play({
+                name: "pickup",
+                loop: false
+            });
+        }
         this.playerHpBar.addTotalHp(this.gameState.hpLimit);
         this.playerHpBar.upDateHP(this.gameState.hp);
         this.playerHpBar.upDateMoney(this.gameState.money);
