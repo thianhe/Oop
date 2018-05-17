@@ -29,6 +29,7 @@ var Map = function(map, state) {
             wav: define.musicPath + "plop.wav"
         }
     });
+    var boughtThings = false;
     this.mapPoopStateArray = [];
     this.mapItemStateArray = [];
     this.gameState = state;
@@ -58,7 +59,11 @@ var Map = function(map, state) {
     var turnFaceCount = 100;
     this.load = function() {
         this.playerHpBar = new PlayerHpBar();
-        this.playerHpBar.load(this.gameState.hpLimit, this.gameState.hp, this.gameState.money);
+        this.playerHpBar.load(
+            this.gameState.hpLimit,
+            this.gameState.hp,
+            this.gameState.money
+        );
         this.audio.play({
             name: "bgm",
             loop: true
@@ -113,8 +118,8 @@ var Map = function(map, state) {
         this.pee = new Framework.Sprite(define.imagePath + "pee.png");
         this.pee.scale = 0.8;
         this.pee.position = {
-            x: 0 * 64-32,
-            y: 0 * 64-32
+            x: 0 * 64 - 32,
+            y: 0 * 64 - 32
         };
         var mapBoxPic1 = new Framework.Sprite(define.imagePath + "stone1.png");
         var mapBoxPic2 = new Framework.Sprite(define.imagePath + "stone2.png");
@@ -126,15 +131,33 @@ var Map = function(map, state) {
         var itemPic3 = new Framework.Sprite(define.imagePath + "halflife.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "coins.png");
         var itemPic4 = new Framework.Sprite(define.imagePath + "bullet.png");
-        var bossHpBarHead = new Framework.Sprite(define.imagePath + "hp_head.png");
+        var bossHpBarHead = new Framework.Sprite(
+            define.imagePath + "hp_head.png"
+        );
         var mapDoorPic = new Framework.Sprite(
             define.imagePath + "doorClose.png"
         );
+        var slotMachine_hp = new Framework.AnimationSprite({
+            url: define.imagePath + "slotMachine_hp.png",
+            col: 4,
+            row: 1,
+            loop: true,
+            speed: 1
+        });
+        var slotMachine_money = new Framework.AnimationSprite({
+            url: define.imagePath + "slotMachine_money.png",
+            col: 4,
+            row: 1,
+            loop: true,
+            speed: 1
+        });
         var fullHpPic = new Framework.Sprite(define.imagePath + "fullHp.png");
         var halfHpPic = new Framework.Sprite(define.imagePath + "halfHp.png");
         var emptyHpPic = new Framework.Sprite(define.imagePath + "emptyHP.png");
         var poopPic = new Framework.Sprite(define.imagePath + "poop.png");
-        var bulletExplorPic = new Framework.Sprite(define.imagePath + "teareffect.png");
+        var bulletExplorPic = new Framework.Sprite(
+            define.imagePath + "teareffect.png"
+        );
         var mapNextLevelGatePic = new Framework.Sprite(
             define.imagePath + "nextLevelGate.png"
         );
@@ -197,7 +220,7 @@ var Map = function(map, state) {
             this.mapItemState.push(this.itemList);
             this.mapItemStateArray.push(this.mapItemState);
         }
-        
+
         var poopNumber = 0;
         for (var i = 0; i < this.mapPoopStateArray.length; i++) {
             if (
@@ -207,9 +230,15 @@ var Map = function(map, state) {
                 this.stateMapPosition = i;
             }
         }
-        this.itemArray = []
-        for(var i = 0; i < this.mapItemStateArray[this.stateMapPosition][2].length; i++){
-            this.itemArray.push(this.mapItemStateArray[this.stateMapPosition][2][i]);
+        this.itemArray = [];
+        for (
+            var i = 0;
+            i < this.mapItemStateArray[this.stateMapPosition][2].length;
+            i++
+        ) {
+            this.itemArray.push(
+                this.mapItemStateArray[this.stateMapPosition][2][i]
+            );
         }
         for (var i = 0; i < this.mapArray.length; i++) {
             var line = this.mapArray[i];
@@ -357,16 +386,32 @@ var Map = function(map, state) {
         }
         for (var i = 0; i < this.bulletArray.length; i++) {
             this.bulletArray[i].update();
-            if(this.bulletArray[i].bulletEnd==false){
-                if(Math.abs(this.bulletArray[i].startPosition.x-this.bulletArray[i].spritePosition.x)>5 ||
-                Math.abs(this.bulletArray[i].startPosition.y-this.bulletArray[i].spritePosition.y)>5) this.bulletArray[i].bulletEnd=true;
+            if (this.bulletArray[i].bulletEnd == false) {
+                if (
+                    Math.abs(
+                        this.bulletArray[i].startPosition.x -
+                            this.bulletArray[i].spritePosition.x
+                    ) > 5 ||
+                    Math.abs(
+                        this.bulletArray[i].startPosition.y -
+                            this.bulletArray[i].spritePosition.y
+                    ) > 5
+                )
+                    this.bulletArray[i].bulletEnd = true;
                 if (this.bulletArray[i].bulletEnd) {
-                    var newBulletExplore= new BulletExplore(define.imagePath + "teareffect.png", {
-                        down: {
-                            from: 0,
-                            to: 13
-                        }});
-                    newBulletExplore.position ={x:this.bulletArray[i].spritePosition.x,y:this.bulletArray[i].spritePosition.y};
+                    var newBulletExplore = new BulletExplore(
+                        define.imagePath + "teareffect.png",
+                        {
+                            down: {
+                                from: 0,
+                                to: 13
+                            }
+                        }
+                    );
+                    newBulletExplore.position = {
+                        x: this.bulletArray[i].spritePosition.x,
+                        y: this.bulletArray[i].spritePosition.y
+                    };
                     this.bulletExploreArray.push(newBulletExplore);
                 }
             }
@@ -408,7 +453,7 @@ var Map = function(map, state) {
                 this.player1.walk(this.playerWalkDirection);
             }
         }
-
+        this.startMapFunction();
         this.runTimeFunction();
         this.nextLevel();
         this.player1.update();
@@ -420,7 +465,7 @@ var Map = function(map, state) {
         for (var i = 0; i < this.boxArray.length; i++) {
             this.boxArray[i].draw(ctx);
         }
-        if(this.isPee)this.pee.draw(ctx);
+        if (this.isPee) this.pee.draw(ctx);
         for (var i = 0; i < this.poopArray.length; i++) {
             this.poopArray[i].draw(ctx);
         }
@@ -455,6 +500,49 @@ var Map = function(map, state) {
     };
 
     var m_map = this;
+    this.startMapFunction = function() {
+        this.StartingMapItem.update();
+        if (mapPositionX == startingMapXY && mapPositionY == startingMapXY) {
+            if (
+                this.player1.position.x ==
+                    this.StartingMapItem.slotMachine_money_Position.x &&
+                this.player1.position.y ==
+                    this.StartingMapItem.slotMachine_money_Position.y &&
+                !this.StartingMapItem.moneyDestoryed &&
+                !boughtThings &&
+                this.gameState.hp > 1
+            ) {
+                this.gameState.hp -= 1;
+                this.playerHpBar.upDateHP(this.gameState.hp);
+                boughtThings = true;
+                this.StartingMapItem.moneyAnimation();
+                this.addNewItem(
+                    4,
+                    this.StartingMapItem.slotMachine_money_Position.x,
+                    this.StartingMapItem.slotMachine_money_Position.y + 1
+                );
+            }
+            if (
+                this.player1.position.x ==
+                    this.StartingMapItem.slotMachine_hp_Position.x &&
+                this.player1.position.y ==
+                    this.StartingMapItem.slotMachine_hp_Position.y &&
+                !this.StartingMapItem.hpDestoryed &&
+                !boughtThings &&
+                this.gameState.money > 0
+            ) {
+                this.gameState.money -= 1;
+                this.playerHpBar.upDateMoney(this.gameState.money);
+                boughtThings = true;
+                this.StartingMapItem.hpAnimation();
+                this.addNewItem(
+                    3,
+                    this.StartingMapItem.slotMachine_hp_Position.x,
+                    this.StartingMapItem.slotMachine_hp_Position.y + 1
+                );
+            }
+        }
+    };
     this.runTimeFunction = function() {
         var randomSound = Math.floor(Math.random() * 3) + 1;
         if (deadTimeCount < 40) {
@@ -520,24 +608,33 @@ var Map = function(map, state) {
             this.playerHpBar.upDateHP(this.gameState.hp);
         }
     };
-    this.eatItem = function(i){
-        if(this.itemArray[i].itemType == 1){
-            if(this.gameState.hp == this.gameState.hpLimit && this.gameState.hpLimit==5) return;
+    this.eatItem = function(i) {
+        if (boughtThings) boughtThings = false;
+        if (this.itemArray[i].itemType == 1) {
+            if (
+                this.gameState.hp == this.gameState.hpLimit &&
+                this.gameState.hpLimit == 5
+            )
+                return;
             this.gameState.hp += 1;
-            this.gameState.hpLimit+=1;
+            this.gameState.hpLimit += 1;
         }
-        if(this.itemArray[i].itemType == 2||this.itemArray[i].itemType == 3){
-            if(this.gameState.hp == this.gameState.hpLimit) return;
-            this.gameState.hp += ((this.itemArray[i].itemType-1)/2);
+        if (
+            this.itemArray[i].itemType == 2 ||
+            this.itemArray[i].itemType == 3
+        ) {
+            if (this.gameState.hp == this.gameState.hpLimit) return;
+            this.gameState.hp += (this.itemArray[i].itemType - 1) / 2;
         }
-        if(this.itemArray[i].itemType == 4) this.gameState.money+=1;
-        if(this.gameState.hpLimit>5) this.gameState.hpLimit=5;
-        if(this.gameState.hp>this.gameState.hpLimit) this.gameState.hp=this.gameState.hpLimit;
+        if (this.itemArray[i].itemType == 4) this.gameState.money += 1;
+        if (this.gameState.hpLimit > 5) this.gameState.hpLimit = 5;
+        if (this.gameState.hp > this.gameState.hpLimit)
+            this.gameState.hp = this.gameState.hpLimit;
         this.itemArray[i].ate = true;
         this.playerHpBar.addTotalHp(this.gameState.hpLimit);
         this.playerHpBar.upDateHP(this.gameState.hp);
-        this.playerHpBar.upDateMoney(this.gameState.money)
-    }
+        this.playerHpBar.upDateMoney(this.gameState.money);
+    };
 
     this.getLeftMonsterNum = function() {
         var count = 0;
@@ -579,9 +676,9 @@ var Map = function(map, state) {
         if (e.key === "G") {
             this.getDamge();
         }
-        if(e.key === "R"){
-            this.gameState.hp = this.gameState.hp +0.5;
-            this.playerHpBar.upDateHP(this.gameState.hp)
+        if (e.key === "R") {
+            this.gameState.hp = this.gameState.hp + 0.5;
+            this.playerHpBar.upDateHP(this.gameState.hp);
         }
         if (e.key === "B") {
             mapPositionX = bossMapPsoitionX;
@@ -1067,14 +1164,14 @@ var Map = function(map, state) {
             };
         }
     };
-    this.outOfMapUpdate = function(){
+    this.outOfMapUpdate = function() {
         this.updatePoopState();
         this.updateItemState();
         this.changeMap();
         this.init();
-        if(this.gameState.hp<=0.5) this.isPee = true;
+        if (this.gameState.hp <= 0.5) this.isPee = true;
         else this.isPee = false;
-    }
+    };
     this.bulletHit = function() {
         for (var i = 0; i < this.bulletArray.length; i++) {
             if (!this.bulletArray[i].bulletEnd) {
@@ -1106,7 +1203,12 @@ var Map = function(map, state) {
                                     name: "plop",
                                     loop: false
                                 });
-                                if(this.randomBool(0.5))this.addNewItem(0,this.poopArray[j].position.x,this.poopArray[j].position.y);
+                                if (this.randomBool(0.5))
+                                    this.addNewItem(
+                                        0,
+                                        this.poopArray[j].position.x,
+                                        this.poopArray[j].position.y
+                                    );
                             }
                             this.bulletArray[i].bulletEnd = true;
                         }
@@ -1126,10 +1228,16 @@ var Map = function(map, state) {
                             ) < 0.5
                         ) {
                             this.monster[j].getHit();
-                            if(this.monster[j].isdead){
-                                if(this.randomBool(0.5))this.addNewItem(0,this.monster[j].position.x,this.monster[j].position.y);
+                            if (this.monster[j].isdead) {
+                                if (this.randomBool(0.5))
+                                    this.addNewItem(
+                                        0,
+                                        this.monster[j].position.x,
+                                        this.monster[j].position.y
+                                    );
                             }
                             this.bulletArray[i].bulletEnd = true;
+                            break;
                         }
                     }
                 }
@@ -1150,14 +1258,60 @@ var Map = function(map, state) {
                         }
                     }
                 }
-                
+                if (
+                    this.StartingMapItem.moneyDestoryed == false &&
+                    mapPositionX == startingMapXY &&
+                    mapPositionY == startingMapXY
+                ) {
+                    if (
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.x -
+                                this.StartingMapItem.slotMachine_money_Position
+                                    .x
+                        ) < 0.5 &&
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.y -
+                                this.StartingMapItem.slotMachine_money_Position
+                                    .y
+                        ) < 0.5
+                    ) {
+                        this.StartingMapItem.moneySoltHP -= 1;
+                        this.bulletArray[i].bulletEnd = true;
+                    }
+                }
+                if (
+                    this.StartingMapItem.hpDestoryed == false &&
+                    mapPositionX == startingMapXY &&
+                    mapPositionY == startingMapXY
+                ) {
+                    if (
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.x -
+                                this.StartingMapItem.slotMachine_hp_Position.x
+                        ) < 0.5 &&
+                        Math.abs(
+                            this.bulletArray[i].spritePosition.y -
+                                this.StartingMapItem.slotMachine_hp_Position.y
+                        ) < 0.5
+                    ) {
+                        this.StartingMapItem.hpSoltHP -= 1;
+                        this.bulletArray[i].bulletEnd = true;
+                    }
+                }
                 if (this.bulletArray[i].bulletEnd) {
-                    var newBulletExplore= new BulletExplore(define.imagePath + "teareffect.png", {
-                        down: {
-                            from: 0,
-                            to: 13
-                        }});
-                    newBulletExplore.position ={x:this.bulletArray[i].spritePosition.x,y:this.bulletArray[i].spritePosition.y};
+                    var newBulletExplore = new BulletExplore(
+                        define.imagePath + "teareffect.png",
+                        {
+                            down: {
+                                from: 0,
+                                to: 13
+                            }
+                        }
+                    );
+                    newBulletExplore.position = {
+                        x: this.bulletArray[i].spritePosition.x,
+                        y: this.bulletArray[i].spritePosition.y
+                    };
                     this.bulletExploreArray.push(newBulletExplore);
                 }
             }
@@ -1190,8 +1344,10 @@ var Map = function(map, state) {
     this.updateItemState = function() {
         this.mapItemStateArray[this.stateMapPosition][2] = [];
         for (var i = 0; i < this.itemArray.length; i++) {
-            if(this.itemArray[i].ate == false){
-                this.mapItemStateArray[this.stateMapPosition][2].push(this.itemArray[i]);
+            if (this.itemArray[i].ate == false) {
+                this.mapItemStateArray[this.stateMapPosition][2].push(
+                    this.itemArray[i]
+                );
             }
         }
     };
@@ -1290,9 +1446,9 @@ var Map = function(map, state) {
             }
         }
     };
-    this.addNewItem = function(item,tempX,tempY){
+    this.addNewItem = function(item, tempX, tempY) {
         var newItem = new MapItem(item);
-        newItem.position = {x:tempX,y:tempY}
+        newItem.position = { x: tempX, y: tempY };
         this.itemArray.push(newItem);
-    }
+    };
 };

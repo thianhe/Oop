@@ -112,7 +112,6 @@ var Monster = function(file, map, options) {
         }
     }
 
-
     this.draw = function(ctx){
         if(this.isdead){ return; }
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y};
