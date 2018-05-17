@@ -27,7 +27,7 @@ var Map = function(map, state) {
         },
         plop: {
             wav: define.musicPath + "plop.wav"
-        }
+        },
         coinslot: {
             wav: define.musicPath + "coinslot.wav"
         }
