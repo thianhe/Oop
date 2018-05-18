@@ -7,11 +7,11 @@ var PlayerHpBar = function(){
     this.coinIcon.index = 1;
 
     this.dmgIcon = new Framework.Sprite(define.imagePath+ 'damageLogo.png')
-    this.dmgIcon.scale = 2;
+    this.dmgIcon.scale = 1.6;
     this.dmgIcon.index = 1;
 
     this.atksIcon = new Framework.Sprite(define.imagePath+ 'speedLogo.png')
-    this.atksIcon.scale = 2;
+    this.atksIcon.scale = 1.6;
     this.atksIcon.index = 1;
 
     this.money = 10;

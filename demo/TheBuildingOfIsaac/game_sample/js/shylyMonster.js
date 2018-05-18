@@ -18,7 +18,7 @@ var ShylyMonster = function(file, map, hp, options) {
     this.spritePosition = { x: 0, y: 0 };
 
     this.getHit = function() {
-        if (this.sprite.index == 1) this.HP--;
+        if (this.sprite.index == 1) this.HP-=this.map.gameState.dmg;
         else {
             this.sprite.index = 2;
             this.getHited = true;
