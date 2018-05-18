@@ -529,52 +529,38 @@ var Map = function(map, state) {
         this.outOfMap();
         this.bulletHit();
         this.monsterClean();
-        for (var i = 0; i < this.boxArray.length; i++) {
-            this.boxArray[i].update();
-        }
-        for (var i = 0; i < this.doorArray.length; i++) {
-            this.doorArray[i].update();
-        }
-        for (var i = 0; i < this.bulletArray.length; i++) {
-            this.bulletArray[i].update();
-            if (this.bulletArray[i].bulletEnd == false) {
-                if (
-                    Math.abs(
-                        this.bulletArray[i].startPosition.x -
-                            this.bulletArray[i].spritePosition.x
-                    ) > 5 ||
-                    Math.abs(
-                        this.bulletArray[i].startPosition.y -
-                            this.bulletArray[i].spritePosition.y
-                    ) > 5
+        this.updateArray(this.boxArray);
+        this.updateArray(this.doorArray)
+        this.updateArray(this.bulletArray);
+        this.updateArray(this.enemyBulletArray);
+        this.updateArray(this.bulletExploreArray);
+        this.updateArray(this.monster);
+        this.updateArray(this.bulletArray);
+        this.updateArray(this.bulletArray);
+        this.updateArray(this.boss);
+        if (this.pressWalk === true && this.player1.isWalking === false) {
+            if (
+                this.checkIsWalkAble(
+                    this.player1.position.x + this.playerWalkDirection.x,
+                    this.player1.position.y + this.playerWalkDirection.y
                 )
-                    this.bulletArray[i].bulletEnd = true;
-                if (this.bulletArray[i].bulletEnd) {
-                    var newBulletExplore = new BulletExplore(
-                        define.imagePath + "teareffect.png",
-                        {
-                            down: {
-                                from: 0,
-                                to: 13
-                            }
-                        }
-                    );
-                    newBulletExplore.position = {
-                        x: this.bulletArray[i].spritePosition.x,
-                        y: this.bulletArray[i].spritePosition.y
-                    };
-                    this.bulletExploreArray.push(newBulletExplore);
-                }
+            ) {
+                this.player1.walk(this.playerWalkDirection);
             }
         }
-        for (var i = 0; i < this.enemyBulletArray.length; i++) {
-            this.enemyBulletArray[i].update();
+        this.onTouchFunction();
+        this.startMapFunction();
+        this.runTimeFunction();
+        this.nextLevel();
+        this.player1.update();
+    };
+    this.updateArray = function(array){
+        for(var i=0; i < array.length;i++){
+            array[i].update();
         }
-        for (var i = 0; i < this.bulletExploreArray.length; i++) {
-            this.bulletExploreArray[i].update();
-        }
+    }
+    this.onTouchFunction = function(){
         for (var i = 0; i < this.monster.length; i++) {
-            this.monster[i].update();
             if (
                 this.player1.position.x == this.monster[i].position.x &&
                 this.player1.position.y == this.monster[i].position.y
@@ -589,7 +575,6 @@ var Map = function(map, state) {
                 if (this.itemArray[i].ate == false) this.eatItem(i);
         }
         for (var i = 0; i < this.boss.length; i++) {
-            this.boss[i].update();
             if (
                 Math.abs(this.player1.position.x - this.boss[i].position.x) <=
                     1 &&
@@ -597,21 +582,7 @@ var Map = function(map, state) {
             )
                 if (this.boss[i].isdead == false) this.getDamge();
         }
-        if (this.pressWalk === true && this.player1.isWalking === false) {
-            if (
-                this.checkIsWalkAble(
-                    this.player1.position.x + this.playerWalkDirection.x,
-                    this.player1.position.y + this.playerWalkDirection.y
-                )
-            ) {
-                this.player1.walk(this.playerWalkDirection);
-            }
-        }
-        this.startMapFunction();
-        this.runTimeFunction();
-        this.nextLevel();
-        this.player1.update();
-    };
+    }
     this.draw = function(ctx) {
         this.arrayDraw(this.tileArray,ctx);
         this.arrayDraw(this.boxArray,ctx);
@@ -715,9 +686,10 @@ var Map = function(map, state) {
                 }
             }
         }
-        if (shootTimeCount < 20 - this.gameState.atks * 3) {
+        var shootSpeed = 20;
+        if (shootTimeCount < shootSpeed - this.gameState.atks * 3) {
             shootTimeCount++;
-            if (shootTimeCount == 20 - this.gameState.atks * 3) {
+            if (shootTimeCount == shootSpeed - this.gameState.atks * 3) {
                 this.shooting = false;
             }
         }
@@ -737,6 +709,28 @@ var Map = function(map, state) {
             }
             if (this.monster[i].isRushingCount < 100)
                 this.monster[i].isRushingCount += 1;
+        }
+        for (var i = 0; i < this.bulletArray.length; i++) {
+            if (this.bulletArray[i].bulletEnd == false) {
+                if (
+                    Math.abs(
+                        this.bulletArray[i].startPosition.x -
+                            this.bulletArray[i].spritePosition.x
+                    ) > 5 ||
+                    Math.abs(
+                        this.bulletArray[i].startPosition.y -
+                            this.bulletArray[i].spritePosition.y
+                    ) > 5
+                )
+                    this.bulletArray[i].bulletEnd = true;
+                if (this.bulletArray[i].bulletEnd) {
+                    if (this.bulletArray[i].bulletEnd) {
+                        this.createBulletExplore({
+                            x: this.bulletArray[i].spritePosition.x,
+                            y: this.bulletArray[i].spritePosition.y})
+                    }
+                }
+            }
         }
     };
     this.getDamge = function() {
@@ -1428,20 +1422,9 @@ var Map = function(map, state) {
                 this.bulletHitMachine(this.StartingMapItem.slotMachine_money,i);
                 this.bulletHitMachine(this.StartingMapItem.slotMachine_atks, i);
                 if (this.bulletArray[i].bulletEnd) {
-                    var newBulletExplore = new BulletExplore(
-                        define.imagePath + "teareffect.png",
-                        {
-                            down: {
-                                from: 0,
-                                to: 13
-                            }
-                        }
-                    );
-                    newBulletExplore.position = {
+                    this.createBulletExplore({
                         x: this.bulletArray[i].spritePosition.x,
-                        y: this.bulletArray[i].spritePosition.y
-                    };
-                    this.bulletExploreArray.push(newBulletExplore);
+                        y: this.bulletArray[i].spritePosition.y})
                 }
             }
         }
@@ -1473,6 +1456,22 @@ var Map = function(map, state) {
             }
         }
     };
+    this.createBulletExplore = function(tempPosition){
+        var newBulletExplore = new BulletExplore(
+            define.imagePath + "teareffect.png",
+            {
+                down: {
+                    from: 0,
+                    to: 13
+                }
+            }
+        );
+        newBulletExplore.position = {
+            x: tempPosition.x,
+            y: tempPosition.y
+        };
+        this.bulletExploreArray.push(newBulletExplore);
+    }
     this.bulletHitMachine = function(slotMachine, i) {
         if (
             slotMachine.destoryed == false &&
