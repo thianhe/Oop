@@ -50,7 +50,7 @@ var Worm = function(file, map, hp, options) {
 
     this.walkEnd = function() {};
 
-    var walkSpeed = 8;
+    var walkSpeed = 4;
     this.walkAlittle = function() {
         if (this.playerDirection === this.constants.DirectionEnum.DOWN) {
             this.spritePosition = {
@@ -129,7 +129,8 @@ var Worm = function(file, map, hp, options) {
             }
             else{
                 this.isRushing = false;
-                this.isRushingCount =0
+                this.isRushingCount =0;
+                walkSpeed=4;
             }
         } else if(this.mapPosition.x == this.map.player1.position.x && this.isRushingCount == 100){
             if(this.map.checkIsRushAbleY(this.mapPosition.x,this.mapPosition.y,this.map.player1.position.y)){
@@ -138,6 +139,7 @@ var Worm = function(file, map, hp, options) {
                 else walkStep.y = -1;
                 this.walk(walkStep);
                 this.isRushing = true;
+                walkSpeed=8;
             }
         }else if(this.mapPosition.y == this.map.player1.position.y && this.isRushingCount == 100){
             if(this.map.checkIsRushAbleX(this.mapPosition.x,this.mapPosition.y,this.map.player1.position.x)){
@@ -146,6 +148,7 @@ var Worm = function(file, map, hp, options) {
                 else walkStep.x = -1;
                 this.walk(walkStep);
                 this.isRushing = true;
+                walkSpeed=8;
             }
         }
         else {

@@ -16,7 +16,7 @@ var Bullet = function(file,shootDirection,startingPosition){
         if(this.bulletEnd){return;}
     }
 
-    var walkSpeed = 0.2;
+    var walkSpeed = 0.1;
     this.walkAlittle = function(){
         if(this.shootingDirection === this.constants.DirectionEnum.DOWN){
             this.spritePosition = {x:this.spritePosition.x, y:this.spritePosition.y + walkSpeed};

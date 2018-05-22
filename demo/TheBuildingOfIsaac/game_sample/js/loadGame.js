@@ -76,6 +76,7 @@ var loadGameEnd;
         { src: 'game_sample/js/enemyBullet.js', lookFor: 'EnemyBullet' },
         { src: 'game_sample/js/bulletExplore.js', lookFor: 'BulletExplore' },
         { src: 'game_sample/js/terrain.js', lookFor: 'Terrain'},
+        { src: 'game_sample/js/slotMachine.js', lookFor: 'SlotMachine' },
         { src: 'game_sample/js/startingMapItem.js', lookFor: 'StartingMapItem' },
         { src: 'game_sample/js/mapTile.js', lookFor: 'MapTile' },
         { src: 'game_sample/js/playerHpBar.js', lookFor: 'PlayerHpBar' },
