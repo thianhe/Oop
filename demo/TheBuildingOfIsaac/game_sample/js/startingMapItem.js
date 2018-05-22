@@ -93,33 +93,105 @@ var StartingMapItem = function() {
         this.slotMachine_money.update();
         this.slotMachine_hp.update();
 
-        if(this.moneySoltHP == 0) {this.moneyDestoryed = true;this.slotMachine_money.start({from:3, to: 3, loop: false, speed: 2});}
-        if(this.slotMachine_money.index == 3 && this.moneyDestoryed == false) this.slotMachine_money.start({from:0, to: 0, loop: false, speed: 2});
+        if (this.moneySoltHP == 0) {
+            this.moneyDestoryed = true;
+            this.slotMachine_money.start({
+                from: 3,
+                to: 3,
+                loop: false,
+                speed: 2
+            });
+        }
+        if (this.slotMachine_money.index == 3 && this.moneyDestoryed == false) this.slotMachine_money.start({
+            from: 0,
+            to: 0,
+            loop: false,
+            speed: 2
+        });
 
-        if(this.hpSoltHP == 0) {this.hpDestoryed = true;this.slotMachine_hp.start({from:3, to: 3, loop: false, speed: 2});}
-        if(this.slotMachine_hp.index == 3 && this.hpDestoryed == false) this.slotMachine_hp.start({from:0, to: 0, loop: false, speed: 2});
+        if (this.hpSoltHP == 0) {
+            this.hpDestoryed = true;
+            this.slotMachine_hp.start({
+                from: 3,
+                to: 3,
+                loop: false,
+                speed: 2
+            });
+        }
+        if (this.slotMachine_hp.index == 3 && this.hpDestoryed == false) this.slotMachine_hp.start({
+            from: 0,
+            to: 0,
+            loop: false,
+            speed: 2
+        });
 
-        if(this.dmgSoltHP == 0) {this.dmgDestoryed = true;this.slotMachine_dmg.start({from:3, to: 3, loop: false, speed: 2});}
-        if(this.slotMachine_dmg.index == 3 && this.dmgDestoryed == false) this.slotMachine_dmg.start({from:0, to: 0, loop: false, speed: 2});
+        if (this.dmgSoltHP == 0) {
+            this.dmgDestoryed = true;
+            this.slotMachine_dmg.start({
+                from: 3,
+                to: 3,
+                loop: false,
+                speed: 2
+            });
+        }
+        if (this.slotMachine_dmg.index == 3 && this.dmgDestoryed == false) this.slotMachine_dmg.start({
+            from: 0,
+            to: 0,
+            loop: false,
+            speed: 2
+        });
 
-        if(this.atksSoltHP == 0) {this.atksDestoryed = true;this.slotMachine_atks.start({from:3, to: 3, loop: false, speed: 2});}
-        if(this.slotMachine_atks.index == 3 && this.atksDestoryed == false) this.slotMachine_atks.start({from:0, to: 0, loop: false, speed: 2});
+        if (this.atksSoltHP == 0) {
+            this.atksDestoryed = true;
+            this.slotMachine_atks.start({
+                from: 3,
+                to: 3,
+                loop: false,
+                speed: 2
+            });
+        }
+        if (this.slotMachine_atks.index == 3 && this.atksDestoryed == false) this.slotMachine_atks.start({
+            from: 0,
+            to: 0,
+            loop: false,
+            speed: 2
+        });
     };
 
     this.moneyAnimation = function() {
-        this.slotMachine_money.start({from:0, to: 3, loop: false, speed: 1});
+        this.slotMachine_money.start({
+            from: 0,
+            to: 3,
+            loop: false,
+            speed: 1
+        });
     };
 
     this.hpAnimation = function() {
-        this.slotMachine_hp.start({from:0, to: 3, loop: false, speed: 1});
+        this.slotMachine_hp.start({
+            from: 0,
+            to: 3,
+            loop: false,
+            speed: 1
+        });
     };
 
     this.dmgAnimation = function() {
-        this.slotMachine_dmg.start({from:0, to: 3, loop: false, speed: 1});
+        this.slotMachine_dmg.start({
+            from: 0,
+            to: 3,
+            loop: false,
+            speed: 1
+        });
     };
 
     this.atksAnimation = function() {
-        this.slotMachine_atks.start({from:0, to: 3, loop: false, speed: 1});
+        this.slotMachine_atks.start({
+            from: 0,
+            to: 3,
+            loop: false,
+            speed: 1
+        });
     };
 
     this.draw = function(ctx) {
