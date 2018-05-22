@@ -834,25 +834,6 @@ var Map = function(map, state) {
             walkDirection[0] = true;
             this.keyPress = "W";
         }
-        if (e.key === "N") {
-            Framework.Game.goToNextLevel();
-        }
-        if (e.key === "G") {
-            this.getDamge();
-        }
-        if (e.key === "R") {
-            this.gameState.hp = this.gameState.hp + 0.5;
-            this.playerHpBar.upDateHP(this.gameState.hp);
-        }
-        if (e.key === "B") {
-            mapPositionX = bossMapPsoitionX;
-            mapPositionY = bossMapPsoitionY;
-            this.changeMap();
-            this.init();
-        }
-        if (e.key === "C") {
-            this.monster = [];
-        }
         if (e.key === "Up") {
             this.createBullet(0)
         }
@@ -865,9 +846,40 @@ var Map = function(map, state) {
         if (e.key === "Right") {
             this.createBullet(3)
         }
-
+        this.testingShortCut(e, list)
         this.playerWalkFunction();
     };
+    this.testingShortCut = function(e, list)
+    {
+        if (e.key === "N") {
+            Framework.Game.goToNextLevel();
+        }
+        if (e.key === "G") {
+            this.getDamge();
+        }
+        if(e.key ==="H"){
+            this.gameState.hp = 0.5;
+            this.playerHpBar.upDateHP(this.gameState.hp);
+        }
+        if (e.key === "R") {
+            this.gameState.hp = this.gameState.hp + 0.5;
+            this.playerHpBar.upDateHP(this.gameState.hp);
+        }
+        if(e.key === "M"){
+            this.gameState.money += 1;
+            this.playerHpBar.upDateMoney(this.gameState.money,this.gameState.dmg,this.gameState.atks);
+        }
+        if (e.key === "B") {
+            mapPositionX = bossMapPsoitionX;
+            mapPositionY = bossMapPsoitionY;
+            this.changeMap();
+            this.init();
+        }
+        if (e.key === "C") {
+            this.monster = [];
+            this.enemyBulletArray = [];
+        }
+    }
     this.createBullet = function(bulletPosition){
         if (this.shooting == false) {
             shootTimeCount = 0;
