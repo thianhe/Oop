@@ -12,10 +12,13 @@ var ShylyMonster = function(file, map, hp, options) {
     this.sprite.scale = 2;
     this.sprite.index = 0;
     this.getHited = false;
-    this.spritePosition = { x: 0, y: 0 };
+    this.spritePosition = {
+        x: 0,
+        y: 0
+    };
 
     this.getHit = function() {
-        if (this.sprite.index == 1) this.HP-=this.map.gameState.dmg;
+        if (this.sprite.index == 1) this.HP -= this.map.gameState.dmg;
         else {
             this.sprite.index = 2;
             this.getHited = true;
@@ -36,7 +39,7 @@ var ShylyMonster = function(file, map, hp, options) {
             if (this.getHited == false) this.sprite.index = 0;
         } else if (
             Math.abs(this.mapPosition.x - this.map.player1.mapPosition.x) <
-                10 &&
+            10 &&
             Math.abs(this.mapPosition.y - this.map.player1.mapPosition.y) < 10
         ) {
             this.shoot();

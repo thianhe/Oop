@@ -88,14 +88,18 @@ var Map = function(map, state) {
         var newBossPic = new FliesBoss(
             define.imagePath + "fliesBoss.png",
             this,
-            this.monsterHP * (7 + this.monsterHP),
-            { from: 0, to: 3 }
+            this.monsterHP * (7 + this.monsterHP), {
+                from: 0,
+                to: 3
+            }
         );
         var newBossPic2 = new Horseman(
             define.imagePath + "horseman.png",
             this,
-            this.monsterHP * (7 + this.monsterHP),
-            { from: 0, to: 5 }
+            this.monsterHP * (7 + this.monsterHP), {
+                from: 0,
+                to: 5
+            }
         );
         this.mapFloor.scale = 2;
         this.mapWall = new Framework.Sprite(define.imagePath + "wall2.png");
@@ -103,8 +107,7 @@ var Map = function(map, state) {
         var newMonster0 = new Worm(
             define.imagePath + "monster.png",
             this,
-            this.monsterHP,
-            {
+            this.monsterHP, {
                 down: {
                     from: 0,
                     to: 2
@@ -126,8 +129,7 @@ var Map = function(map, state) {
         var newMonster1 = new Fly(
             define.imagePath + "fly.png",
             this,
-            this.monsterHP,
-            {
+            this.monsterHP, {
                 down: {
                     from: 0,
                     to: 3
@@ -149,8 +151,7 @@ var Map = function(map, state) {
         var newMonster2 = new SmallFly(
             define.imagePath + "smallFly.png",
             this,
-            this.monsterHP,
-            {
+            this.monsterHP, {
                 down: {
                     from: 0,
                     to: 1
@@ -160,8 +161,7 @@ var Map = function(map, state) {
         var newMonster3 = new ShylyMonster(
             define.imagePath + "shy.png",
             this,
-            this.monsterHP,
-            {
+            this.monsterHP, {
                 down: {
                     from: 0,
                     to: 2
@@ -322,9 +322,7 @@ var Map = function(map, state) {
         }
         this.itemArray = [];
         for (
-            var i = 0;
-            i < this.mapItemStateArray[this.stateMapPosition][2].length;
-            i++
+            var i = 0; i < this.mapItemStateArray[this.stateMapPosition][2].length; i++
         ) {
             this.itemArray.push(
                 this.mapItemStateArray[this.stateMapPosition][2][i]
@@ -414,8 +412,7 @@ var Map = function(map, state) {
             newMonster = new Worm(
                 define.imagePath + "monster.png",
                 this,
-                this.monsterHP,
-                {
+                this.monsterHP, {
                     down: {
                         from: 0,
                         to: 2
@@ -438,8 +435,7 @@ var Map = function(map, state) {
             newMonster = new Fly(
                 define.imagePath + "fly.png",
                 this,
-                this.monsterHP,
-                {
+                this.monsterHP, {
                     down: {
                         from: 0,
                         to: 3
@@ -462,8 +458,7 @@ var Map = function(map, state) {
             newMonster = new SmallFly(
                 define.imagePath + "smallFly.png",
                 this,
-                this.monsterHP,
-                {
+                this.monsterHP, {
                     down: {
                         from: 0,
                         to: 1
@@ -474,8 +469,7 @@ var Map = function(map, state) {
             newMonster = new ShylyMonster(
                 define.imagePath + "shy.png",
                 this,
-                this.monsterHP,
-                {
+                this.monsterHP, {
                     down: {
                         from: 0,
                         to: 2
@@ -492,15 +486,19 @@ var Map = function(map, state) {
             newBoss = new FliesBoss(
                 define.imagePath + "fliesBoss.png",
                 this,
-                this.monsterHP * (7 + this.monsterHP),
-                { from: 0, to: 3 }
+                this.monsterHP * (7 + this.monsterHP), {
+                    from: 0,
+                    to: 3
+                }
             );
         if (this.gameState.gameLevel == 2)
             newBoss = new Horseman(
                 define.imagePath + "horseman.png",
                 this,
-                this.monsterHP * (7 + this.monsterHP),
-                { from: 0, to: 5 }
+                this.monsterHP * (7 + this.monsterHP), {
+                    from: 0,
+                    to: 5
+                }
             );
         newBoss.position = monsterPosition;
         this.boss.push(newBoss);
@@ -595,8 +593,8 @@ var Map = function(map, state) {
         for (var i = 0; i < this.boss.length; i++) {
             if (
                 Math.abs(this.player1.position.x - this.boss[i].position.x) <=
-                this.boss[i].bossSize/2 &&
-                Math.abs(this.player1.position.y - this.boss[i].position.y) <= this.boss[i].bossSize/2
+                this.boss[i].bossSize / 2 &&
+                Math.abs(this.player1.position.y - this.boss[i].position.y) <= this.boss[i].bossSize / 2
             )
                 if (this.boss[i].isdead == false) this.getDamge();
         }
@@ -617,8 +615,7 @@ var Map = function(map, state) {
             this.StartingMapItem.draw(ctx);
         this.arrayDraw(this.bulletExploreArray, ctx);
         this.playerHpBar.draw(ctx);
-        if (this.gettingDamge) {
-        } else {
+        if (this.gettingDamge) {} else {
             this.player1.draw(ctx);
         }
     };
@@ -744,11 +741,11 @@ var Map = function(map, state) {
                 if (
                     Math.abs(
                         this.bulletArray[i].startPosition.x -
-                            this.bulletArray[i].spritePosition.x
+                        this.bulletArray[i].spritePosition.x
                     ) > 5 ||
                     Math.abs(
                         this.bulletArray[i].startPosition.y -
-                            this.bulletArray[i].spritePosition.y
+                        this.bulletArray[i].spritePosition.y
                     ) > 5
                 )
                     this.bulletArray[i].bulletEnd = true;
@@ -951,8 +948,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             walkDirection[1] &&
             walkDirection[2] &&
             !walkDirection[3]
@@ -968,8 +964,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             !walkDirection[1] &&
             walkDirection[2] &&
             walkDirection[3]
@@ -1015,8 +1010,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             walkDirection[1] &&
             !walkDirection[2] &&
             !walkDirection[3]
@@ -1028,8 +1022,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             !walkDirection[1] &&
             walkDirection[2] &&
             !walkDirection[3]
@@ -1041,8 +1034,7 @@ var Map = function(map, state) {
                 };
                 this.pressWalk = true;
             }
-        } else if (
-            !walkDirection[0] &&
+        } else if (!walkDirection[0] &&
             !walkDirection[1] &&
             !walkDirection[2] &&
             walkDirection[3]
@@ -1128,8 +1120,7 @@ var Map = function(map, state) {
             if (e.key === "S") walkDirection[2] = false;
             if (e.key === "D") walkDirection[3] = false;
             this.playerWalkFunction();
-            if (
-                !walkDirection[0] &&
+            if (!walkDirection[0] &&
                 !walkDirection[1] &&
                 !walkDirection[2] &&
                 !walkDirection[3]
@@ -1405,11 +1396,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                    this.poopArray[j].mapPosition.x
+                                this.poopArray[j].mapPosition.x
                             ) < 0.5 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                    this.poopArray[j].mapPosition.y
+                                this.poopArray[j].mapPosition.y
                             ) < 0.5
                         ) {
                             this.poopArray[j].getHit();
@@ -1438,11 +1429,11 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                    this.monster[j].mapPosition.x
+                                this.monster[j].mapPosition.x
                             ) < 0.5 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                    this.monster[j].mapPosition.y
+                                this.monster[j].mapPosition.y
                             ) < 0.5
                         ) {
                             this.monster[j].getHit();
@@ -1470,14 +1461,14 @@ var Map = function(map, state) {
                         if (
                             Math.abs(
                                 this.bulletArray[i].spritePosition.x -
-                                    this.boss[j].spritePosition.x / 64
+                                this.boss[j].spritePosition.x / 64
                             ) <
-                                this.boss[j].bossSize / 2 &&
+                            this.boss[j].bossSize / 2 &&
                             Math.abs(
                                 this.bulletArray[i].spritePosition.y -
-                                    this.boss[j].spritePosition.y / 64
+                                this.boss[j].spritePosition.y / 64
                             ) <
-                                this.boss[j].bossSize / 2
+                            this.boss[j].bossSize / 2
                         ) {
                             this.boss[j].getHit();
                             this.bulletArray[i].bulletEnd = true;
@@ -1514,11 +1505,11 @@ var Map = function(map, state) {
                 if (
                     Math.abs(
                         this.enemyBulletArray[i].spritePosition.x -
-                            this.player1.sprite.position.x
+                        this.player1.sprite.position.x
                     ) < 32 &&
                     Math.abs(
                         this.enemyBulletArray[i].spritePosition.y -
-                            this.player1.sprite.position.y
+                        this.player1.sprite.position.y
                     ) < 32
                 ) {
                     this.enemyBulletArray[i].bulletEnd = true;
@@ -1529,8 +1520,7 @@ var Map = function(map, state) {
     };
     this.createBulletExplore = function(tempPosition) {
         var newBulletExplore = new BulletExplore(
-            define.imagePath + "teareffect.png",
-            {
+            define.imagePath + "teareffect.png", {
                 down: {
                     from: 0,
                     to: 13
@@ -1553,11 +1543,11 @@ var Map = function(map, state) {
             if (
                 Math.abs(
                     this.bulletArray[i].spritePosition.x -
-                        slotMachine.mapPosition.x
+                    slotMachine.mapPosition.x
                 ) < 0.5 &&
                 Math.abs(
                     this.bulletArray[i].spritePosition.y -
-                        slotMachine.mapPosition.y
+                    slotMachine.mapPosition.y
                 ) < 0.5
             ) {
                 slotMachine.slotHp -= 1;
@@ -1570,11 +1560,11 @@ var Map = function(map, state) {
             if (
                 Math.abs(
                     this.bulletArray[i].spritePosition.x -
-                        tempArray[j].mapPosition.x
+                    tempArray[j].mapPosition.x
                 ) < 0.5 &&
                 Math.abs(
                     this.bulletArray[i].spritePosition.y -
-                        tempArray[j].mapPosition.y
+                    tempArray[j].mapPosition.y
                 ) < 0.5
             ) {
                 this.bulletArray[i].bulletEnd = true;
@@ -1642,7 +1632,7 @@ var Map = function(map, state) {
             });
             this.addMonster(4, {
                 x: 4,
-                y: 7
+                y: 5
             });
         }
     };
