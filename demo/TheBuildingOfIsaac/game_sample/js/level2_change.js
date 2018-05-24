@@ -35,9 +35,7 @@ var Level2_change = Framework.Class(Framework.Level , {
     },
 
     keydown:function(e, list){
-
         Framework.DebugInfo.Log.warning(e.key);
-
         this.map.keydown(e, list);
         if(e.key === 'F11') {
             if(!this.isFullScreen) {
@@ -50,7 +48,6 @@ var Level2_change = Framework.Class(Framework.Level , {
 
         }
     },
-
     keyup:function(e, list){
 
         this.map.keyup(e, list);

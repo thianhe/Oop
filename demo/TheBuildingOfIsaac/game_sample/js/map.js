@@ -942,6 +942,8 @@ var Map = function(map, state) {
         ) {
             if (
                 this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y - 1)
+                && this.checkIsWalkAble(playerPosition.x, playerPosition.y - 1)
+                && this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y)
             ) {
                 this.playerWalkDirection = {
                     x: -1,
@@ -957,6 +959,8 @@ var Map = function(map, state) {
         ) {
             if (
                 this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y + 1)
+                && this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y )
+                &&this.checkIsWalkAble(playerPosition.x , playerPosition.y + 1)
             ) {
                 this.playerWalkDirection = {
                     x: -1,
@@ -972,6 +976,8 @@ var Map = function(map, state) {
         ) {
             if (
                 this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y + 1)
+                &&this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y )
+                &&this.checkIsWalkAble(playerPosition.x , playerPosition.y + 1)
             ) {
                 this.playerWalkDirection = {
                     x: 1,
@@ -987,6 +993,8 @@ var Map = function(map, state) {
         ) {
             if (
                 this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y - 1)
+                &&this.checkIsWalkAble(playerPosition.x, playerPosition.y - 1)
+                &&this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y)
             ) {
                 this.playerWalkDirection = {
                     x: 1,
