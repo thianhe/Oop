@@ -1,37 +1,37 @@
 var Map = function(map, state) {
     this.audio = new Framework.Audio({
         bgm: {
-            mp3: define.musicPath + "bgm.mp3"
+            //mp3: define.musicPath + "bgm.mp3"
         },
         hurt1: {
-            wav: define.musicPath + "hurt_grunt.wav"
+            //wav: define.musicPath + "hurt_grunt.wav"
         },
         hurt2: {
-            wav: define.musicPath + "hurt_grunt_1.wav"
+            //wav: define.musicPath + "hurt_grunt_1.wav"
         },
         hurt3: {
-            wav: define.musicPath + "hurt_grunt_2.wav"
+            //wav: define.musicPath + "hurt_grunt_2.wav"
         },
         isaacdie1: {
-            wav: define.musicPath + "isaacdie1.wav"
+            //wav: define.musicPath + "isaacdie1.wav"
         },
         isaacdie2: {
-            wav: define.musicPath + "isaacdie2.wav"
+            //wav: define.musicPath + "isaacdie2.wav"
         },
         isaacdie3: {
-            wav: define.musicPath + "isaacdie3.wav"
+            //wav: define.musicPath + "isaacdie3.wav"
         },
         bubble: {
-            mp3: define.musicPath + "bubble1.mp3"
+            //mp3: define.musicPath + "bubble1.mp3"
         },
         plop: {
-            wav: define.musicPath + "plop.wav"
+            //wav: define.musicPath + "plop.wav"
         },
         coinslot: {
-            wav: define.musicPath + "coinslot.wav"
+            //wav: define.musicPath + "coinslot.wav"
         },
         pickup: {
-            wav: define.musicPath + "pickup.wav"
+            //wav: define.musicPath + "pickup.wav"
         }
     });
     var boughtThings = false;
@@ -635,7 +635,7 @@ var Map = function(map, state) {
         if (
             this.player1.position.x == slotMachine.mapPosition.x &&
             this.player1.position.y == slotMachine.mapPosition.y &&
-            !this.StartingMapItem.atksDestoryed &&
+            !slotMachine.destoryed &&
             !boughtThings
         ) {
             this.gameState.hp -= hpCost;
