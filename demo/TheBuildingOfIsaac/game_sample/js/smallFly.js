@@ -2,7 +2,7 @@
 //目前Class寫法都是以function的方式
 //只要是this.XXX皆會是Public的property
 var SmallFly = function(file, map, hp, options) {
-    SmallFly.prototype = new Monster(map, hp);
+    SmallFly.prototype = new Monster(map, hp/2);
     this.url = file;
 
     this.sprite = new Framework.AnimationSprite({url:this.url, col:2 , row:1 , loop:true , speed:12}); 
@@ -49,10 +49,7 @@ var SmallFly = function(file, map, hp, options) {
         }
     }
     
-
-    this.walkEnd = function(){    }
-
-    var walkSpeed = 1;
+    var walkSpeed = 2;
     this.walkAlittle = function(){
         if(this.playerDirection === this.constants.DirectionEnum.RIGHTDOWN){
             this.spritePosition = {x:this.spritePosition.x + walkSpeed, y:this.spritePosition.y + walkSpeed};

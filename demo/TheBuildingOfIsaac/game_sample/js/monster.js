@@ -2,6 +2,7 @@
 //目前Class寫法都是以function的方式
 //只要是this.XXX皆會是Public的property
 var Monster = function(map,hp) {
+    
     this.mapPosition = {x:0, y:0};
     this.map = map;
     this.canWalking = true;

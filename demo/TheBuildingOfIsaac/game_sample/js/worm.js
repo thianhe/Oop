@@ -4,7 +4,6 @@
 var Worm = function(file, map, hp, options) {
     Worm.prototype = new Monster(map, hp);
     this.url = file;
-
     this.sprite = new Framework.AnimationSprite({
         url: this.url,
         col: 3,

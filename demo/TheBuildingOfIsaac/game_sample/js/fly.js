@@ -21,10 +21,8 @@ var Fly = function(file, map, hp, options) {
     //this.StepMovedCallBack = [];
 
     this.playerDirection = this.constants.DirectionEnum.DOWN;
-    this.getHit = function() {
-        this.HP-=this.map.gameState.dmg;
-        if (this.HP <= 0) {
-            this.die();
+    this.die = function() {
+            this.isdead = true;
             this.map.addFlyDie(this.mapPosition);
             this.map.addMonster(3,{
                 x:  this.mapPosition.x,
@@ -34,7 +32,6 @@ var Fly = function(file, map, hp, options) {
                 x:  this.mapPosition.x+1,
                 y:  this.mapPosition.y+1
             });
-        }
     };
     this.walk = function(moveStep) {
         if (this.isWalking === false) {
