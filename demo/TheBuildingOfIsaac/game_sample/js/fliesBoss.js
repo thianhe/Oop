@@ -8,13 +8,14 @@ var FliesBoss = function(file, map, hp, options) {
         col: 4,
         row: 1,
         loop: true,
-        speed: 0.5
+        speed: 0.7
     });
     this.sprite.scale = 2;
     this.sprite.index = 1;
     this.spritePosition = { x: 0, y: 0 };
     this.constants = new Constants();
-    this.sprite.start({ from: 0, to: 3, loop: false });
+    var flySpawned = false;
+    this.sprite.start({ from: 0, to: 3, loop: true });
     var walkSpeed = 2;
     this.die = function() {
         this.isdead = true;
@@ -87,10 +88,11 @@ var FliesBoss = function(file, map, hp, options) {
         if (this.isdead) {
             return;
         }
-        if (this.sprite.index == 3) {
-            this.sprite.start({ from: 0, to: 3, loop: false });
+        if (this.sprite.index == 3 && !flySpawned) {
             this.spawnFly();
+            flySpawned = true;
         }
+        if(this.sprite.index == 2) flySpawned = false;
         this.sprite.update();
         if (this.isWalking) {
             if (

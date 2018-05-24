@@ -5,6 +5,7 @@ var Monster = function(map,hp) {
     
     this.mapPosition = {x:0, y:0};
     this.map = map;
+    this.itemDrop = true;
     this.canWalking = true;
     this.PIXEL_CONST = 64;
     this.isdead = false;

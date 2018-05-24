@@ -8,7 +8,7 @@ var SmallFly = function(file, map, hp, options) {
     this.sprite = new Framework.AnimationSprite({url:this.url, col:2 , row:1 , loop:true , speed:12}); 
     this.sprite.scale = 2;
     this.sprite.index = 1;
-    
+    this.itemDrop = false;
     this.spritePosition = {x:0, y:0};
     this.constants = new Constants();
 

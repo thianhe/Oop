@@ -590,8 +590,8 @@ var Map = function(map, state) {
         this.arrayDraw(this.poopArray, ctx);
         this.arrayDraw(this.itemArray, ctx);
         this.arrayDraw(this.doorArray, ctx);
-        this.arrayDraw(this.monster, ctx);
         this.arrayDraw(this.boss, ctx);
+        this.arrayDraw(this.monster, ctx);
         this.arrayDraw(this.nextLevelGateArray, ctx);
         this.arrayDraw(this.bulletArray, ctx);
         this.arrayDraw(this.enemyBulletArray, ctx);
@@ -1412,7 +1412,7 @@ var Map = function(map, state) {
                         ) {
                             this.monster[j].getHit();
                             if (this.monster[j].isdead) {
-                                if (this.randomBool(0.5))
+                                if (this.randomBool(0.5) && this.monster[j].itemDrop)
                                     this.addNewItem(
                                         0,
                                         this.monster[j].position.x,
