@@ -89,7 +89,13 @@ var Map = function(map, state) {
             define.imagePath + "fliesBoss.png",
             this,
             this.monsterHP * (7 + this.monsterHP),
-            { from: 0, to: 4 }
+            { from: 0, to: 3 }
+        );
+        var newBossPic2 = new Horseman(
+            define.imagePath + "horseman.png",
+            this,
+            this.monsterHP * (7 + this.monsterHP),
+            { from: 0, to: 5 }
         );
         this.mapFloor.scale = 2;
         this.mapWall = new Framework.Sprite(define.imagePath + "wall2.png");
@@ -334,7 +340,7 @@ var Map = function(map, state) {
                     y: i
                 };
                 if (line[j] === 2) {
-                    this.addBox(i,j);
+                    this.addBox(i, j);
                 } else if (line[j] === 3) {
                     var door = new Door();
                     door.position = {
@@ -375,16 +381,18 @@ var Map = function(map, state) {
         if (
             mapPositionX == bossMapPsoitionX &&
             mapPositionY == bossMapPsoitionY
-        ){this.bossMapSetting()}
-    };
-    this.bossMapSetting = function(){
-        if(this.gameState.gameLevel == 1){
-            this.addBox(2,6);
-            this.addBox(2,12);
-            this.addBox(6,2);
-            this.addBox(6,9);
+        ) {
+            this.bossMapSetting();
         }
-    }
+    };
+    this.bossMapSetting = function() {
+        if (this.gameState.gameLevel == 1) {
+            this.addBox(2, 6);
+            this.addBox(2, 12);
+            this.addBox(6, 2);
+            this.addBox(6, 9);
+        }
+    };
     this.addBox = function(i, j) {
         var box = new Box();
         box.position = {
@@ -479,12 +487,21 @@ var Map = function(map, state) {
         this.monster.push(newMonster);
     };
     this.addBoss = function(monsterPosition) {
-        var newBoss = new FliesBoss(
-            define.imagePath + "fliesBoss.png",
-            this,
-            this.monsterHP * (7 + this.monsterHP),
-            { from: 0, to: 4 }
-        );
+        var newBoss;
+        if (this.gameState.gameLevel == 1)
+            newBoss = new FliesBoss(
+                define.imagePath + "fliesBoss.png",
+                this,
+                this.monsterHP * (7 + this.monsterHP),
+                { from: 0, to: 3 }
+            );
+        if (this.gameState.gameLevel == 2)
+            newBoss = new Horseman(
+                define.imagePath + "horseman.png",
+                this,
+                this.monsterHP * (7 + this.monsterHP),
+                { from: 0, to: 5 }
+            );
         newBoss.position = monsterPosition;
         this.boss.push(newBoss);
     };
@@ -578,8 +595,8 @@ var Map = function(map, state) {
         for (var i = 0; i < this.boss.length; i++) {
             if (
                 Math.abs(this.player1.position.x - this.boss[i].position.x) <=
-                    1 &&
-                Math.abs(this.player1.position.y - this.boss[i].position.y) <= 1
+                this.boss[i].bossSize/2 &&
+                Math.abs(this.player1.position.y - this.boss[i].position.y) <= this.boss[i].bossSize/2
             )
                 if (this.boss[i].isdead == false) this.getDamge();
         }
@@ -710,6 +727,17 @@ var Map = function(map, state) {
             }
             if (this.monster[i].isRushingCount < 100)
                 this.monster[i].isRushingCount += 1;
+        }
+        for (var i = 0; i < this.boss.length; i++) {
+            if (this.boss[i].isShooting) {
+                this.boss[i].isShootingCounter += 1;
+                if (this.boss[i].isShootingCounter == 70) {
+                    this.boss[i].isShooting = false;
+                    this.boss[i].isShootingCounter = 0;
+                }
+            }
+            if (this.boss[i].isRushingCount < 200)
+                this.boss[i].isRushingCount += 1;
         }
         for (var i = 0; i < this.bulletArray.length; i++) {
             if (this.bulletArray[i].bulletEnd == false) {
@@ -1045,13 +1073,12 @@ var Map = function(map, state) {
             }
         }
         for (var i = 0; i < this.boxArray.length; i++) {
-                if (
-                    this.boxArray[i].mapPosition.y == y &&
-                    this.boxArray[i].mapPosition.x == x
-                ) {
-                    return false;
-                }
-            
+            if (
+                this.boxArray[i].mapPosition.y == y &&
+                this.boxArray[i].mapPosition.x == x
+            ) {
+                return false;
+            }
         }
         if (this.mapArray[y][x] > 0) {
             return false;
@@ -1412,7 +1439,10 @@ var Map = function(map, state) {
                         ) {
                             this.monster[j].getHit();
                             if (this.monster[j].isdead) {
-                                if (this.randomBool(0.5) && this.monster[j].itemDrop)
+                                if (
+                                    this.randomBool(0.5) &&
+                                    this.monster[j].itemDrop
+                                )
                                     this.addNewItem(
                                         0,
                                         this.monster[j].position.x,

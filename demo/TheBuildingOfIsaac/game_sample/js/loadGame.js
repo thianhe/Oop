@@ -66,6 +66,7 @@ var loadGameEnd;
         { src: 'game_sample/js/shylyMonster.js', lookFor: 'ShylyMonster' },
         { src: 'game_sample/js/smallFly.js', lookFor: 'SmallFly' },
         { src: 'game_sample/js/fliesBoss.js', lookFor: 'FliesBoss' },
+        { src: 'game_sample/js/horseman.js', lookFor: 'Horseman' },
         { src: 'game_sample/js/explore.js', lookFor: 'Explore' },
         { src: 'game_sample/js/bomb.js', lookFor: 'Bomb' },
         { src: 'game_sample/js/mapItem.js', lookFor: 'MapItem' },

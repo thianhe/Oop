@@ -18,8 +18,6 @@ var Fly = function(file, map, hp, options) {
     this.spritePosition = { x: 0, y: 0 };
     this.constants = new Constants();
 
-    //this.StepMovedCallBack = [];
-
     this.playerDirection = this.constants.DirectionEnum.DOWN;
     this.die = function() {
             this.isdead = true;

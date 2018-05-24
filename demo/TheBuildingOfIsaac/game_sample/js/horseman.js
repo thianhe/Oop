@@ -1,25 +1,54 @@
-//由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
-//目前Class寫法都是以function的方式
-//只要是this.XXX皆會是Public的property
-var Worm = function(file, map, hp, options) {
-    Worm.prototype = new Monster(map, hp);
+var Horseman = function(file, map, hp, options) {
+    var tempBoss = new Boss(map, hp, 1.5);
+    Horseman.prototype = new Boss(map, hp, 1.5);
+    var wallBreak = 0;
     this.url = file;
     this.sprite = new Framework.AnimationSprite({
         url: this.url,
         col: 3,
-        row: 4,
+        row: 2,
         loop: true,
-        speed: 12
+        speed: 2
     });
     this.sprite.scale = 2;
     this.sprite.index = 1;
-
     this.spritePosition = { x: 0, y: 0 };
     this.constants = new Constants();
-
-    //this.StepMovedCallBack = [];
-
-    this.playerDirection = this.constants.DirectionEnum.DOWN;
+    this.sprite.start({ from: 3, to: 5, loop: true });
+    this.update = function() {
+        if (this.isdead) {
+            return;
+        }
+        if (this.isRushing == false) this.shoot();
+        this.sprite.update();
+        if (this.isWalking) {
+            if (
+                this.walkTarget.x * this.PIXEL_CONST ===
+                    this.spritePosition.x &&
+                this.walkTarget.y * this.PIXEL_CONST === this.spritePosition.y
+            ) {
+                this.isWalking = false;
+                this.mapPosition = this.walkTarget;
+            } else {
+                this.walkAlittle();
+            }
+        } else {
+            if (this.canWalking) {
+                this.randomWalk();
+            }
+        }
+    };
+    this.draw = function(ctx) {
+        if (this.isdead) {
+            return;
+        }
+        this.sprite.position = {
+            x: this.spritePosition.x,
+            y: this.spritePosition.y
+        };
+        this.sprite.draw(ctx);
+        this.drawHpBar(ctx);
+    };
 
     this.walk = function(moveStep) {
         if (this.isWalking === false) {
@@ -39,11 +68,6 @@ var Worm = function(file, map, hp, options) {
                 x: this.mapPosition.x + moveStep.x,
                 y: this.mapPosition.y + moveStep.y
             };
-            this.sprite.start({
-                from: this.playerDirection * 3,
-                to: this.playerDirection * 3 + 2,
-                loop: true
-            });
         }
     };
     var walkSpeed = 4;
@@ -72,88 +96,66 @@ var Worm = function(file, map, hp, options) {
             };
         }
     };
-    this.update = function() {
-        if (this.isdead) {
-            return;
-        }
-        this.sprite.update();
-        if (this.isWalking) {
-            if (
-                this.walkTarget.x * this.PIXEL_CONST ===
-                    this.spritePosition.x &&
-                this.walkTarget.y * this.PIXEL_CONST === this.spritePosition.y
-            ) {
-                this.isWalking = false;
-                this.sprite.stop();
-                this.sprite.index = this.playerDirection * 3 + 1;
-                this.mapPosition = this.walkTarget;
 
-                /*for(var i=0; i<this.StepMovedCallBack.length; i++){
-                    this.StepMovedCallBack[i](this);
-                }*/
-            } else {
-                this.walkAlittle();
-            }
-        } else {
-            if (this.canWalking) {
-                this.randomWalk();
-            }
-        }
-    };
-
-    this.draw = function(ctx) {
-        if (this.isdead) {
-            return;
-        }
-        this.sprite.position = {
-            x: this.spritePosition.x,
-            y: this.spritePosition.y
-        };
-        this.sprite.draw(ctx);
-    };
     var walkDir = 0;
     var walkStep = { x: 0, y: 0 };
+
     this.randomWalk = function() {
         if (this.isRushing) {
-            if (
-                this.map.checkIsWalkAble(
-                    this.mapPosition.x + walkStep.x,
-                    this.mapPosition.y + walkStep.y
-                )
-            ) {
-                this.walk(walkStep);
+            if(wallBreak == 3 && this.mapPosition.x == 7){
+                this.isRushing = false;
+                this.isRushingCount = 0;
+                walkSpeed = 4;
             }
             else{
-                this.isRushing = false;
-                this.isRushingCount =0;
-                walkSpeed=4;
-            }
-        } else if(this.mapPosition.x == this.map.player1.position.x && this.isRushingCount == 100){
-            if(this.map.checkIsRushAbleY(this.mapPosition.x,this.mapPosition.y,this.map.player1.position.y)){
-                walkStep = { x: 0, y: 0 };
-                if(this.mapPosition.y<this.map.player1.position.y) walkStep.y = 1;
-                else walkStep.y = -1;
+                console.log(this.mapPosition);
+                if (this.mapPosition.x > 15) {
+                    wallBreak+=1;
+                    this.mapPosition = {
+                        x: -1,
+                        y: this.map.player1.mapPosition.y
+                    };
+                    this.spritePosition = {
+                        x: this.mapPosition.x * 64,
+                        y: this.mapPosition.y * 64
+                    };
+                }
+                if (this.mapPosition.x <-1) {
+                    wallBreak+=1;
+                    this.mapPosition = {
+                        x: 15,
+                        y: this.map.player1.mapPosition.y
+                    };
+                    this.spritePosition = {
+                        x: this.mapPosition.x * 64,
+                        y: this.mapPosition.y * 64
+                    };
+                }
                 this.walk(walkStep);
-                this.isRushing = true;
-                walkSpeed=8;
             }
-        }else if(this.mapPosition.y == this.map.player1.position.y && this.isRushingCount == 100){
-            if(this.map.checkIsRushAbleX(this.mapPosition.x,this.mapPosition.y,this.map.player1.position.x)){
-                walkStep = { x: 0, y: 0 };
-                if(this.mapPosition.x<this.map.player1.position.x) walkStep.x = 1;
-                else walkStep.x = -1;
-                this.walk(walkStep);
-                this.isRushing = true;
-                walkSpeed=8;
+        } else if (this.isRushingCount == 200) {
+            console.log("start");
+            walkStep = { x: 0, y: 0 };
+            if (this.mapPosition.x < this.map.player1.position.x) {
+                walkStep.x = 1;
+                this.sprite.start({ from: 0, to: 2, loop: true });
+            } else {
+                walkStep.x = -1;
+                this.sprite.start({ from: 3, to: 5, loop: true });
             }
-        }
-        else {
+            this.walk(walkStep);
+            this.isRushing = true;
+            walkSpeed = 32;
+            wallBreak = 0;
+        } else {
             var randNum = Math.floor(Math.random() * 1000) % 553;
             walkDir++;
             walkStep = { x: 0, y: 0 };
             if (randNum % 117 == 0) {
                 walkStep.x = 1;
+                this.sprite.start({ from: 0, to: 2, loop: true });
             } else if (randNum % 79 == 0) {
+                this.sprite.start({ from: 3, to: 5, loop: true });
                 walkStep.x = -1;
             } else if (randNum % 133 == 0) {
                 walkStep.y = 1;
@@ -176,7 +178,7 @@ var Worm = function(file, map, hp, options) {
     };
 };
 
-Object.defineProperty(Worm.prototype, "position", {
+Object.defineProperty(Horseman.prototype, "position", {
     get: function() {
         return this.mapPosition;
     },
@@ -186,5 +188,11 @@ Object.defineProperty(Worm.prototype, "position", {
             x: this.mapPosition.x * 64,
             y: this.mapPosition.y * 64
         };
+    }
+});
+
+Object.defineProperty(Horseman.prototype, "isDead", {
+    get: function() {
+        return this.isdead;
     }
 });
