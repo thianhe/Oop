@@ -1,6 +1,6 @@
 var Terrain = function() {
     this.terrainList = [];
-    //0 空地  1牆壁  2空木箱  3增加炸彈木箱  4增加威力木箱  -1大便  -2增加炸彈power
+    //0 空地  1牆壁 2石頭 -1大便
     this.map0 = [];
     this.map0.push([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //1
     this.map0.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //2
@@ -16,9 +16,9 @@ var Terrain = function() {
     this.map1.push([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //1
     this.map1.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //2
     this.map1.push([1, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 1]); //3
-    this.map1.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //4
-    this.map1.push([1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1]); //5
-    this.map1.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //6
+    this.map1.push([1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1]); //4
+    this.map1.push([1, 0, 0, 2, 0, 0, 0, -1, 0, 0, 0, 2, 0, 0, 1]); //5
+    this.map1.push([1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1]); //6
     this.map1.push([1, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 1]); //7
     this.map1.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //8
     this.map1.push([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //9
@@ -188,6 +188,17 @@ var Terrain = function() {
     this.map16.push([1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //8
     this.map16.push([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //9
 
+    this.map17 = [];
+    this.map17.push([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //1
+    this.map17.push([1, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 0, 1]); //2
+    this.map17.push([1, 2, -1, 0, 0, 0, 0, 0, 0, 2, -1, 0, 0, 2, 1]); //3
+    this.map17.push([1, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 0, 2, 1]); //4
+    this.map17.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]); //5
+    this.map17.push([1, 2, 0, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 1]); //6
+    this.map17.push([1, 2, 0, 0, -1, 2, 0, 0, 0, 0, 0, 0, -1, 2, 1]); //7
+    this.map17.push([1, 0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 1]); //8
+    this.map17.push([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]); //9
+
     this.terrainList.push(this.map0);
     this.terrainList.push(this.map1);
     this.terrainList.push(this.map2);
@@ -205,4 +216,5 @@ var Terrain = function() {
     this.terrainList.push(this.map14);
     this.terrainList.push(this.map15);
     this.terrainList.push(this.map16);
+    this.terrainList.push(this.map17);
 };
