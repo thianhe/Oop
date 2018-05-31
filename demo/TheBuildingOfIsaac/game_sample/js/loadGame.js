@@ -82,6 +82,7 @@ var loadGameEnd;
         { src: 'game_sample/js/startingMapItem.js', lookFor: 'StartingMapItem' },
         { src: 'game_sample/js/mapTile.js', lookFor: 'MapTile' },
         { src: 'game_sample/js/playerHpBar.js', lookFor: 'PlayerHpBar' },
+        { src: 'game_sample/js/randomMonster.js', lookFor: 'RandomMonster' },
         { src: 'game_sample/js/map.js', lookFor: 'Map' },
         { src: 'game_sample/js/level2.js', lookFor: 'Level2' },
         { src: 'game_sample/js/level2_change.js', lookFor: 'Level2_change' },

@@ -34,6 +34,7 @@ var Map = function(map, state) {
             //wav: define.musicPath + "pickup.wav"
         }
     });
+    this.randomMonster = new RandomMonster(this);
     var boughtThings = false;
     this.mapPoopStateArray = [];
     this.mapItemStateArray = [];
@@ -1608,7 +1609,17 @@ var Map = function(map, state) {
             if (this.thisMapState[mapPositionX][mapPositionY][4] === 0)
                 this.mapArray[8][7] = 3;
             this.monster = [];
-            this.createMonster();
+            if (
+                mapPositionX == bossMapPsoitionX &&
+                mapPositionY == bossMapPsoitionY
+            ) {this.addBoss({
+                x: 5,
+                y: 4
+            });}
+            else{this.randomMonster.createMonster(this.mapTerrain[mapPositionX][mapPositionY])}
+
+            //this.createMonster();
+
             this.thisMapState[mapPositionX][mapPositionY][0] = 1;
         }
     };
