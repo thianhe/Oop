@@ -77,7 +77,7 @@ var Isaac = function(file,option) {
     this.walkEnd = function(){
     }
 
-    var walkSpeed =8;
+    var walkSpeed =4;
     this.walkAlittle = function(){
         //console.log("player walk a little " + walkSpeed);
         if(this.playerDirection === this.constants.DirectionEnum.RIGHTDOWN){
