@@ -8,15 +8,18 @@ var Bullet = function(file,shootDirection,startingPosition){
     this.startPosition = startingPosition;
     this.spritePosition = startingPosition;
     this.mapPosition = startingPosition;
+    this.range = 5;
     this.time = 0;
     this.bulletEnd = false;
     this.shootingDirection = shootDirection;
     this.update = function(){
-        if(!(this.bulletEnd))this.walkAlittle()
         if(this.bulletEnd){return;}
+        this.walkAlittle()
+        if(this.range == 5)this.walkAlittle()
+        
     }
 
-    var walkSpeed = 0.1;
+    var walkSpeed = 0.15;
     this.walkAlittle = function(){
         if(this.shootingDirection === this.constants.DirectionEnum.DOWN){
             this.spritePosition = {x:this.spritePosition.x, y:this.spritePosition.y + walkSpeed};

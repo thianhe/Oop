@@ -12,7 +12,7 @@ var Isaac = function(file,option) {
     this.mapPosition = {x:0, y:0};
     this.spritePosition = {x:0, y:0};
     this.constants = new Constants();
-
+    this.weapon = 0;
     this.StepMovedCallBack = [];
     this.maxBombNum = 1;
     this.bombNum = 0;
@@ -25,6 +25,10 @@ var Isaac = function(file,option) {
     this.playerDirection = this.constants.DirectionEnum.DOWN;
     this.isaacHead = new IsaacHead(define.imagePath + 'isaacHead.png', {up: {from: 0, to: 11}, down: {from:12, to: 23}, left: {from: 24, to: 35}, right: {from: 36, to: 47}});
     this.isaacHead.position = {x:1, y:1};
+    this.isaacHead_laser = new IsaacHead(define.imagePath + 'isaacHead_laser.png', {up: {from: 0, to: 11}, down: {from:12, to: 23}, left: {from: 24, to: 35}, right: {from: 36, to: 47}});
+    this.isaacHead_laser.position = {x:1, y:1};
+    this.isaacHead_mega = new IsaacHead(define.imagePath + 'isaacHead_mega.png', {up: {from: 0, to: 11}, down: {from:12, to: 23}, left: {from: 24, to: 35}, right: {from: 36, to: 47}});
+    this.isaacHead_mega.position = {x:1, y:1};
     //以下這句話的意思是當options.position為undefined時this.sprite.position = x: 0, y: 0}
     //若options.position有值, 則this.sprite.position = options.position
     //原因是在JS中, undefined會被cast成false
@@ -123,12 +127,16 @@ var Isaac = function(file,option) {
             }
         }
         this.isaacHead.update(this.sprite.position);
+        this.isaacHead_laser.update(this.sprite.position);
+        this.isaacHead_mega.update(this.sprite.position);
     }
 
     this.draw = function(ctx){
         this.sprite.position = {x: this.spritePosition.x, y: this.spritePosition.y+10};
         this.sprite.draw(ctx);
-        this.isaacHead.draw(ctx);
+        if(this.weapon == 0)this.isaacHead.draw(ctx);
+        if(this.weapon == 1)this.isaacHead_mega.draw(ctx);
+        if(this.weapon == 2)this.isaacHead_laser.draw(ctx);
     }
     this.placeBomb = function(){
         if(this.bombNum < this.maxBombNum){
@@ -142,6 +150,8 @@ var Isaac = function(file,option) {
     }
     this.turnFace = function(shootDirection){
         this.isaacHead.shootingAnimation(shootDirection);
+        this.isaacHead_laser.shootingAnimation(shootDirection);
+        this.isaacHead_mega.shootingAnimation(shootDirection);
     }
 };
 

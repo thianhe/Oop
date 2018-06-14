@@ -75,6 +75,7 @@ var loadGameEnd;
         { src: 'game_sample/js/door.js', lookFor: 'Door' },
         { src: 'game_sample/js/nextLevelGate.js', lookFor: 'NextLevelGate' },
         { src: 'game_sample/js/bullet.js', lookFor: 'Bullet' },
+        { src: 'game_sample/js/laser.js', lookFor: 'Laser' },
         { src: 'game_sample/js/enemyBullet.js', lookFor: 'EnemyBullet' },
         { src: 'game_sample/js/bulletExplore.js', lookFor: 'BulletExplore' },
         { src: 'game_sample/js/terrain.js', lookFor: 'Terrain'},
