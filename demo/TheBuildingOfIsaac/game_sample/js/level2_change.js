@@ -1,7 +1,10 @@
 var Level2_change = Framework.Class(Framework.Level , {
     load: function() {
         if( typeof Level2_change.state == 'undefined' ) {
-            Level2_change.state= {hpLimit:3,hp:3,money:0,gameLevel:0,dmg:1,atks:1};
+            Level2_change.state= {hpLimit:3,hp:3,money:0,gameLevel:0,dmg:1,atks:1,weapon:0,weaponList:[],weaponUsing:1};
+            Level2_change.state.weaponList.push(0);
+            Level2_change.state.weaponList.push(2);
+            Level2_change.state.weaponList.push(1);
         }
         console.log("Character State: "+Level2_change.state.hp);
         var size = 11;
