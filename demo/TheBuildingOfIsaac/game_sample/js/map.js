@@ -22,7 +22,7 @@ var Map = function (map, state) {
             //wav: define.musicPath + "isaacdie3.wav"
         },
         bubble: {
-            mp3: define.musicPath + "bubble1.mp3"
+            //mp3: define.musicPath + "bubble1.mp3"
         },
         plop: {
             //wav: define.musicPath + "plop.wav"
@@ -34,13 +34,13 @@ var Map = function (map, state) {
             //wav: define.musicPath + "pickup.wav"
         },
         lasersound: {
-            mp3: define.musicPath + "laser.mp3"
+            //mp3: define.musicPath + "laser.mp3"
         },
         coindestroy: {
-            wav: define.musicPath + "coin_destroy.wav"
+            //wav: define.musicPath + "coin_destroy.wav"
         },
         holy: {
-            wav: define.musicPath + "holy!.wav"
+            //wav: define.musicPath + "holy!.wav"
         },
     });
     this.randomMonster = new RandomMonster(this);
@@ -1071,7 +1071,6 @@ var Map = function (map, state) {
                 });
                 laser.spritePosition = tempPosition;
                 this.laserArray.push(laser);
-
             }
             this.audio.play({
                 name: "lasersound",
