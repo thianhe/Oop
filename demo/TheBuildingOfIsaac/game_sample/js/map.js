@@ -939,9 +939,9 @@ var Map = function(map, state) {
             !walkDirection[3]
         ) {
             if (
-                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y - 1)
-                && this.checkIsWalkAble(playerPosition.x, playerPosition.y - 1)
-                && this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y)
+                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y - 1) &&
+                this.checkIsWalkAble(playerPosition.x, playerPosition.y - 1) &&
+                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y)
             ) {
                 this.playerWalkDirection = {
                     x: -1,
@@ -955,9 +955,9 @@ var Map = function(map, state) {
             !walkDirection[3]
         ) {
             if (
-                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y + 1)
-                && this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y )
-                &&this.checkIsWalkAble(playerPosition.x , playerPosition.y + 1)
+                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y + 1) &&
+                this.checkIsWalkAble(playerPosition.x - 1, playerPosition.y) &&
+                this.checkIsWalkAble(playerPosition.x, playerPosition.y + 1)
             ) {
                 this.playerWalkDirection = {
                     x: -1,
@@ -971,9 +971,9 @@ var Map = function(map, state) {
             walkDirection[3]
         ) {
             if (
-                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y + 1)
-                &&this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y )
-                &&this.checkIsWalkAble(playerPosition.x , playerPosition.y + 1)
+                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y + 1) &&
+                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y) &&
+                this.checkIsWalkAble(playerPosition.x, playerPosition.y + 1)
             ) {
                 this.playerWalkDirection = {
                     x: 1,
@@ -988,9 +988,9 @@ var Map = function(map, state) {
             walkDirection[3]
         ) {
             if (
-                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y - 1)
-                &&this.checkIsWalkAble(playerPosition.x, playerPosition.y - 1)
-                &&this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y)
+                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y - 1) &&
+                this.checkIsWalkAble(playerPosition.x, playerPosition.y - 1) &&
+                this.checkIsWalkAble(playerPosition.x + 1, playerPosition.y)
             ) {
                 this.playerWalkDirection = {
                     x: 1,
@@ -1612,11 +1612,14 @@ var Map = function(map, state) {
             if (
                 mapPositionX == bossMapPsoitionX &&
                 mapPositionY == bossMapPsoitionY
-            ) {this.addBoss({
-                x: 5,
-                y: 4
-            });}
-            else{this.randomMonster.createMonster(this.mapTerrain[mapPositionX][mapPositionY])}
+            ) {
+                this.addBoss({
+                    x: 5,
+                    y: 4
+                });
+            } else {
+                this.randomMonster.createMonster(this.mapTerrain[mapPositionX][mapPositionY])
+            }
 
             //this.createMonster();
 
@@ -1653,18 +1656,10 @@ var Map = function(map, state) {
             this.getLeftMonsterNum() === 0
         ) {
             for (var i = 0; i < this.doorArray.length; i++) {
-                this.mapArray[4][0] = this.thisMapState[mapPositionX][
-                    mapPositionY
-                ][1];
-                this.mapArray[0][7] = this.thisMapState[mapPositionX][
-                    mapPositionY
-                ][2];
-                this.mapArray[4][14] = this.thisMapState[mapPositionX][
-                    mapPositionY
-                ][3];
-                this.mapArray[8][7] = this.thisMapState[mapPositionX][
-                    mapPositionY
-                ][4];
+                this.mapArray[4][0] = this.thisMapState[mapPositionX][mapPositionY][1];
+                this.mapArray[0][7] = this.thisMapState[mapPositionX][mapPositionY][2];
+                this.mapArray[4][14] = this.thisMapState[mapPositionX][mapPositionY][3];
+                this.mapArray[8][7] = this.thisMapState[mapPositionX][mapPositionY][4];
                 this.doorArray[i].mapClean();
             }
             this.thisMapState[mapPositionX][mapPositionY][0] = 2;
