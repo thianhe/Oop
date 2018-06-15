@@ -1840,12 +1840,7 @@ var Map = function (map, state) {
             this.thisMapState[mapPositionX][mapPositionY][0] = 1;
         }
     };
-<<<<<<< HEAD
     this.createMonster = function () {
-=======
-    this.createMonster = function() {
-
->>>>>>> 49efbbc19dbe04b548846a41089d9911cd618bc0
         if (
             mapPositionX == bossMapPsoitionX &&
             mapPositionY == bossMapPsoitionY
@@ -1869,12 +1864,7 @@ var Map = function (map, state) {
             });
         }
     };
-<<<<<<< HEAD
     this.monsterClean = function () {
-=======
-    this.monsterClean = function() {
-
->>>>>>> 49efbbc19dbe04b548846a41089d9911cd618bc0
         if (
             this.thisMapState[mapPositionX][mapPositionY][0] === 1 &&
             this.getLeftMonsterNum() === 0
