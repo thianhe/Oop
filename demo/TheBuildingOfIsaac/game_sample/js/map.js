@@ -22,7 +22,7 @@ var Map = function(map, state) {
             //wav: define.musicPath + "isaacdie3.wav"
         },
         bubble: {
-            //mp3: define.musicPath + "bubble1.mp3"
+            mp3: define.musicPath + "bubble1.mp3"
         },
         plop: {
             //wav: define.musicPath + "plop.wav"
@@ -32,7 +32,16 @@ var Map = function(map, state) {
         },
         pickup: {
             //wav: define.musicPath + "pickup.wav"
-        }
+        },
+        lasersound: {
+            mp3: define.musicPath + "laser.mp3"
+        },
+        coindestroy: {
+            wav: define.musicPath + "coin_destroy.wav"
+        },
+        holy: {
+            wav: define.musicPath + "holy!.wav"
+        },
     });
     this.randomMonster = new RandomMonster(this);
     var boughtThings = false;
@@ -997,6 +1006,7 @@ var Map = function(map, state) {
             };
             addPosition.x = this.player1.position.x;
             addPosition.y = this.player1.position.y;
+
             while (1) {
                 if (laserPosition == 0) addPosition.y -= 1;
                 if (laserPosition == 1) addPosition.y += 1;
@@ -1017,7 +1027,12 @@ var Map = function(map, state) {
                 });
                 laser.spritePosition = tempPosition;
                 this.laserArray.push(laser);
+
             }
+            this.audio.play({
+                name: "lasersound",
+                loop: false
+            });
         }
     };
     this.playerWalkFunction = function() {
@@ -1569,8 +1584,7 @@ var Map = function(map, state) {
                 this.bulletHitMachine(this.StartingMapItem.slotMachine_hp, i);
                 this.bulletHitMachine(this.StartingMapItem.slotMachine_dmg, i);
                 this.bulletHitMachine(
-                    this.StartingMapItem.slotMachine_money,
-                    i
+                    this.StartingMapItem.slotMachine_money, i
                 );
                 this.bulletHitMachine(this.StartingMapItem.slotMachine_atks, i);
                 if (this.bulletArray[i].bulletEnd) {
@@ -1698,8 +1712,15 @@ var Map = function(map, state) {
             ) {
                 slotMachine.slotHp -= 1;
                 this.bulletArray[i].bulletEnd = true;
+                if (slotMachine.slotHp == 0) {
+                    this.audio.play({
+                        name: "coindestroy",
+                        loop: false
+                    });
+                }
             }
         }
+
     };
     this.bulletHitDeadArray = function(i, tempArray) {
         for (var j = 0; j < tempArray.length; j++) {
@@ -1772,6 +1793,7 @@ var Map = function(map, state) {
         }
     };
     this.createMonster = function() {
+
         if (
             mapPositionX == bossMapPsoitionX &&
             mapPositionY == bossMapPsoitionY
@@ -1796,6 +1818,7 @@ var Map = function(map, state) {
         }
     };
     this.monsterClean = function() {
+
         if (
             this.thisMapState[mapPositionX][mapPositionY][0] === 1 &&
             this.getLeftMonsterNum() === 0
@@ -1821,6 +1844,10 @@ var Map = function(map, state) {
                     y: 4
                 };
                 this.nextLevelGateArray.push(nextLevelGate);
+                this.audio.play({
+                    name: "holy",
+                    loop: false
+                });
             }
         }
     };
