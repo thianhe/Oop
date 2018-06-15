@@ -5,7 +5,7 @@ var Laser = function(file, option) {
         col: 3,
         row: 1,
         loop: false,
-        speed: 3
+        speed: 8
     });
     this.sprite.scale = 0.99;
     this.sprite.index = 1;

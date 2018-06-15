@@ -1,6 +1,6 @@
 var FliesBoss = function(file, map, hp, options) {
-    var tempBoss = new Boss(map, hp, 2);
-    FliesBoss.prototype = new Boss(map, hp, 2);
+    var tempBoss = new Boss(map, hp, 1.5);
+    FliesBoss.prototype = new Boss(map, hp, 1.5);
     
     this.url = file;
     this.sprite = new Framework.AnimationSprite({
@@ -10,7 +10,7 @@ var FliesBoss = function(file, map, hp, options) {
         loop: true,
         speed: 0.7
     });
-    this.sprite.scale = 2;
+    this.sprite.scale = 1.5;
     this.sprite.index = 1;
     this.spritePosition = { x: 0, y: 0 };
     this.constants = new Constants();

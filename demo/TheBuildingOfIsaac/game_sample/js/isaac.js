@@ -29,17 +29,6 @@ var Isaac = function(file,option) {
     this.isaacHead_laser.position = {x:1, y:1};
     this.isaacHead_mega = new IsaacHead(define.imagePath + 'isaacHead_mega.png', {up: {from: 0, to: 11}, down: {from:12, to: 23}, left: {from: 24, to: 35}, right: {from: 36, to: 47}});
     this.isaacHead_mega.position = {x:1, y:1};
-    //以下這句話的意思是當options.position為undefined時this.sprite.position = x: 0, y: 0}
-    //若options.position有值, 則this.sprite.position = options.position
-    //原因是在JS中, undefined會被cast成false
-    //this.sprite.position = options.position || {x: 0, y: 0};
-    //this.sprite.scale = options.scale || 1;
-
-    //由於0會被cast成false, 故不能用上面的方法來簡化
-    //this.sprite.rotation = (Framework.Util.isUndefined(options.rotation))?0:options.rotation;
-
-
-    //moveStep為位移量  格式範例{x:1,y:0}
     this.walk = function(moveStep){
 
         if(this.isWalking === false){
