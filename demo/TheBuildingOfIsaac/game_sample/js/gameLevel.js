@@ -1,7 +1,7 @@
-var Level2_change = Framework.Class(Framework.Level, {
+var GameLevel = Framework.Class(Framework.Level, {
     load: function() {
-        if (typeof Level2_change.state == 'undefined') {
-            Level2_change.state = {
+        if (typeof GameLevel.state == 'undefined') {
+            GameLevel.state = {
                 hpLimit: 3,
                 hp: 3,
                 money: 0,
@@ -12,11 +12,11 @@ var Level2_change = Framework.Class(Framework.Level, {
                 weaponList: [],
                 weaponUsing: 1
             };
-            Level2_change.state.weaponList.push(0);
-            Level2_change.state.weaponList.push(2);
-            Level2_change.state.weaponList.push(1);
+            GameLevel.state.weaponList.push(0);
+            GameLevel.state.weaponList.push(1);
+            GameLevel.state.weaponList.push(2);
         }
-        console.log("Character State: " + Level2_change.state.hp);
+        console.log("Character State: " + GameLevel.state.hp);
         var size = 11;
         this.mapArray = [];
         var mapList = new Terrain();
@@ -27,7 +27,7 @@ var Level2_change = Framework.Class(Framework.Level, {
                 else this.mapArray[i].push(Math.floor((Math.random() * mapList.terrainList.length)));
             }
         }
-        this.map = new Map(this.mapArray, Level2_change.state);
+        this.map = new Map(this.mapArray, GameLevel.state);
         this.map.load();
     },
 

@@ -10,6 +10,8 @@ var MapItem = function(itemNum){
     if(this.itemType == 4) path = 'coins.png';
     if(this.itemType == 5) path = 'damageLogo.png';
     if(this.itemType == 6) path = 'speedLogo.png';
+    if(this.itemType == 7) path = 'weapon_mega.png';
+    if(this.itemType == 8) path = 'weapon_laser.png';
     this.ate = false;
     this.sprite = new Framework.Sprite(define.imagePath + path);
     this.sprite.scale = 2;

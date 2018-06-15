@@ -87,7 +87,7 @@ var loadGameEnd;
         { src: 'game_sample/js/randomMonster.js', lookFor: 'RandomMonster' },
         { src: 'game_sample/js/map.js', lookFor: 'Map' },
         { src: 'game_sample/js/level2.js', lookFor: 'Level2' },
-        { src: 'game_sample/js/level2_change.js', lookFor: 'Level2_change' },
+        { src: 'game_sample/js/gameLevel.js', lookFor: 'GameLevel' },
         { src: 'game_sample/js/gameOver.js', lookFor: 'GameOver' },
         { src: 'game_sample/js/gameWin.js', lookFor: 'GameWin' },
         { src: 'game_sample/js/mainGame.js'}

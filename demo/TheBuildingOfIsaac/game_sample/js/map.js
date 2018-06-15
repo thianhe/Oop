@@ -226,6 +226,8 @@ var Map = function (map, state) {
             define.imagePath + "damageLogo.png"
         );
         var itemPic8 = new Framework.Sprite(define.imagePath + "speedLogo.png");
+        var itemPic9 = new Framework.Sprite(define.imagePath + "weapon_laser.png");
+        var itemPic10 = new Framework.Sprite(define.imagePath + "weapon_mega.png");
         var bossHpBarHead = new Framework.Sprite(
             define.imagePath + "hp_head.png"
         );
@@ -598,8 +600,8 @@ var Map = function (map, state) {
     this.onTouchFunction = function () {
         for (var i = 0; i < this.monster.length; i++) {
             if (
-                this.player1.position.x == this.monster[i].position.x &&
-                this.player1.position.y == this.monster[i].position.y
+                Math.abs(this.player1.sprite.position.x - this.monster[i].sprite.position.x)<32 &&
+                Math.abs(this.player1.sprite.position.y - this.monster[i].sprite.position.y)<32
             )
                 if (this.monster[i].isdead == false) this.getDamge();
         }
@@ -612,10 +614,10 @@ var Map = function (map, state) {
         }
         for (var i = 0; i < this.boss.length; i++) {
             if (
-                Math.abs(this.player1.position.x - this.boss[i].position.x) <=
-                this.boss[i].bossSize / 2 &&
-                Math.abs(this.player1.position.y - this.boss[i].position.y) <=
-                this.boss[i].bossSize / 2
+                Math.abs(this.player1.sprite.position.x - this.boss[i].sprite.position.x) <=
+               (this.boss[i].bossSize*32) &&
+                Math.abs(this.player1.sprite.position.y - this.boss[i].sprite.position.y) <=
+                (this.boss[i].bossSize*32)
             )
                 if (this.boss[i].isdead == false) this.getDamge();
         }
@@ -827,6 +829,8 @@ var Map = function (map, state) {
         if (this.itemArray[i].itemType == 4) this.gameState.money += 1;
         if (this.itemArray[i].itemType == 5) this.gameState.dmg += 1;
         if (this.itemArray[i].itemType == 6) this.gameState.atks += 1;
+        if(this.itemArray[i].itemType == 7) this.changeWeapon(2);
+        if(this.itemArray[i].itemType == 8) this.changeWeapon(3);
         if (this.gameState.hpLimit > 5) this.gameState.hpLimit = 5;
         if(this.gameState.weapon == 1){
             if (this.gameState.dmg > 7) this.gameState.dmg = 7;
@@ -887,7 +891,7 @@ var Map = function (map, state) {
             this.keyPress = "W";
         }
         if (e.key === "Q") {
-            this.changeWeapon();
+            this.changeWeapon(0);
         }
         if (e.key === "Up") {
             if (this.gameState.weapon == 0) this.createBullet(0);
@@ -951,10 +955,12 @@ var Map = function (map, state) {
             this.enemyBulletArray = [];
         }
     };
-    this.changeWeapon = function () {
-        if (this.gameState.weaponUsing < this.gameState.weaponList.length)
-            this.gameState.weaponUsing += 1;
-        else this.gameState.weaponUsing = 1;
+    this.changeWeapon = function (weaponNumber) {
+        if(weaponNumber == 0)
+            this.gameState.weaponUsing +=1;
+        else
+            this.gameState.weaponUsing = weaponNumber;
+        if(this.gameState.weaponUsing > 3) this.gameState.weaponUsing = 1;
         if (this.gameState.weapon == 1) this.gameState.dmg -= 2;
         this.gameState.weapon = this.gameState.weaponList[
             this.gameState.weaponUsing - 1
@@ -1584,13 +1590,13 @@ var Map = function (map, state) {
                     ) {
                         if (
                             Math.abs(
-                                this.bulletArray[i].spritePosition.x -
-                                this.monster[j].mapPosition.x
-                            ) < 0.5 &&
+                                this.bulletArray[i].sprite.position.x -
+                                this.monster[j].sprite.position.x
+                            ) < 32 &&
                             Math.abs(
-                                this.bulletArray[i].spritePosition.y -
-                                this.monster[j].mapPosition.y
-                            ) < 0.5
+                                this.bulletArray[i].sprite.position.y -
+                                this.monster[j].sprite.position.y
+                            ) < 32
                         ) {
                             this.monster[j].getHit();
                             if (this.monster[j].isdead) {
@@ -1616,15 +1622,15 @@ var Map = function (map, state) {
                     ) {
                         if (
                             Math.abs(
-                                this.bulletArray[i].spritePosition.x -
-                                this.boss[j].spritePosition.x / 64
+                                this.bulletArray[i].sprite.position.x -
+                                this.boss[j].sprite.position.x
                             ) <
-                            this.boss[j].bossSize / 2 &&
+                            this.boss[j].bossSize*32 &&
                             Math.abs(
-                                this.bulletArray[i].spritePosition.y -
-                                this.boss[j].spritePosition.y / 64
+                                this.bulletArray[i].sprite.position.y -
+                                this.boss[j].sprite.position.y
                             ) <
-                            this.boss[j].bossSize / 2
+                            this.boss[j].bossSize*32
                         ) {
                             this.boss[j].getHit();
                             this.bulletArray[i].bulletEnd = true;
@@ -1898,6 +1904,8 @@ var Map = function (map, state) {
                     y: 4
                 };
                 this.nextLevelGateArray.push(nextLevelGate);
+                if(this.gameState.gameLevel == 1)this.addNewItem(7,7,6);
+                if(this.gameState.gameLevel == 2)this.addNewItem(8,7,6);
                 this.audio.play({
                     name: "holy",
                     loop: false

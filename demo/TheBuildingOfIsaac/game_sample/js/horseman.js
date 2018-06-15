@@ -108,7 +108,6 @@ var Horseman = function(file, map, hp, options) {
                 walkSpeed = 4;
             }
             else{
-                console.log(this.mapPosition);
                 if (this.mapPosition.x > 15) {
                     wallBreak+=1;
                     this.mapPosition = {
