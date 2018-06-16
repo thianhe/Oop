@@ -616,12 +616,12 @@ var Map = function(map, state) {
         this.arrayDraw(this.tileArray, ctx);
         this.arrayDraw(this.boxArray, ctx);
         this.arrayDraw(this.poopArray, ctx);
+        this.arrayDraw(this.stoneArray, ctx);
         this.arrayDraw(this.itemArray, ctx);
         this.arrayDraw(this.doorArray, ctx);
         this.arrayDraw(this.boss, ctx);
         this.arrayDraw(this.monster, ctx);
         this.arrayDraw(this.nextLevelGateArray, ctx);
-        this.arrayDraw(this.stoneArray, ctx);
         this.arrayDraw(this.enemyBulletArray, ctx);
         if (this.isPee) this.pee.draw(ctx);
         if (mapPositionX == startingMapXY && mapPositionY == startingMapXY)
@@ -953,11 +953,7 @@ var Map = function(map, state) {
             this.enemyBulletArray = [];
         }
     };
-<<<<<<< HEAD
-    this.changeWeapon = function (weaponNumber) {
-=======
     this.changeWeapon = function(weaponNumber) {
->>>>>>> 91b2786d2ac49062b224e696f30ef1d7887afc71
         if (weaponNumber == 0)
             this.gameState.weaponUsing += 1;
         else
@@ -1926,6 +1922,7 @@ var Map = function(map, state) {
                     name: "holy",
                     loop: false
                 });
+
             }
         }
     };

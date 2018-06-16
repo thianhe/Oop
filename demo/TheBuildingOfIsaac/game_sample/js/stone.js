@@ -6,7 +6,7 @@ var Stone = function() {
 
     this.mapPosition = {
         x: 6.5,
-        y: 5.5
+        y: 5
     };
 
     //被炸彈炸到的function
