@@ -8,6 +8,7 @@ Framework.Game.isBackwardCompatiable = false;
 Framework.Game.addNewLevel({menu: new MyMenu()});
 Framework.Game.addNewLevel({level1: new GameLevel()});
 Framework.Game.addNewLevel({level2: new GameLevel()});
+Framework.Game.addNewLevel({level3: new GameLevel()});
 Framework.Game.addNewLevel({gameWin: new GameWin()});
 Framework.Game.addNewLevel({gameOver: new GameOver()});
 Framework.Game.start();

@@ -103,6 +103,14 @@ var Map = function (map, state) {
                 to: 3
             }
         );
+        var newBossPic1 = new WormBoss(
+            define.imagePath + "monster.png",
+            this,
+            this.monsterHP * (7 + this.monsterHP), {
+                from: 0,
+                to: 3
+            }
+        );
         var newBossPic2 = new Horseman(
             define.imagePath + "horseman.png",
             this,
@@ -506,6 +514,15 @@ var Map = function (map, state) {
     this.addBoss = function (monsterPosition) {
         var newBoss;
         if (this.gameState.gameLevel == 1)
+            newBoss = new WormBoss(
+                define.imagePath + "monster.png",
+                this,
+                this.monsterHP * (7 + this.monsterHP), {
+                    from: 0,
+                    to: 3
+                }
+            );
+        if (this.gameState.gameLevel == 2)
             newBoss = new FliesBoss(
                 define.imagePath + "fliesBoss.png",
                 this,
@@ -514,7 +531,7 @@ var Map = function (map, state) {
                     to: 3
                 }
             );
-        if (this.gameState.gameLevel == 2)
+        if (this.gameState.gameLevel == 3)
             newBoss = new Horseman(
                 define.imagePath + "horseman.png",
                 this,
@@ -536,33 +553,6 @@ var Map = function (map, state) {
         flyDie.position = diePosition;
         this.bulletExploreArray.push(flyDie);
     };
-
-    /*this.playerMovedHandler = function(player){
-         var constants = new Constants();
-          var item = m_map.mapArray[player.position.y][player.position.x];
-          if(item === constants.ItemEnum.INCREASE_BOMB){
-              player.increaseBombNum();
-              m_map.mapArray[player.position.y][player.position.x] = 0;
-              m_map.tileArray[player.position.y*22+player.position.x].tileType = 0;
-              m_map.score.addScore(200);
-          }else if(item === constants.ItemEnum.INCREASE_POWER){
-              player.increaseBombPower();
-              m_map.mapArray[player.position.y][player.position.x] = 0;
-              m_map.tileArray[player.position.y*22+player.position.x].tileType = 0;
-              m_map.score.addScore(200);
-          }else if(item === constants.ItemEnum.STOP_MONSTER){
-              m_map.stopMonster = true;
-              m_map.mapArray[player.position.y][player.position.x] = 0;
-              m_map.tileArray[player.position.y*22+player.position.x].tileType = 0;
-              m_map.score.addScore(200);
-          }
-      }*/
-
-    /*this.exploreEndHandler = function(explore){
-          var index = m_map.exploreArray.indexOf(explore);
-          m_map.exploreArray.splice(index,1);
-          m_map.draw(Framework.Game._context);
-      }*/
 
     this.update = function () {
         this.outOfMap();
@@ -890,9 +880,6 @@ var Map = function (map, state) {
             walkDirection[0] = true;
             this.keyPress = "W";
         }
-        if (e.key === "Q") {
-            this.changeWeapon(0);
-        }
         if (e.key === "Up") {
             if (this.gameState.weapon == 0) this.createBullet(0);
             if (this.gameState.weapon == 1) this.createBigBullet(0);
@@ -921,6 +908,9 @@ var Map = function (map, state) {
         this.playerWalkFunction();
     };
     this.testingShortCut = function (e, list) {
+        if (e.key === "Q") {
+            this.changeWeapon(0);
+        }
         if (e.key === "N") {
             Framework.Game.goToNextLevel();
         }
@@ -1570,7 +1560,7 @@ var Map = function (map, state) {
                                     name: "plop",
                                     loop: false
                                 });
-                                if (this.randomBool(0.5))
+                                if (this.randomBool(0.7))
                                     this.addNewItem(
                                         0,
                                         this.poopArray[j].position.x,
@@ -1600,8 +1590,9 @@ var Map = function (map, state) {
                             this.monster[j].getHit();
                             if (this.monster[j].isdead) {
                                 if (
-                                    this.randomBool(0.5) &&
-                                    this.monster[j].itemDrop
+                                    this.randomBool(0.7) &&
+                                    this.monster[j].itemDrop && !(mapPositionX == bossMapPsoitionX &&
+                                    mapPositionY == bossMapPsoitionY)
                                 )
                                     this.addNewItem(
                                         0,
@@ -1689,8 +1680,9 @@ var Map = function (map, state) {
                             this.monster[j].getHit();
                             if (this.monster[j].isdead) {
                                 if (
-                                    this.randomBool(0.5) &&
-                                    this.monster[j].itemDrop
+                                    this.randomBool(0.7) &&
+                                    this.monster[j].itemDrop&& !(mapPositionX == bossMapPsoitionX &&
+                                        mapPositionY == bossMapPsoitionY)
                                 )
                                     this.addNewItem(
                                         0,

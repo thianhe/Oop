@@ -1,8 +1,7 @@
-//由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
-//目前Class寫法都是以function的方式
-//只要是this.XXX皆會是Public的property
-var Worm = function(file, map, hp, options) {
-    Worm.prototype = new Monster(map, hp);
+var WormBoss = function(file, map, hp, options) {
+    var tempBoss = new Boss(map, hp, 1.5);
+    WormBoss.prototype = new Boss(map, hp, 1.5);
+    var wallBreak = 0;
     this.url = file;
     this.sprite = new Framework.AnimationSprite({
         url: this.url,
@@ -11,14 +10,11 @@ var Worm = function(file, map, hp, options) {
         loop: true,
         speed: 12
     });
-    this.sprite.scale = 2;
-    this.sprite.index = 1;
-
+    this.sprite.scale = 3;
+    this.sprite.index = 2;
     this.spritePosition = { x: 0, y: 0 };
     this.constants = new Constants();
-
     this.playerDirection = this.constants.DirectionEnum.DOWN;
-
     this.walk = function(moveStep) {
         if (this.isWalking === false) {
             if (moveStep.x > 0) {
@@ -85,6 +81,10 @@ var Worm = function(file, map, hp, options) {
                 this.sprite.stop();
                 this.sprite.index = this.playerDirection * 3 + 1;
                 this.mapPosition = this.walkTarget;
+
+                /*for(var i=0; i<this.StepMovedCallBack.length; i++){
+                    this.StepMovedCallBack[i](this);
+                }*/
             } else {
                 this.walkAlittle();
             }
@@ -104,6 +104,7 @@ var Worm = function(file, map, hp, options) {
             y: this.spritePosition.y
         };
         this.sprite.draw(ctx);
+        this.drawHpBar(ctx);
     };
     var walkDir = 0;
     var walkStep = { x: 0, y: 0 };
@@ -118,11 +119,19 @@ var Worm = function(file, map, hp, options) {
                 this.walk(walkStep);
             }
             else{
+                this.map.addMonster(1, {
+                    x: this.mapPosition.x,
+                    y: this.mapPosition.y
+                });
+                this.map.addMonster(1, {
+                    x: this.mapPosition.x,
+                    y: this.mapPosition.y
+                });
                 this.isRushing = false;
                 this.isRushingCount =0;
                 walkSpeed=4;
             }
-        } else if(this.mapPosition.x == this.map.player1.position.x && this.isRushingCount == 100){
+        } else if(this.mapPosition.x == this.map.player1.position.x && this.isRushingCount == 200){
             if(this.map.checkIsRushAbleY(this.mapPosition.x,this.mapPosition.y,this.map.player1.position.y)){
                 walkStep = { x: 0, y: 0 };
                 if(this.mapPosition.y<this.map.player1.position.y) walkStep.y = 1;
@@ -131,7 +140,7 @@ var Worm = function(file, map, hp, options) {
                 this.isRushing = true;
                 walkSpeed=8;
             }
-        }else if(this.mapPosition.y == this.map.player1.position.y && this.isRushingCount == 100){
+        }else if(this.mapPosition.y == this.map.player1.position.y && this.isRushingCount == 200){
             if(this.map.checkIsRushAbleX(this.mapPosition.x,this.mapPosition.y,this.map.player1.position.x)){
                 walkStep = { x: 0, y: 0 };
                 if(this.mapPosition.x<this.map.player1.position.x) walkStep.x = 1;
@@ -170,7 +179,7 @@ var Worm = function(file, map, hp, options) {
     };
 };
 
-Object.defineProperty(Worm.prototype, "position", {
+Object.defineProperty(WormBoss.prototype, "position", {
     get: function() {
         return this.mapPosition;
     },
@@ -180,5 +189,11 @@ Object.defineProperty(Worm.prototype, "position", {
             x: this.mapPosition.x * 64,
             y: this.mapPosition.y * 64
         };
+    }
+});
+
+Object.defineProperty(WormBoss.prototype, "isDead", {
+    get: function() {
+        return this.isdead;
     }
 });
