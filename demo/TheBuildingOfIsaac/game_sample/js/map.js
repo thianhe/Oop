@@ -1928,7 +1928,7 @@ var Map = function(map, state) {
         ) {
             if (this.thisMapState[mapPositionX][mapPositionY][0] == 2) {
                 if (
-                    this.player1.position.x == 6 &&
+                    this.player1.position.x == 7 &&
                     this.player1.position.y == 2
                 ) {
                     Framework.Game.goToNextLevel();
