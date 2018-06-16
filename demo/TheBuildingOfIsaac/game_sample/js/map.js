@@ -590,8 +590,8 @@ var Map = function (map, state) {
     this.onTouchFunction = function () {
         for (var i = 0; i < this.monster.length; i++) {
             if (
-                Math.abs(this.player1.sprite.position.x - this.monster[i].sprite.position.x)<32 &&
-                Math.abs(this.player1.sprite.position.y - this.monster[i].sprite.position.y)<32
+                Math.abs(this.player1.sprite.position.x - this.monster[i].sprite.position.x) < 32 &&
+                Math.abs(this.player1.sprite.position.y - this.monster[i].sprite.position.y) < 32
             )
                 if (this.monster[i].isdead == false) this.getDamge();
         }
@@ -605,9 +605,9 @@ var Map = function (map, state) {
         for (var i = 0; i < this.boss.length; i++) {
             if (
                 Math.abs(this.player1.sprite.position.x - this.boss[i].sprite.position.x) <=
-               (this.boss[i].bossSize*32) &&
+                (this.boss[i].bossSize * 32) &&
                 Math.abs(this.player1.sprite.position.y - this.boss[i].sprite.position.y) <=
-                (this.boss[i].bossSize*32)
+                (this.boss[i].bossSize * 32)
             )
                 if (this.boss[i].isdead == false) this.getDamge();
         }
@@ -650,7 +650,7 @@ var Map = function (map, state) {
             if (this.gameState.hp > 1) {
                 this.buyItem(this.StartingMapItem.slotMachine_money, 4, 1, 0);
             }
-            if ((this.gameState.money > 0 && this.gameState.dmg < 5) || (this.gameState.money > 0 && this.gameState.dmg < 7 && this.gameState.weapon ==1)) {
+            if ((this.gameState.money > 0 && this.gameState.dmg < 5) || (this.gameState.money > 0 && this.gameState.dmg < 7 && this.gameState.weapon == 1)) {
                 this.buyItem(this.StartingMapItem.slotMachine_dmg, 5, 0, 1);
             }
             if (this.gameState.money > 0 && this.gameState.atks < 5) {
@@ -819,13 +819,12 @@ var Map = function (map, state) {
         if (this.itemArray[i].itemType == 4) this.gameState.money += 1;
         if (this.itemArray[i].itemType == 5) this.gameState.dmg += 1;
         if (this.itemArray[i].itemType == 6) this.gameState.atks += 1;
-        if(this.itemArray[i].itemType == 7) this.changeWeapon(2);
-        if(this.itemArray[i].itemType == 8) this.changeWeapon(3);
+        if (this.itemArray[i].itemType == 7) this.changeWeapon(2);
+        if (this.itemArray[i].itemType == 8) this.changeWeapon(3);
         if (this.gameState.hpLimit > 5) this.gameState.hpLimit = 5;
-        if(this.gameState.weapon == 1){
+        if (this.gameState.weapon == 1) {
             if (this.gameState.dmg > 7) this.gameState.dmg = 7;
-        }
-        else{
+        } else {
             if (this.gameState.dmg > 5) this.gameState.dmg = 5;
         }
         if (this.gameState.atks > 5) this.gameState.atks = 5;
@@ -946,11 +945,11 @@ var Map = function (map, state) {
         }
     };
     this.changeWeapon = function (weaponNumber) {
-        if(weaponNumber == 0)
-            this.gameState.weaponUsing +=1;
+        if (weaponNumber == 0)
+            this.gameState.weaponUsing += 1;
         else
             this.gameState.weaponUsing = weaponNumber;
-        if(this.gameState.weaponUsing > 3) this.gameState.weaponUsing = 1;
+        if (this.gameState.weaponUsing > 3) this.gameState.weaponUsing = 1;
         if (this.gameState.weapon == 1) this.gameState.dmg -= 2;
         this.gameState.weapon = this.gameState.weaponList[
             this.gameState.weaponUsing - 1
@@ -1592,7 +1591,7 @@ var Map = function (map, state) {
                                 if (
                                     this.randomBool(0.7) &&
                                     this.monster[j].itemDrop && !(mapPositionX == bossMapPsoitionX &&
-                                    mapPositionY == bossMapPsoitionY)
+                                        mapPositionY == bossMapPsoitionY)
                                 )
                                     this.addNewItem(
                                         0,
@@ -1615,12 +1614,12 @@ var Map = function (map, state) {
                                 this.bulletArray[i].sprite.position.x -
                                 this.boss[j].sprite.position.x
                             ) <
-                            this.boss[j].bossSize*32 &&
+                            this.boss[j].bossSize * 32 &&
                             Math.abs(
                                 this.bulletArray[i].sprite.position.y -
                                 this.boss[j].sprite.position.y
                             ) <
-                            this.boss[j].bossSize*32
+                            this.boss[j].bossSize * 32
                         ) {
                             this.boss[j].getHit();
                             this.bulletArray[i].bulletEnd = true;
@@ -1681,7 +1680,7 @@ var Map = function (map, state) {
                             if (this.monster[j].isdead) {
                                 if (
                                     this.randomBool(0.7) &&
-                                    this.monster[j].itemDrop&& !(mapPositionX == bossMapPsoitionX &&
+                                    this.monster[j].itemDrop && !(mapPositionX == bossMapPsoitionX &&
                                         mapPositionY == bossMapPsoitionY)
                                 )
                                     this.addNewItem(
@@ -1882,6 +1881,12 @@ var Map = function (map, state) {
                 this.doorArray[i].mapClean();
             }
             this.thisMapState[mapPositionX][mapPositionY][0] = 2;
+            if (
+                mapPositionX == bossMapPsoitionX &&
+                mapPositionY == bossMapPsoitionY) {
+                if (this.gameState.gameLevel == 1) this.addNewItem(7, 7, 6);
+                if (this.gameState.gameLevel == 2) this.addNewItem(8, 7, 6);
+            }
         }
         if (this.thisMapState[mapPositionX][mapPositionY][0] === 2) {
             if (
@@ -1895,8 +1900,7 @@ var Map = function (map, state) {
                     y: 4
                 };
                 this.nextLevelGateArray.push(nextLevelGate);
-                if(this.gameState.gameLevel == 1)this.addNewItem(7,7,6);
-                if(this.gameState.gameLevel == 2)this.addNewItem(8,7,6);
+
                 this.audio.play({
                     name: "holy",
                     loop: false
