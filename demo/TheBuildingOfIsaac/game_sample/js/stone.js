@@ -1,12 +1,12 @@
-var NextLevelGate = function() {
-    this.sprite = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
-    this.sprite.scale = 1;
+var Stone = function() {
+    this.sprite = new Framework.Sprite(define.imagePath + 'stone.png');
+    this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
 
     this.mapPosition = {
-        x: 1,
-        y: 1
+        x: 6.5,
+        y: 5.5
     };
 
     //被炸彈炸到的function
