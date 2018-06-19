@@ -67,10 +67,6 @@ var loadGameEnd;
             lookFor: 'Constants'
         },
         {
-            src: 'game_sample/js/score.js',
-            lookFor: 'Score'
-        },
-        {
             src: 'game_sample/js/isaacHead.js',
             lookFor: 'IsaacHead'
         },
@@ -121,10 +117,6 @@ var loadGameEnd;
         {
             src: 'game_sample/js/explore.js',
             lookFor: 'Explore'
-        },
-        {
-            src: 'game_sample/js/bomb.js',
-            lookFor: 'Bomb'
         },
         {
             src: 'game_sample/js/mapItem.js',
@@ -197,10 +189,6 @@ var loadGameEnd;
         {
             src: 'game_sample/js/map.js',
             lookFor: 'Map'
-        },
-        {
-            src: 'game_sample/js/level2.js',
-            lookFor: 'Level2'
         },
         {
             src: 'game_sample/js/gameLevel.js',

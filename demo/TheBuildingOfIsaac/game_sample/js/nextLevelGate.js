@@ -9,7 +9,6 @@ var NextLevelGate = function() {
         y: 1
     };
 
-    //被炸彈炸到的function
     this.explored = function() {
 
     }

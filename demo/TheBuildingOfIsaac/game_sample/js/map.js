@@ -89,11 +89,6 @@ var Map = function(map, state) {
             loop: true
         });
         this.audio.setVolume("bgm", 0.08);
-        this.score = new Score();
-        this.score.position = {
-            x: 0,
-            y: 0
-        };
         this.mapFloor = new Framework.Sprite(define.imagePath + "floor1.png");
         var newBossPic = new FliesBoss(
             define.imagePath + "fliesBoss.png",
@@ -313,7 +308,6 @@ var Map = function(map, state) {
     this.monster = [];
     this.boss = [];
     this.init = function() {
-        this.player1.StepMovedCallBack.push(this.playerMovedHandler);
         this.constants = new Constants();
         this.boxArray = [];
         this.tileArray = [];
@@ -513,7 +507,7 @@ var Map = function(map, state) {
     };
     this.addBoss = function(monsterPosition) {
         var newBoss;
-        if (this.gameState.gameLevel == 1)
+        if (this.gameState.gameLevel == 2)
             newBoss = new WormBoss(
                 define.imagePath + "monster.png",
                 this,
@@ -522,7 +516,7 @@ var Map = function(map, state) {
                     to: 3
                 }
             );
-        if (this.gameState.gameLevel == 2)
+        if (this.gameState.gameLevel == 1)
             newBoss = new FliesBoss(
                 define.imagePath + "fliesBoss.png",
                 this,
@@ -1894,12 +1888,12 @@ var Map = function(map, state) {
                 mapPositionX == bossMapPsoitionX &&
                 mapPositionY == bossMapPsoitionY) {
                     if (this.gameState.gameLevel == 1) {
-                        this.addNewItem(7, 7, 4);
+                        this.addNewItem(8, 7, 4);
                         var stone = new Stone();
                         this.stoneArray.push(stone);
                     }
                     if (this.gameState.gameLevel == 2) {
-                        this.addNewItem(8, 7, 4);
+                        this.addNewItem(7, 7, 4);
                         var stone = new Stone();
                         this.stoneArray.push(stone);
                     }
