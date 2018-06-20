@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+
+<body>
+    <video id="myVideo" src="ending.mp4" type="video/mp4" autoplay="" style="position: fixed; right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto; z-index: -100;
+    background-size: cover;">
+    </video>
+    <script type="text/javascript">
+        $(document).click(function (e) {
+            window.location.href = "demo/TheBuildingOfIsaac/game_sample.html";
+        })
+        $(document).keydown(function (e) {
+            window.location.href = "demo/TheBuildingOfIsaac/game_sample.html";
+        })
+        document.getElementById('myVideo').addEventListener('ended', myHandler, false);
+
+        function myHandler(e) {
+            window.location.href = "demo/TheBuildingOfIsaac/game_sample.html";
+        }
+    </script>
+</body>
+
+</html>

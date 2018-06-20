@@ -1,5 +1,5 @@
-var NextLevelGate = function() {
-    this.sprite = new Framework.Sprite(define.imagePath + 'nextLevelGate.png');
+var NextLevelGate = function(url) {
+    this.sprite = new Framework.Sprite(url);
     this.sprite.scale = 1;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
@@ -10,13 +10,9 @@ var NextLevelGate = function() {
     };
 
     this.explored = function() {
-
     }
-
     this.update = function() {
-
     }
-
 
     this.draw = function(ctx) {
         this.sprite.position = {

@@ -15,6 +15,7 @@ var GameWin = Framework.Class(Framework.Level , {
 
     load: function() {
         this.menu = new Framework.Sprite(define.imagePath + 'loading.png');
+        window.location.href = "./../../ending.html";
     },
 
     initialize: function() {

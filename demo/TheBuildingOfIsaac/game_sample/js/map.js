@@ -277,6 +277,7 @@ var Map = function(map, state) {
         );
         var flyDiewPic = new Framework.Sprite(define.imagePath + "dieFly.png");
         var mapNextLevelGatePic = new Framework.Sprite(define.imagePath + "nextLevelGate.png");
+        var mapNextLevelGatePic2 = new Framework.Sprite(define.imagePath + "nextLevelGate2.png");
         var stonePic = new Framework.Sprite(define.imagePath + "stone.png");
         this.player1 = new Isaac(define.imagePath + "player1.png", {
             down: {
@@ -1898,8 +1899,11 @@ var Map = function(map, state) {
                 mapPositionX == bossMapPsoitionX &&
                 mapPositionY == bossMapPsoitionY &&
                 this.nextLevelGateArray.length == 0
-            ) {
-                var nextLevelGate = new NextLevelGate();
+            ) {var nextLevelGate;
+                if(this.gameState.gameLevel < 3)
+                    nextLevelGate = new NextLevelGate(define.imagePath + 'nextLevelGate.png');
+                else
+                nextLevelGate = new NextLevelGate(define.imagePath + 'nextLevelGate2.png');
                 nextLevelGate.position = {
                     x: 6,
                     y: 2
