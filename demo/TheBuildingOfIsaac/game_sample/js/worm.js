@@ -1,6 +1,3 @@
-//由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
-//目前Class寫法都是以function的方式
-//只要是this.XXX皆會是Public的property
 var Worm = function(file, map, hp, options) {
     Worm.prototype = new Monster(map, hp);
     this.url = file;

@@ -8,8 +8,6 @@ var Door = function() {
         x: 1,
         y: 1
     };
-
-    //被炸彈炸到的function
     this.mapClean = function() {
         doorOpen = true;
     }

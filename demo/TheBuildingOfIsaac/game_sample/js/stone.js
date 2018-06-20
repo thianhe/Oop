@@ -3,22 +3,12 @@ var Stone = function() {
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
-
     this.mapPosition = {
         x: 6.5,
         y: 5
     };
-
-    //被炸彈炸到的function
-    this.explored = function() {
-
-    }
-
     this.update = function() {
-
     }
-
-
     this.draw = function(ctx) {
         this.sprite.position = {
             x: (this.mapPosition.x * PIXEL_CONST) + 32,
@@ -26,7 +16,6 @@ var Stone = function() {
         };
         this.sprite.draw(ctx);
     }
-
 };
 
 Object.defineProperty(NextLevelGate.prototype, 'position', {

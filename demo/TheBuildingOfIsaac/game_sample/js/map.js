@@ -1202,12 +1202,6 @@ var Map = function(map, state) {
         }
     };
 
-    /*this.stopAllMonsterWalk = function() {
-        for (var i = 0; i < this.monster.length; i++) {
-            this.monster[i].stopWalk();
-        }
-    };*/
-
     this.checkIsWalkAble = function(x, y) {
         if (x < 0 || x > this.mapArray[0].length) {
             return false;
@@ -1278,7 +1272,7 @@ var Map = function(map, state) {
                 !walkDirection[2] &&
                 !walkDirection[3]
             ) {
-                this.player1.walkEnd();
+                //this.player1.walkEnd();
                 this.playerWalkDirection = {
                     x: 0,
                     y: 0

@@ -107,7 +107,6 @@ var FliesBoss = function(file, map, hp, options) {
             }
         } else {
             if (this.canWalking) {
-                //console.log(this.mapPosition,this.bossSize);
                 this.floatTo();
             }
         }

@@ -16,8 +16,6 @@ var EnemyBullet = function(file,startingPosition,aimPosition){
         if(!(this.bulletEnd))this.walkAlittle()
         if(this.bulletEnd){return;}
     }
-
-    var walkSpeed = 0.1;
     this.walkAlittle = function(){
         this.spritePosition = {x:this.spritePosition.x+spdX, y:this.spritePosition.y + spdY};
     }

@@ -81,10 +81,6 @@ var WormBoss = function(file, map, hp, options) {
                 this.sprite.stop();
                 this.sprite.index = this.playerDirection * 3 + 1;
                 this.mapPosition = this.walkTarget;
-
-                /*for(var i=0; i<this.StepMovedCallBack.length; i++){
-                    this.StepMovedCallBack[i](this);
-                }*/
             } else {
                 this.walkAlittle();
             }

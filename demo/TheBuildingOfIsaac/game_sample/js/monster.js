@@ -7,6 +7,7 @@ var Monster = function(map,hp) {
     this.isdead = false;
     this.HP = hp;
     this.isShooting = true;
+    var walkDir=0;
     this.isShootingCounter = 0;
     this.isRushing = false;
     this.isRushingCount = 0;

@@ -12,27 +12,19 @@ var Box = function() {
     } else if (randomstone == 4) {
         path = 'stone5.png';
     }
-
     this.sprite = new Framework.Sprite(define.imagePath + path);
     this.sprite.scale = 2;
     this.sprite.index = 1;
     var PIXEL_CONST = 64;
-
 
     this.mapPosition = {
         x: 1,
         y: 1
     };
 
-    //被炸彈炸到的function
-    this.explored = function() {
-
-    }
-
     this.update = function() {
 
     }
-
 
     this.draw = function(ctx) {
         this.sprite.position = {

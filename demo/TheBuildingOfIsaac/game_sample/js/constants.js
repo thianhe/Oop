@@ -18,10 +18,4 @@ var Constants = function() {
         RIGHT : 3,
     };
 
-    /*this.ItemEnum = {
-        NONE : 0,
-        INCREASE_BOMB : -1,
-        INCREASE_POWER : -2,
-        STOP_MONSTER : -3
-    };*/
 };

@@ -1,8 +1,5 @@
-//立即執行函式, 並封裝所有變數避免衝突
 var loadGameEnd;
 (function() {
-    //動態依序載入JS
-    //ref: http://blog.darkthread.net/blogs/darkthreadtw/archive/2009/01/15/4061.aspx
     var importJS = function(jsConf, src, lookFor) {
         var headID = document.getElementsByTagName("head")[0];
         var newJs = document.createElement('script');
@@ -50,10 +47,6 @@ var loadGameEnd;
             }
         }, 50);
     }
-
-    //陣列和載入JS檔的順序相同, lookFor為在要載入的檔案中,
-    //有用到的全域變數, importJS這個function, 會在找到lookFor的變數後
-    //才會繼續loading下一個檔案, 如果沒有需要lookFor, 則以空字串代表
     var listScript = [{
             src: 'game_sample/js/define.js',
             lookFor: 'define'
@@ -113,10 +106,6 @@ var loadGameEnd;
         {
             src: 'game_sample/js/horseman.js',
             lookFor: 'Horseman'
-        },
-        {
-            src: 'game_sample/js/explore.js',
-            lookFor: 'Explore'
         },
         {
             src: 'game_sample/js/mapItem.js',

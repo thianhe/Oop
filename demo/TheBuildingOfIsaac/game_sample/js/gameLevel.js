@@ -44,8 +44,6 @@ var GameLevel = Framework.Class(Framework.Level, {
     },
 
     draw: function(parentCtx) {
-        //this.rootScene.draw();
-        //可支援畫各種單純的圖形和字
         this.map.draw(parentCtx);
 
     },
@@ -65,17 +63,11 @@ var GameLevel = Framework.Class(Framework.Level, {
         }
     },
     keyup: function(e, list) {
-
         this.map.keyup(e, list);
     },
-
     touchstart: function(e) {
-        //為了要讓Mouse和Touch都有一樣的事件
-        //又要減少Duplicated code, 故在Touch事件被觸發時, 去Trigger Mouse事件
         this.click(e[0]);
     },
 
-    click: function(e) {
-
-    },
+    click: function(e) {},
 });

@@ -1,6 +1,3 @@
-//由於JS尚未支援Class(ECMAScript 6以後, 宣稱會支援)
-//目前Class寫法都是以function的方式
-//只要是this.XXX皆會是Public的property
 var SmallFly = function(file, map, hp, options) {
     SmallFly.prototype = new Monster(map, hp/2);
     this.url = file;
@@ -11,8 +8,6 @@ var SmallFly = function(file, map, hp, options) {
     this.itemDrop = false;
     this.spritePosition = {x:0, y:0};
     this.constants = new Constants();
-
-    //this.StepMovedCallBack = [];
 
     
     this.playerDirection = this.constants.DirectionEnum.DOWN;
@@ -82,13 +77,9 @@ var SmallFly = function(file, map, hp, options) {
         if(this.isWalking){
             if(this.walkTarget.x * this.PIXEL_CONST === this.spritePosition.x && this.walkTarget.y * this.PIXEL_CONST === this.spritePosition.y){
                 this.isWalking = false;
-                //this.sprite.stop();
                 this.sprite.index = 0;
                 this.mapPosition = this.walkTarget;
 
-                /*for(var i=0; i<this.StepMovedCallBack.length; i++){
-                    this.StepMovedCallBack[i](this);
-                }*/
             }else{
                 this.walkAlittle();
             }
