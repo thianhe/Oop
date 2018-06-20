@@ -15,7 +15,7 @@ var GameWin = Framework.Class(Framework.Level , {
 
     load: function() {
         this.menu = new Framework.Sprite(define.imagePath + 'loading.png');
-        window.location.href = "./../../ending.html";
+        
     },
 
     initialize: function() {
@@ -50,14 +50,15 @@ var GameWin = Framework.Class(Framework.Level , {
         parentCtx.fillStyle = 'White';
         parentCtx.textBaseline = 'top';
         parentCtx.textAlign = 'center';
-        parentCtx.fillText('You Win!', this.rectPosition.x + 130, this.rectPosition.y, 260);
+        parentCtx.fillText('You Win! Press any key to ending!', this.rectPosition.x + 130, this.rectPosition.y, 500);
+
     },
 
     mouseup: function(e) {
     },
 
     mousedown: function(e) {
-        Framework.Game.goToLevel('menu');
+        window.location.href = "./../../ending.html";
     },
 
     mousemove: function(e) {        
