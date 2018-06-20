@@ -126,6 +126,7 @@ var Fly = function(file, map, hp, options) {
         };
         this.sprite.draw(ctx);
     };
+    var walkDir = 0;
     this.randomWalk = function() {
         var randNum = Math.floor(Math.random() * 1000) % 553;
         walkDir++;

@@ -19,15 +19,13 @@ var MyMenu = Framework.exClass(Framework.GameMainMenu , {
     },
 
     initialize: function() {
-
-
         //為了讓之後的位置較好操控, new出一個位於中心點且可以黏貼任何東西的容器
         //注意, Position都是用中心點
         this.menu.position = {
-            x: Framework.Game.getCanvasWidth() / 2,
-            y: (Framework.Game.getCanvasHeight() / 2)-50
+            x: 430,
+            y: 180
         };
-        this.menu.scale = 2;
+        this.menu.scale = 1.5;
         this.rootScene.attach(this.menu);
 
         this.rectPosition = {
@@ -47,13 +45,6 @@ var MyMenu = Framework.exClass(Framework.GameMainMenu , {
         //this.rootScene.draw();一定要在第一行
         this.rootScene.draw(parentCtx);
         this.menu.draw(parentCtx);
-        //this.rootScene.draw();
-        //可支援畫各種單純的圖形和字
-        parentCtx.font = '65pt bold';
-        parentCtx.fillStyle = 'Black';
-        parentCtx.textBaseline = 'top';
-        parentCtx.textAlign = 'center';
-        parentCtx.fillText('Click To Start', this.rectPosition.x + 130, this.rectPosition.y, 260);
     },
 
     mouseup: function(e) {
